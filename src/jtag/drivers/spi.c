@@ -70,6 +70,10 @@ static unsigned int lsb_buf_bit_index;
 /// File descriptor for SPI device
 static int spi_fd = -1;
 
+//  SWD Sequence to Read Register 0 (IDCODE), prepadded with 2 null bits bits to fill up 6 bytes. Target will not get out of sync after sequence.
+static const uint8_t swd_read_reg_0_prepadded[] = { 0x94, 0x02, 0x00, 0x00, 0x00, 0x00 };
+static const unsigned swd_read_reg_0_prepadded_len = 48;  //  Number of bits
+
 static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
 static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
 static void spi_transmit(int fd, const uint8_t *buf, unsigned int len);
@@ -106,6 +110,9 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
     if (target_to_host && (bit_cnt - offset) % 8 != 0) {
         puts("spi_exchange: JTAG-to-SWD seq");
         spi_transmit(spi_fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
+        //  Transmit command to read Register 0 (IDCODE).  This is mandatory after JTAG-to-SWD sequence, according to SWD protocol.  We prepad with 2 null bits so that the next command will be byte-aligned.
+        puts("spi_exchange: Prepadded read reg 0 seq");
+        spi_transmit(fd, swd_read_reg_0_prepadded, swd_read_reg_0_prepadded_len / 8);
     }
     //  Sending to target is always round number of bytes with trailing bits=0, so target is not confused.
     static int count = 0;  if (++count == 6) { pabort("Exit for testing"); } ////
