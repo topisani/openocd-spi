@@ -104,7 +104,7 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
         spi_transmit(spi_fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
     }
     //  Sending to target is always round number of bytes with trailing bits=0, so target is not confused.
-    static int count = 0;  if (++count == 4) { pabort("Exit for testing"); } ////
+    static int count = 0;  if (++count == 5) { pabort("Exit for testing"); } ////
 }
 
 /// Transmit bit_cnt number of bits from buf (LSB format) starting at the bit offset.
@@ -321,6 +321,8 @@ static void pabort(const char *s) {
 cd ~/openocd-spi
 ./bootstrap
 ./configure --enable-sysfsgpio --enable-bcm2835gpio --enable-cmsis-dap
+
+~/openocd-spi/scripts/build-test.sh
 
 clear ; cd ~/openocd-spi ; git pull ; make
 
