@@ -404,11 +404,19 @@ static int bitbang_swd_init(void)
 	return ERROR_OK;
 }
 
+//#define SWD_SPI
+#ifdef SWD_SPI	
+void spi_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
+#endif  //  SWD_SPI	
+
 static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
+#ifdef SWD_SPI	
+	spi_exchange(rnw, buf, offset, bit_cnt);
+#else
 	{ ////
-		printf("** %s offset %d bits %2d:", rnw ? "target -> host" : "host -> target", offset, bit_cnt);
 		if (!rnw && buf) {
+			printf("** %s offset %d bits %2d:", rnw ? "trgt -> host" : "host -> trgt", offset, bit_cnt);
 			for (unsigned int i = 0; i < (bit_cnt + 7) / 8; i++) {
 				printf(" %02x", buf[i]);
 			}
@@ -434,6 +442,16 @@ static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsig
 
 		bitbang_interface->write(1, 0, tdi);
 	}
+	{ ////
+		if (rnw && buf) {
+			printf("** %s offset %d bits %2d:", rnw ? "trgt -> host" : "host -> trgt", offset, bit_cnt);
+			for (unsigned int i = 0; i < (bit_cnt + 7) / 8; i++) {
+				printf(" %02x", buf[i]);
+			}
+		}
+		printf("\n");
+	} ////
+#endif  //  SWD_SPI	
 }
 
 int bitbang_swd_switch_seq(enum swd_special_seq seq)
