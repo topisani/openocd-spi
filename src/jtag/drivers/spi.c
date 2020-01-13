@@ -3,15 +3,6 @@
 
 void spi_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
-	{ ////
-		printf("** %s offset %d bits %2d:", rnw ? "trgt -> host" : "host -> trgt", offset, bit_cnt);
-		if (!rnw && buf) {
-			for (unsigned int i = 0; i < (bit_cnt + 7) / 8; i++) {
-				printf(" %02x", buf[i]);
-			}
-		}
-		printf("\n");
-	} ////
 	int tdi;
 
 	for (unsigned int i = offset; i < bit_cnt + offset; i++) {

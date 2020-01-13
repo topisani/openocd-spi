@@ -404,16 +404,13 @@ static int bitbang_swd_init(void)
 	return ERROR_OK;
 }
 
-//#define SWD_SPI
+//#define SWD_SPI  //  Transmit and receive SWD commands over SPI...
 #ifdef SWD_SPI	
 void spi_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
 #endif  //  SWD_SPI	
 
 static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
-#ifdef SWD_SPI	
-	spi_exchange(rnw, buf, offset, bit_cnt);
-#else
 	{ ////
 		if (!rnw && buf) {
 			printf("** %s offset %d bits %2d:", rnw ? "trgt -> host" : "host -> trgt", offset, bit_cnt);
@@ -424,6 +421,9 @@ static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsig
 		printf("\n");
 	} ////
 	////  LOG_DEBUG("bitbang_exchange");
+#ifdef SWD_SPI  //  Transmit and receive SWD commands over SPI...
+	spi_exchange(rnw, buf, offset, bit_cnt);
+#else           //  Transmit and receive SWD commands over GPIO...
 	int tdi;
 
 	for (unsigned int i = offset; i < bit_cnt + offset; i++) {
@@ -442,6 +442,7 @@ static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsig
 
 		bitbang_interface->write(1, 0, tdi);
 	}
+#endif  //  SWD_SPI	
 	{ ////
 		if (rnw && buf) {
 			printf("** %s offset %d bits %2d:", rnw ? "trgt -> host" : "host -> trgt", offset, bit_cnt);
@@ -451,7 +452,6 @@ static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsig
 		}
 		printf("\n");
 	} ////
-#endif  //  SWD_SPI	
 }
 
 int bitbang_swd_switch_seq(enum swd_special_seq seq)
