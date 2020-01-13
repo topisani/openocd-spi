@@ -66,7 +66,7 @@ static uint8_t msb_buf[MAX_SPI_SIZE];
 /// Index of bit in lsb_buf currently being pushed or popped
 static unsigned int lsb_buf_bit_index;
 /// File descriptor for SPI device
-static int fd = -1;
+static int spi_fd = -1;
 
 static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
 static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
@@ -101,7 +101,7 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
     //  Else we got trailing undefined bits that will confuse the target. Need to resync the target by transmitting JTAG-to-SWD sequence.
     if (target_to_host && bit_cnt % 8 != 0) {
         puts("spi_exchange: JTAG-to-SWD seq");
-        spi_transmit(fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
+        spi_transmit(spi_fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
     }
     //  Sending to target is always round number of bytes with trailing bits=0, so target is not confused.
     static int count = 0;  if (++count == 1) { pabort("Exit for testing"); } ////
@@ -116,7 +116,6 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
     lsb_buf_bit_index = 0;
 
     //  Consolidate the bits into LSB buffer before transmitting.
-	int tdi;
 	for (unsigned int i = offset; i < bit_cnt + offset; i++) {
 		int bytec = i/8;
 		int bcval = 1 << (i % 8);
@@ -130,7 +129,7 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
 	}
 
     //  Transmit the consolidated LSB buffer to target.
-    spi_transmit(fd, lsb_buf, byte_cnt);
+    spi_transmit(spi_fd, lsb_buf, byte_cnt);
 }
 
 /// Receive bit_cnt number of bits into buf (LSB format) starting at the bit offset.
@@ -142,10 +141,9 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
     lsb_buf_bit_index = 0;
 
     //  Receive the LSB buffer from target.
-    spi_receive(fd, lsb_buf, byte_cnt);
+    spi_receive(spi_fd, lsb_buf, byte_cnt);
 
     //  Populate LSB buf from the received LSB bits.
-	int tdi;
 	for (unsigned int i = offset; i < bit_cnt + offset; i++) {
 		int bytec = i/8;
 		int bcval = 1 << (i % 8);
@@ -246,62 +244,41 @@ static void spi_receive(int fd, uint8_t *buf, unsigned int len) {
     }
 }
 
-/// Transmit and receive data to/from SPI device
-static void spi_transfer(int fd) {
-    for (int i = 0; i <= 1; i++) {  //  Test twice
-        printf("\n---- Test #%d\n\n", i + 1);
-
-        //  Transmit JTAG-to-SWD sequence. Need to transmit every time because the SWD read/write command has extra 2 undefined bits that will confuse the target.
-        puts("Transmit JTAG-to-SWD sequence...");
-        spi_transmit(fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
-
-        //  Transmit command to read Register 0 (IDCODE).
-        puts("\nTransmit command to read Register 0 (IDCODE)...");
-        spi_transmit(fd, swd_read_reg_0, swd_read_reg_0_len / 8);
-
-        //  Read response (38 bits)
-        const int buf_size = 5;
-        uint8_t buf[buf_size];
-        puts("\nReceive value of Register 0 (IDCODE)...");
-        spi_receive(fd, buf, buf_size);
-    }
-}
-
 static void spi_init(void) {
-    if (fd >= 0) { return; }  //  Init only once
+    if (spi_fd >= 0) { return; }  //  Init only once
 	printf("spi_init spi mode: %d\n", mode);
 	printf("bits per word: %d\n", bits);
 	printf("max speed: %d Hz (%d KHz)\n", speed, speed/1000);
 
     //  Open SPI device.
-	fd = open(device, O_RDWR);
-	if (fd < 0) { pabort("can't open device"); }
+	spi_fd = open(device, O_RDWR);
+	if (spi_fd < 0) { pabort("can't open device"); }
 
     //  Set SPI mode to read and write.
-	int ret = ioctl(fd, SPI_IOC_WR_MODE, &mode);
+	int ret = ioctl(spi_fd, SPI_IOC_WR_MODE, &mode);
 	if (ret == -1) { pabort("can't set spi mode"); }
-	ret = ioctl(fd, SPI_IOC_RD_MODE, &mode);
+	ret = ioctl(spi_fd, SPI_IOC_RD_MODE, &mode);
 	if (ret == -1) { pabort("can't get spi mode"); }
 
     //  Set SPI read and write bits per word.
-	ret = ioctl(fd, SPI_IOC_WR_BITS_PER_WORD, &bits);
+	ret = ioctl(spi_fd, SPI_IOC_WR_BITS_PER_WORD, &bits);
 	if (ret == -1) { pabort("can't set bits per word"); }
-	ret = ioctl(fd, SPI_IOC_RD_BITS_PER_WORD, &bits);
+	ret = ioctl(spi_fd, SPI_IOC_RD_BITS_PER_WORD, &bits);
 	if (ret == -1) { pabort("can't get bits per word"); }
 
     //  Set SPI read and write max speed.
-	ret = ioctl(fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
+	ret = ioctl(spi_fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
 	if (ret == -1) { pabort("can't set max speed hz"); }
-	ret = ioctl(fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
+	ret = ioctl(spi_fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
 	if (ret == -1) { pabort("can't get max speed hz"); }
 }
 
 static void spi_terminate(void) {
     //  Close SPI device.
-    if (fd < 0) { return; }  //  Terminate only once
+    if (spi_fd < 0) { return; }  //  Terminate only once
 	printf("spi_terminate\n");
     close(fd);
-	fd = -1;
+	spi_fd = -1;
 }
 
 /// Push the bit to the lsb_buf
@@ -355,4 +332,24 @@ clear ; cd ~/pi-swd-spi ; pi-swd-spi
 
 sync ; sudo shutdown now
 
+/// Transmit and receive data to/from SPI device
+static void spi_transfer(int fd) {
+    for (int i = 0; i <= 1; i++) {  //  Test twice
+        printf("\n---- Test #%d\n\n", i + 1);
+
+        //  Transmit JTAG-to-SWD sequence. Need to transmit every time because the SWD read/write command has extra 2 undefined bits that will confuse the target.
+        puts("Transmit JTAG-to-SWD sequence...");
+        spi_transmit(fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
+
+        //  Transmit command to read Register 0 (IDCODE).
+        puts("\nTransmit command to read Register 0 (IDCODE)...");
+        spi_transmit(fd, swd_read_reg_0, swd_read_reg_0_len / 8);
+
+        //  Read response (38 bits)
+        const int buf_size = 5;
+        uint8_t buf[buf_size];
+        puts("\nReceive value of Register 0 (IDCODE)...");
+        spi_receive(fd, buf, buf_size);
+    }
+}
 #endif  //  NOTUSED
