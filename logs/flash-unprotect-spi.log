@@ -3,192 +3,192 @@ Open On-Chip Debugger 0.10.0+dev-01004-g8f19391d (2020-01-14-00:35)
 Licensed under GNU GPL v2
 For bug reports, read
 	http://openocd.org/doc/doxygen/bugs.html
-User : 13 7 options.c:63 configuration_output_handler(): debug_level: 4
-User : 14 7 options.c:63 configuration_output_handler(): 
-Debug: 15 7 configuration.c:42 add_script_search_dir(): adding /home/pi/openocd-spi/tcl
-Debug: 16 8 options.c:187 add_default_dirs(): bindir=/usr/local/bin
-Debug: 17 8 options.c:188 add_default_dirs(): pkgdatadir=/usr/local/share/openocd
-Debug: 18 8 options.c:189 add_default_dirs(): exepath=/home/pi/openocd-spi/src
-Debug: 19 8 options.c:190 add_default_dirs(): bin2data=../share/openocd
-Debug: 20 8 configuration.c:42 add_script_search_dir(): adding /root/.openocd
-Debug: 21 8 configuration.c:42 add_script_search_dir(): adding /home/pi/openocd-spi/src/../share/openocd/site
-Debug: 22 8 configuration.c:42 add_script_search_dir(): adding /home/pi/openocd-spi/src/../share/openocd/scripts
-Debug: 23 8 configuration.c:97 find_file(): found scripts/nrf52-pi/swd-pi.ocd
-Debug: 24 8 command.c:143 script_debug(): command - interface interface bcm2835gpio
-Debug: 26 8 command.c:354 register_command_handler(): registering 'bcm2835gpio_jtag_nums'...
-Debug: 27 8 command.c:354 register_command_handler(): registering 'bcm2835gpio_tck_num'...
-Debug: 28 8 command.c:354 register_command_handler(): registering 'bcm2835gpio_tms_num'...
-Debug: 29 8 command.c:354 register_command_handler(): registering 'bcm2835gpio_tdo_num'...
-Debug: 30 8 command.c:354 register_command_handler(): registering 'bcm2835gpio_tdi_num'...
-Debug: 31 8 command.c:354 register_command_handler(): registering 'bcm2835gpio_swd_nums'...
+User : 13 6 options.c:63 configuration_output_handler(): debug_level: 4
+User : 14 6 options.c:63 configuration_output_handler(): 
+Debug: 15 6 configuration.c:42 add_script_search_dir(): adding /home/pi/openocd-spi/tcl
+Debug: 16 7 options.c:187 add_default_dirs(): bindir=/usr/local/bin
+Debug: 17 7 options.c:188 add_default_dirs(): pkgdatadir=/usr/local/share/openocd
+Debug: 18 7 options.c:189 add_default_dirs(): exepath=/home/pi/openocd-spi/src
+Debug: 19 7 options.c:190 add_default_dirs(): bin2data=../share/openocd
+Debug: 20 7 configuration.c:42 add_script_search_dir(): adding /root/.openocd
+Debug: 21 7 configuration.c:42 add_script_search_dir(): adding /home/pi/openocd-spi/src/../share/openocd/site
+Debug: 22 7 configuration.c:42 add_script_search_dir(): adding /home/pi/openocd-spi/src/../share/openocd/scripts
+Debug: 23 7 configuration.c:97 find_file(): found scripts/nrf52-pi/swd-pi.ocd
+Debug: 24 7 command.c:143 script_debug(): command - interface interface bcm2835gpio
+Debug: 26 7 command.c:354 register_command_handler(): registering 'bcm2835gpio_jtag_nums'...
+Debug: 27 7 command.c:354 register_command_handler(): registering 'bcm2835gpio_tck_num'...
+Debug: 28 7 command.c:354 register_command_handler(): registering 'bcm2835gpio_tms_num'...
+Debug: 29 7 command.c:354 register_command_handler(): registering 'bcm2835gpio_tdo_num'...
+Debug: 30 7 command.c:354 register_command_handler(): registering 'bcm2835gpio_tdi_num'...
+Debug: 31 7 command.c:354 register_command_handler(): registering 'bcm2835gpio_swd_nums'...
 Debug: 32 8 command.c:354 register_command_handler(): registering 'bcm2835gpio_swclk_num'...
-Debug: 33 9 command.c:354 register_command_handler(): registering 'bcm2835gpio_swdio_num'...
-Debug: 34 9 command.c:354 register_command_handler(): registering 'bcm2835gpio_srst_num'...
-Debug: 35 9 command.c:354 register_command_handler(): registering 'bcm2835gpio_trst_num'...
-Debug: 36 9 command.c:354 register_command_handler(): registering 'bcm2835gpio_speed_coeffs'...
-Debug: 37 9 command.c:354 register_command_handler(): registering 'bcm2835gpio_peripheral_base'...
-Debug: 38 9 command.c:143 script_debug(): command - bcm2835gpio_peripheral_base bcm2835gpio_peripheral_base 0xFE000000
-Debug: 40 9 command.c:143 script_debug(): command - bcm2835gpio_speed_coeffs bcm2835gpio_speed_coeffs 236181 60
-Debug: 42 9 command.c:143 script_debug(): command - bcm2835gpio_swd_nums bcm2835gpio_swd_nums 20 21
-Debug: 44 9 command.c:143 script_debug(): command - bcm2835gpio_srst_num bcm2835gpio_srst_num 18
-Debug: 46 9 command.c:143 script_debug(): command - transport transport select swd
-Debug: 47 9 command.c:354 register_command_handler(): registering 'swd'...
-Debug: 48 9 bitbang.c:402 bitbang_swd_init(): bitbang_swd_init
-Debug: 49 9 configuration.c:97 find_file(): found /home/pi/openocd-spi/tcl/target/nrf52.cfg
-Debug: 50 9 configuration.c:97 find_file(): found /home/pi/openocd-spi/tcl/target/swj-dp.tcl
-Debug: 51 10 command.c:143 script_debug(): command - transport transport select
-Debug: 52 10 command.c:143 script_debug(): command - transport transport select
-Debug: 53 10 command.c:143 script_debug(): command - transport transport select
-Debug: 54 10 command.c:143 script_debug(): command - transport transport select
-Debug: 55 10 command.c:143 script_debug(): command - swd swd newdap nrf52 cpu -expected-id 0x2ba01477
-Debug: 56 10 tcl.c:567 jim_newtap_cmd(): Creating New Tap, Chip: nrf52, Tap: cpu, Dotted: nrf52.cpu, 2 params
-Debug: 57 10 core.c:1375 jtag_tap_init(): Created Tap: nrf52.cpu @ abs position 0, irlen 0, capture: 0x0 mask: 0x0
-Debug: 58 10 command.c:143 script_debug(): command - dap dap create nrf52.dap -chain-position nrf52.cpu
-Debug: 59 10 command.c:354 register_command_handler(): registering 'nrf52.dap'...
-Debug: 60 10 command.c:354 register_command_handler(): registering 'nrf52.dap'...
-Debug: 61 11 command.c:354 register_command_handler(): registering 'nrf52.dap'...
-Debug: 62 11 command.c:354 register_command_handler(): registering 'nrf52.dap'...
-Debug: 63 11 command.c:354 register_command_handler(): registering 'nrf52.dap'...
-Debug: 64 11 command.c:354 register_command_handler(): registering 'nrf52.dap'...
-Debug: 65 11 command.c:354 register_command_handler(): registering 'nrf52.dap'...
-Debug: 66 11 command.c:354 register_command_handler(): registering 'nrf52.dap'...
-Debug: 67 11 command.c:354 register_command_handler(): registering 'nrf52.dap'...
-Debug: 68 11 command.c:143 script_debug(): command - target target create nrf52.cpu cortex_m -dap nrf52.dap
-Debug: 69 11 command.c:354 register_command_handler(): registering 'arm'...
-Debug: 70 11 command.c:354 register_command_handler(): registering 'arm'...
-Debug: 71 11 command.c:354 register_command_handler(): registering 'arm'...
-Debug: 72 11 command.c:354 register_command_handler(): registering 'arm'...
-Debug: 73 11 command.c:354 register_command_handler(): registering 'arm'...
-Debug: 74 11 command.c:354 register_command_handler(): registering 'arm'...
-Debug: 75 11 command.c:354 register_command_handler(): registering 'arm'...
-Debug: 76 11 command.c:354 register_command_handler(): registering 'arm'...
-Debug: 77 11 command.c:354 register_command_handler(): registering 'arm'...
-Debug: 78 11 command.c:354 register_command_handler(): registering 'tpiu'...
-Debug: 79 12 command.c:354 register_command_handler(): registering 'itm'...
-Debug: 80 12 command.c:354 register_command_handler(): registering 'itm'...
-Debug: 81 12 command.c:354 register_command_handler(): registering 'cortex_m'...
-Debug: 82 12 command.c:354 register_command_handler(): registering 'cortex_m'...
-Debug: 83 12 command.c:354 register_command_handler(): registering 'cortex_m'...
-Debug: 84 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 85 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 86 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 87 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 88 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 89 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 90 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 91 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 92 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 93 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 94 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 95 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 96 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 97 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 98 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 99 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 100 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 101 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 102 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 103 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 104 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 105 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 106 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 107 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 108 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 109 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 110 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 111 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 112 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 113 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 114 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 115 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 116 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 117 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 118 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 119 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 120 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 121 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 122 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 123 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 124 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 125 13 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
-Debug: 126 13 command.c:143 script_debug(): command - adapter_khz adapter_khz 1000
-Debug: 128 13 core.c:1707 jtag_config_khz(): handle jtag khz
-Debug: 129 13 core.c:1670 adapter_khz_to_speed(): convert khz to interface specific speed value
-Debug: 130 13 core.c:1670 adapter_khz_to_speed(): convert khz to interface specific speed value
-Debug: 131 13 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu configure -work-area-phys 0x20000000 -work-area-size 0x4000 -work-area-backup 0
-Debug: 132 13 target.c:1961 target_free_all_working_areas_restore(): freeing all working areas
-Debug: 133 14 target.c:1961 target_free_all_working_areas_restore(): freeing all working areas
-Debug: 134 14 target.c:1961 target_free_all_working_areas_restore(): freeing all working areas
-Debug: 135 14 command.c:143 script_debug(): command - transport transport select
-Debug: 136 14 command.c:143 script_debug(): command - cortex_m cortex_m reset_config sysresetreq
-Debug: 138 14 command.c:143 script_debug(): command - flash flash bank nrf52.flash nrf5 0x00000000 0 1 1 nrf52.cpu
-Debug: 140 14 command.c:354 register_command_handler(): registering 'nrf5'...
-Debug: 141 14 command.c:354 register_command_handler(): registering 'nrf5'...
-Debug: 142 14 command.c:354 register_command_handler(): registering 'nrf51'...
-Debug: 143 14 command.c:354 register_command_handler(): registering 'nrf51'...
-Debug: 144 14 tcl.c:1156 handle_flash_bank_command(): 'nrf5' driver usage field missing
-Debug: 145 14 command.c:143 script_debug(): command - flash flash bank nrf52.uicr nrf5 0x10001000 0 1 1 nrf52.cpu
-Debug: 147 14 command.c:376 register_command(): command 'nrf5' is already registered in '<global>' context
-Debug: 148 14 command.c:376 register_command(): command 'mass_erase' is already registered in 'nrf5' context
-Debug: 149 14 command.c:376 register_command(): command 'info' is already registered in 'nrf5' context
-Debug: 150 14 command.c:376 register_command(): command 'nrf51' is already registered in '<global>' context
-Debug: 151 14 command.c:376 register_command(): command 'mass_erase' is already registered in 'nrf51' context
-Debug: 152 14 command.c:376 register_command(): command 'info' is already registered in 'nrf51' context
-Debug: 153 14 tcl.c:1156 handle_flash_bank_command(): 'nrf5' driver usage field missing
-Debug: 154 14 configuration.c:97 find_file(): found scripts/nrf52-pi/flash-unprotect.ocd
-Debug: 155 15 command.c:143 script_debug(): command - gdb_flash_program gdb_flash_program enable
-Debug: 157 15 command.c:143 script_debug(): command - gdb_breakpoint_override gdb_breakpoint_override hard
-User : 159 15 gdb_server.c:3669 handle_gdb_breakpoint_override_command(): force hard breakpoints
-Debug: 160 15 command.c:143 script_debug(): command - init init
-Debug: 162 15 command.c:143 script_debug(): command - target target init
-Debug: 164 15 command.c:143 script_debug(): command - target target names
-Debug: 165 15 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu cget -event gdb-flash-erase-start
-Debug: 166 15 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu configure -event gdb-flash-erase-start reset init
-Debug: 167 15 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu cget -event gdb-flash-write-end
-Debug: 168 15 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu configure -event gdb-flash-write-end reset halt
-Debug: 169 15 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu cget -event gdb-attach
-Debug: 170 15 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu configure -event gdb-attach halt
-Debug: 171 16 target.c:1423 handle_target_init_command(): Initializing targets...
-Debug: 172 16 semihosting_common.c:97 semihosting_common_init():  
-Debug: 173 16 command.c:354 register_command_handler(): registering 'target_request'...
-Debug: 174 16 command.c:354 register_command_handler(): registering 'trace'...
-Debug: 175 16 command.c:354 register_command_handler(): registering 'trace'...
-Debug: 176 16 command.c:354 register_command_handler(): registering 'fast_load_image'...
-Debug: 177 16 command.c:354 register_command_handler(): registering 'fast_load'...
-Debug: 178 16 command.c:354 register_command_handler(): registering 'profile'...
-Debug: 179 16 command.c:354 register_command_handler(): registering 'virt2phys'...
-Debug: 180 16 command.c:354 register_command_handler(): registering 'reg'...
-Debug: 181 16 command.c:354 register_command_handler(): registering 'poll'...
-Debug: 182 16 command.c:354 register_command_handler(): registering 'wait_halt'...
-Debug: 183 16 command.c:354 register_command_handler(): registering 'halt'...
-Debug: 184 16 command.c:354 register_command_handler(): registering 'resume'...
-Debug: 185 16 command.c:354 register_command_handler(): registering 'reset'...
-Debug: 186 16 command.c:354 register_command_handler(): registering 'soft_reset_halt'...
-Debug: 187 16 command.c:354 register_command_handler(): registering 'step'...
-Debug: 188 16 command.c:354 register_command_handler(): registering 'mdd'...
-Debug: 189 16 command.c:354 register_command_handler(): registering 'mdw'...
-Debug: 190 16 command.c:354 register_command_handler(): registering 'mdh'...
-Debug: 191 16 command.c:354 register_command_handler(): registering 'mdb'...
-Debug: 192 16 command.c:354 register_command_handler(): registering 'mwd'...
-Debug: 193 16 command.c:354 register_command_handler(): registering 'mww'...
-Debug: 194 16 command.c:354 register_command_handler(): registering 'mwh'...
-Debug: 195 16 command.c:354 register_command_handler(): registering 'mwb'...
-Debug: 196 16 command.c:354 register_command_handler(): registering 'bp'...
-Debug: 197 17 command.c:354 register_command_handler(): registering 'rbp'...
-Debug: 198 17 command.c:354 register_command_handler(): registering 'wp'...
-Debug: 199 17 command.c:354 register_command_handler(): registering 'rwp'...
-Debug: 200 17 command.c:354 register_command_handler(): registering 'load_image'...
-Debug: 201 17 command.c:354 register_command_handler(): registering 'dump_image'...
-Debug: 202 17 command.c:354 register_command_handler(): registering 'verify_image_checksum'...
-Debug: 203 17 command.c:354 register_command_handler(): registering 'verify_image'...
-Debug: 204 17 command.c:354 register_command_handler(): registering 'test_image'...
-Debug: 205 17 command.c:354 register_command_handler(): registering 'reset_nag'...
-Debug: 206 17 command.c:354 register_command_handler(): registering 'ps'...
-Debug: 207 17 command.c:354 register_command_handler(): registering 'test_mem_access'...
-Info : 208 17 bcm2835gpio.c:450 bcm2835gpio_init(): BCM2835 GPIO JTAG/SWD bitbang driver
-Info : 209 17 bcm2835gpio.c:458 bcm2835gpio_init(): SWD only mode enabled (specify tck, tms, tdi and tdo gpios to add JTAG mode)
-Debug: 210 17 bcm2835gpio.c:525 bcm2835gpio_init(): saved pinmux settings: tck 0 tms 0 tdi 0 tdo 0 trst 0 srst 1
-Debug: 211 17 bitbang.c:484 bitbang_switch_to_swd(): bitbang_switch_to_swd
+Debug: 33 8 command.c:354 register_command_handler(): registering 'bcm2835gpio_swdio_num'...
+Debug: 34 8 command.c:354 register_command_handler(): registering 'bcm2835gpio_srst_num'...
+Debug: 35 8 command.c:354 register_command_handler(): registering 'bcm2835gpio_trst_num'...
+Debug: 36 8 command.c:354 register_command_handler(): registering 'bcm2835gpio_speed_coeffs'...
+Debug: 37 8 command.c:354 register_command_handler(): registering 'bcm2835gpio_peripheral_base'...
+Debug: 38 8 command.c:143 script_debug(): command - bcm2835gpio_peripheral_base bcm2835gpio_peripheral_base 0xFE000000
+Debug: 40 8 command.c:143 script_debug(): command - bcm2835gpio_speed_coeffs bcm2835gpio_speed_coeffs 236181 60
+Debug: 42 8 command.c:143 script_debug(): command - bcm2835gpio_swd_nums bcm2835gpio_swd_nums 20 21
+Debug: 44 8 command.c:143 script_debug(): command - bcm2835gpio_srst_num bcm2835gpio_srst_num 18
+Debug: 46 8 command.c:143 script_debug(): command - transport transport select swd
+Debug: 47 8 command.c:354 register_command_handler(): registering 'swd'...
+Debug: 48 8 bitbang.c:402 bitbang_swd_init(): bitbang_swd_init
+Debug: 49 8 configuration.c:97 find_file(): found /home/pi/openocd-spi/tcl/target/nrf52.cfg
+Debug: 50 8 configuration.c:97 find_file(): found /home/pi/openocd-spi/tcl/target/swj-dp.tcl
+Debug: 51 9 command.c:143 script_debug(): command - transport transport select
+Debug: 52 9 command.c:143 script_debug(): command - transport transport select
+Debug: 53 9 command.c:143 script_debug(): command - transport transport select
+Debug: 54 9 command.c:143 script_debug(): command - transport transport select
+Debug: 55 9 command.c:143 script_debug(): command - swd swd newdap nrf52 cpu -expected-id 0x2ba01477
+Debug: 56 9 tcl.c:567 jim_newtap_cmd(): Creating New Tap, Chip: nrf52, Tap: cpu, Dotted: nrf52.cpu, 2 params
+Debug: 57 9 core.c:1375 jtag_tap_init(): Created Tap: nrf52.cpu @ abs position 0, irlen 0, capture: 0x0 mask: 0x0
+Debug: 58 9 command.c:143 script_debug(): command - dap dap create nrf52.dap -chain-position nrf52.cpu
+Debug: 59 9 command.c:354 register_command_handler(): registering 'nrf52.dap'...
+Debug: 60 9 command.c:354 register_command_handler(): registering 'nrf52.dap'...
+Debug: 61 10 command.c:354 register_command_handler(): registering 'nrf52.dap'...
+Debug: 62 10 command.c:354 register_command_handler(): registering 'nrf52.dap'...
+Debug: 63 10 command.c:354 register_command_handler(): registering 'nrf52.dap'...
+Debug: 64 10 command.c:354 register_command_handler(): registering 'nrf52.dap'...
+Debug: 65 10 command.c:354 register_command_handler(): registering 'nrf52.dap'...
+Debug: 66 10 command.c:354 register_command_handler(): registering 'nrf52.dap'...
+Debug: 67 10 command.c:354 register_command_handler(): registering 'nrf52.dap'...
+Debug: 68 10 command.c:143 script_debug(): command - target target create nrf52.cpu cortex_m -dap nrf52.dap
+Debug: 69 10 command.c:354 register_command_handler(): registering 'arm'...
+Debug: 70 10 command.c:354 register_command_handler(): registering 'arm'...
+Debug: 71 10 command.c:354 register_command_handler(): registering 'arm'...
+Debug: 72 10 command.c:354 register_command_handler(): registering 'arm'...
+Debug: 73 10 command.c:354 register_command_handler(): registering 'arm'...
+Debug: 74 10 command.c:354 register_command_handler(): registering 'arm'...
+Debug: 75 10 command.c:354 register_command_handler(): registering 'arm'...
+Debug: 76 10 command.c:354 register_command_handler(): registering 'arm'...
+Debug: 77 10 command.c:354 register_command_handler(): registering 'arm'...
+Debug: 78 10 command.c:354 register_command_handler(): registering 'tpiu'...
+Debug: 79 10 command.c:354 register_command_handler(): registering 'itm'...
+Debug: 80 10 command.c:354 register_command_handler(): registering 'itm'...
+Debug: 81 10 command.c:354 register_command_handler(): registering 'cortex_m'...
+Debug: 82 10 command.c:354 register_command_handler(): registering 'cortex_m'...
+Debug: 83 10 command.c:354 register_command_handler(): registering 'cortex_m'...
+Debug: 84 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 85 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 86 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 87 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 88 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 89 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 90 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 91 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 92 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 93 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 94 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 95 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 96 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 97 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 98 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 99 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 100 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 101 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 102 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 103 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 104 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 105 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 106 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 107 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 108 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 109 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 110 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 111 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 112 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 113 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 114 11 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 115 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 116 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 117 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 118 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 119 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 120 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 121 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 122 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 123 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 124 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 125 12 command.c:354 register_command_handler(): registering 'nrf52.cpu'...
+Debug: 126 12 command.c:143 script_debug(): command - adapter_khz adapter_khz 1000
+Debug: 128 12 core.c:1707 jtag_config_khz(): handle jtag khz
+Debug: 129 12 core.c:1670 adapter_khz_to_speed(): convert khz to interface specific speed value
+Debug: 130 12 core.c:1670 adapter_khz_to_speed(): convert khz to interface specific speed value
+Debug: 131 12 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu configure -work-area-phys 0x20000000 -work-area-size 0x4000 -work-area-backup 0
+Debug: 132 12 target.c:1961 target_free_all_working_areas_restore(): freeing all working areas
+Debug: 133 12 target.c:1961 target_free_all_working_areas_restore(): freeing all working areas
+Debug: 134 12 target.c:1961 target_free_all_working_areas_restore(): freeing all working areas
+Debug: 135 12 command.c:143 script_debug(): command - transport transport select
+Debug: 136 12 command.c:143 script_debug(): command - cortex_m cortex_m reset_config sysresetreq
+Debug: 138 12 command.c:143 script_debug(): command - flash flash bank nrf52.flash nrf5 0x00000000 0 1 1 nrf52.cpu
+Debug: 140 12 command.c:354 register_command_handler(): registering 'nrf5'...
+Debug: 141 12 command.c:354 register_command_handler(): registering 'nrf5'...
+Debug: 142 12 command.c:354 register_command_handler(): registering 'nrf51'...
+Debug: 143 12 command.c:354 register_command_handler(): registering 'nrf51'...
+Debug: 144 13 tcl.c:1156 handle_flash_bank_command(): 'nrf5' driver usage field missing
+Debug: 145 13 command.c:143 script_debug(): command - flash flash bank nrf52.uicr nrf5 0x10001000 0 1 1 nrf52.cpu
+Debug: 147 13 command.c:376 register_command(): command 'nrf5' is already registered in '<global>' context
+Debug: 148 13 command.c:376 register_command(): command 'mass_erase' is already registered in 'nrf5' context
+Debug: 149 13 command.c:376 register_command(): command 'info' is already registered in 'nrf5' context
+Debug: 150 13 command.c:376 register_command(): command 'nrf51' is already registered in '<global>' context
+Debug: 151 13 command.c:376 register_command(): command 'mass_erase' is already registered in 'nrf51' context
+Debug: 152 13 command.c:376 register_command(): command 'info' is already registered in 'nrf51' context
+Debug: 153 13 tcl.c:1156 handle_flash_bank_command(): 'nrf5' driver usage field missing
+Debug: 154 13 configuration.c:97 find_file(): found scripts/nrf52-pi/flash-unprotect.ocd
+Debug: 155 13 command.c:143 script_debug(): command - gdb_flash_program gdb_flash_program enable
+Debug: 157 13 command.c:143 script_debug(): command - gdb_breakpoint_override gdb_breakpoint_override hard
+User : 159 13 gdb_server.c:3669 handle_gdb_breakpoint_override_command(): force hard breakpoints
+Debug: 160 13 command.c:143 script_debug(): command - init init
+Debug: 162 13 command.c:143 script_debug(): command - target target init
+Debug: 164 13 command.c:143 script_debug(): command - target target names
+Debug: 165 14 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu cget -event gdb-flash-erase-start
+Debug: 166 14 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu configure -event gdb-flash-erase-start reset init
+Debug: 167 14 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu cget -event gdb-flash-write-end
+Debug: 168 14 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu configure -event gdb-flash-write-end reset halt
+Debug: 169 14 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu cget -event gdb-attach
+Debug: 170 14 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu configure -event gdb-attach halt
+Debug: 171 14 target.c:1423 handle_target_init_command(): Initializing targets...
+Debug: 172 14 semihosting_common.c:97 semihosting_common_init():  
+Debug: 173 14 command.c:354 register_command_handler(): registering 'target_request'...
+Debug: 174 14 command.c:354 register_command_handler(): registering 'trace'...
+Debug: 175 14 command.c:354 register_command_handler(): registering 'trace'...
+Debug: 176 14 command.c:354 register_command_handler(): registering 'fast_load_image'...
+Debug: 177 14 command.c:354 register_command_handler(): registering 'fast_load'...
+Debug: 178 14 command.c:354 register_command_handler(): registering 'profile'...
+Debug: 179 14 command.c:354 register_command_handler(): registering 'virt2phys'...
+Debug: 180 14 command.c:354 register_command_handler(): registering 'reg'...
+Debug: 181 14 command.c:354 register_command_handler(): registering 'poll'...
+Debug: 182 15 command.c:354 register_command_handler(): registering 'wait_halt'...
+Debug: 183 15 command.c:354 register_command_handler(): registering 'halt'...
+Debug: 184 15 command.c:354 register_command_handler(): registering 'resume'...
+Debug: 185 15 command.c:354 register_command_handler(): registering 'reset'...
+Debug: 186 15 command.c:354 register_command_handler(): registering 'soft_reset_halt'...
+Debug: 187 15 command.c:354 register_command_handler(): registering 'step'...
+Debug: 188 15 command.c:354 register_command_handler(): registering 'mdd'...
+Debug: 189 15 command.c:354 register_command_handler(): registering 'mdw'...
+Debug: 190 15 command.c:354 register_command_handler(): registering 'mdh'...
+Debug: 191 15 command.c:354 register_command_handler(): registering 'mdb'...
+Debug: 192 15 command.c:354 register_command_handler(): registering 'mwd'...
+Debug: 193 15 command.c:354 register_command_handler(): registering 'mww'...
+Debug: 194 15 command.c:354 register_command_handler(): registering 'mwh'...
+Debug: 195 15 command.c:354 register_command_handler(): registering 'mwb'...
+Debug: 196 15 command.c:354 register_command_handler(): registering 'bp'...
+Debug: 197 15 command.c:354 register_command_handler(): registering 'rbp'...
+Debug: 198 15 command.c:354 register_command_handler(): registering 'wp'...
+Debug: 199 15 command.c:354 register_command_handler(): registering 'rwp'...
+Debug: 200 15 command.c:354 register_command_handler(): registering 'load_image'...
+Debug: 201 15 command.c:354 register_command_handler(): registering 'dump_image'...
+Debug: 202 15 command.c:354 register_command_handler(): registering 'verify_image_checksum'...
+Debug: 203 15 command.c:354 register_command_handler(): registering 'verify_image'...
+Debug: 204 15 command.c:354 register_command_handler(): registering 'test_image'...
+Debug: 205 15 command.c:354 register_command_handler(): registering 'reset_nag'...
+Debug: 206 15 command.c:354 register_command_handler(): registering 'ps'...
+Debug: 207 15 command.c:354 register_command_handler(): registering 'test_mem_access'...
+Info : 208 16 bcm2835gpio.c:450 bcm2835gpio_init(): BCM2835 GPIO JTAG/SWD bitbang driver
+Info : 209 16 bcm2835gpio.c:458 bcm2835gpio_init(): SWD only mode enabled (specify tck, tms, tdi and tdo gpios to add JTAG mode)
+Debug: 210 16 bcm2835gpio.c:525 bcm2835gpio_init(): saved pinmux settings: tck 0 tms 0 tdi 0 tdo 0 trst 0 srst 1
+Debug: 211 16 bitbang.c:484 bitbang_switch_to_swd(): bitbang_switch_to_swd
 ** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
 spi_init spi mode: 80
 bits per word: 8
@@ -197,24 +197,24 @@ spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
   E7 FF FF FF FF FF FF FF 
   00 
-Debug: 212 18 core.c:1670 adapter_khz_to_speed(): convert khz to interface specific speed value
-Debug: 213 18 core.c:1674 adapter_khz_to_speed(): have interface set up
-Debug: 214 18 core.c:1670 adapter_khz_to_speed(): convert khz to interface specific speed value
-Debug: 215 18 core.c:1674 adapter_khz_to_speed(): have interface set up
-Info : 216 19 core.c:1452 adapter_init(): clock speed 1000 kHz
-Debug: 217 19 openocd.c:141 handle_init_command(): Debug Adapter init complete
-Debug: 218 19 command.c:143 script_debug(): command - transport transport init
-Debug: 220 19 transport.c:239 handle_transport_init(): handle_transport_init
-Debug: 221 19 command.c:143 script_debug(): command - dap dap init
-Debug: 223 19 arm_dap.c:106 dap_init_all(): Initializing all DAPs ...
-Debug: 224 19 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
-Debug: 225 19 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+Debug: 212 17 core.c:1670 adapter_khz_to_speed(): convert khz to interface specific speed value
+Debug: 213 17 core.c:1674 adapter_khz_to_speed(): have interface set up
+Debug: 214 17 core.c:1670 adapter_khz_to_speed(): convert khz to interface specific speed value
+Debug: 215 17 core.c:1674 adapter_khz_to_speed(): have interface set up
+Info : 216 17 core.c:1452 adapter_init(): clock speed 1000 kHz
+Debug: 217 17 openocd.c:141 handle_init_command(): Debug Adapter init complete
+Debug: 218 17 command.c:143 script_debug(): command - transport transport init
+Debug: 220 17 transport.c:239 handle_transport_init(): handle_transport_init
+Debug: 221 17 command.c:143 script_debug(): command - dap dap init
+Debug: 223 17 arm_dap.c:106 dap_init_all(): Initializing all DAPs ...
+Debug: 224 17 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 225 17 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
 ** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
   E7 FF FF FF FF FF FF FF 
   00 
-Debug: 226 20 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 226 18 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: a5
 spi_transmit: len=1
   A5 
@@ -228,9 +228,9 @@ spi_transmit: len=17
 spi_exchange: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 73 47 01 ba a2
-Debug: 227 21 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
-Debug: 228 21 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 227 20 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 228 20 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: 81
 spi_transmit: len=1
   81 
@@ -248,9 +248,1306 @@ spi_transmit: len=6
 ** host -> trgt offset 5 bits 33: d3 03 00 00 80
 spi_transmit: len=4
   78 00 00 00 
-Debug: 229 23 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
-Debug: 230 23 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_exchange: null buffer: Success
+Debug: 229 22 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 230 22 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 231 22 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 232 22 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 233 22 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 234 22 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 235 24 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 236 24 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 237 24 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 238 24 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 239 24 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 240 24 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 241 24 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 242 24 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 243 25 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 244 27 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 245 27 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 246 28 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 247 28 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 248 29 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 249 29 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 250 29 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 251 29 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 252 30 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 253 30 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 254 30 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 255 30 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 256 30 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 257 31 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 258 31 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 259 31 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 260 32 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 261 33 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 262 33 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 263 35 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 264 35 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 265 35 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 266 35 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 267 35 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 268 35 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 269 37 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 270 37 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 271 37 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 272 37 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 273 37 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 274 37 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 275 37 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 276 37 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 277 38 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 278 40 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 279 40 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 280 41 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 281 41 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 282 42 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 283 42 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 284 42 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 285 42 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 286 43 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 287 43 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 288 43 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 289 43 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 290 43 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 291 44 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 292 44 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 293 44 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 294 45 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 295 46 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 296 46 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 297 48 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 298 48 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 299 48 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 300 48 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 301 48 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 302 48 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 303 50 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 304 50 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 305 50 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 306 50 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 307 50 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 308 50 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 309 50 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 310 50 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 311 51 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 312 53 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 313 53 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 314 55 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 315 55 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 316 55 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 317 55 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 318 55 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 319 55 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 320 56 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 321 56 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 322 56 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 323 56 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 324 56 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 325 56 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 326 56 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 327 56 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 328 56 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 329 57 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 330 57 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 331 58 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 332 58 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 333 58 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 334 58 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 335 58 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 336 58 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 337 58 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 338 58 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 339 58 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 340 58 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 341 58 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 342 59 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 343 59 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 344 59 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 345 59 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 346 60 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 347 60 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 348 60 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 349 60 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 350 60 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 351 60 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 352 60 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 353 60 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 354 61 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 355 61 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 356 61 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 357 61 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 358 61 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 359 61 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 360 61 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 361 61 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 362 62 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 363 62 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 364 62 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 365 63 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 366 63 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 367 63 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 368 63 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 369 63 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 370 63 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 371 64 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 372 64 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 373 64 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 374 64 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 375 64 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 376 64 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 377 64 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 378 64 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 379 64 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 380 65 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 381 65 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 382 65 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 383 65 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 384 66 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 385 66 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 386 66 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 387 66 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 388 66 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 389 66 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 390 66 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 391 66 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 392 66 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 393 66 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 394 66 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 395 66 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 396 67 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 397 67 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 398 67 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 399 68 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 400 68 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 401 68 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 402 68 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 403 68 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 404 68 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 405 69 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 406 69 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 407 69 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 408 69 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 409 69 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 410 69 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 411 69 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 412 69 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 413 69 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 414 70 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 415 70 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 416 71 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 417 71 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 418 71 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 419 71 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 420 71 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 421 71 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 422 72 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 423 72 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 424 72 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 425 72 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 426 72 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 427 72 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 428 72 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 429 72 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 430 72 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 431 73 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 432 73 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 433 73 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 434 73 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 435 73 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 436 73 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 437 74 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 438 74 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 439 74 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 440 74 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 441 74 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 442 74 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 443 74 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 444 74 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 445 74 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 446 74 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 447 75 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 448 75 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 449 75 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 450 76 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 451 76 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 452 76 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 453 76 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 454 76 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 455 76 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 456 77 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 457 77 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 458 77 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 459 77 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 460 77 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 461 77 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 462 77 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 463 77 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 464 77 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 465 78 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 466 78 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 467 79 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 468 79 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 469 79 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 470 79 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 471 79 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 472 79 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 473 79 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 474 79 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 475 79 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 476 79 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 477 79 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 478 79 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 479 79 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 480 80 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 481 80 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 482 81 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 483 81 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 484 81 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 485 81 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 486 81 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 487 81 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 488 81 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 489 81 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 490 82 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 491 82 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 492 82 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 493 82 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 494 82 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 495 82 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 496 82 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 497 82 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 498 83 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 499 83 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 500 83 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 501 84 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 502 84 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 503 84 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 504 84 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 505 84 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 506 84 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 507 85 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 508 85 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 509 85 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 510 85 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 511 85 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 512 85 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 513 85 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 514 85 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+Debug: 515 85 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+** host -> trgt offset 0 bits  8: a5
+spi_transmit: len=1
+  A5 
+spi_receive: len=5
+  73 47 01 BA E2 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits 38: 73 47 01 ba e2
+Debug: 516 86 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 517 86 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: 81
+spi_transmit: len=1
+  81 
+spi_receive: len=1
+  F3 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
+spi_transmit: len=4
+  78 00 00 00 
+Debug: 518 87 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 519 87 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 520 87 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 521 87 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 522 87 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 523 87 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** host -> trgt offset 0 bits  8: b1
+spi_transmit: len=1
+  8D 
+spi_receive: len=1
+  FF 
+spi_exchange: JTAG-to-SWD seq
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+spi_exchange: Prepadded read reg 0 seq
+spi_transmit: len=6
+  29 40 00 00 00 00 
+** trgt -> host offset 0 bits  5: 1f
+** host -> trgt offset 5 bits 33: 1f 00 00 00 80
+spi_transmit: len=4
+  00 00 00 00 
+Debug: 524 87 bitbang.c:582 bitbang_swd_write_reg(): JUNK DP write reg 8 = 00000000
+Debug: 525 87 bitbang.c:598 bitbang_swd_write_reg(): No valid acknowledge: ack=7
+Debug: 526 87 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 527 87 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
+Debug: 528 87 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+spi_transmit: len=1
+  00 
+Debug: 529 87 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
+Debug: 530 87 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 531 88 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+spi_transmit: len=17
+  FF FF FF FF FF FF FF 79 
+  E7 FF FF FF FF FF FF FF 
+  00 
+** PABORT: Exit for testing: Success
+
 spi_terminate
-Debug: 231 23 server.c:609 sig_handler(): Terminating on Signal 6
-scripts/nrf52-pi/flash-unprotect.sh: line 11:  5636 Aborted                 sudo /home/pi/openocd-spi/src/openocd -d4 -s /home/pi/openocd-spi/tcl -f scripts/nrf52-pi/swd-pi.ocd -f scripts/nrf52-pi/flash-unprotect.ocd
+Debug: 532 88 server.c:609 sig_handler(): Terminating on Signal 6
+scripts/nrf52-pi/flash-unprotect.sh: line 11:  9111 Aborted                 sudo /home/pi/openocd-spi/src/openocd -d4 -s /home/pi/openocd-spi/tcl -f scripts/nrf52-pi/swd-pi.ocd -f scripts/nrf52-pi/flash-unprotect.ocd
