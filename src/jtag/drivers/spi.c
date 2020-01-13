@@ -115,7 +115,7 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
         spi_transmit(spi_fd, swd_read_reg_0_prepadded, swd_read_reg_0_prepadded_len / 8);
     }
     //  Sending to target is always round number of bytes with trailing bits=0, so target is not confused.
-    static int count = 0;  if (++count == 20) { pabort("Exit for testing"); } ////
+    static int count = 0;  if (++count == 100) { pabort("Exit for testing"); } ////
 }
 
 /// Transmit bit_cnt number of bits from buf (LSB format) starting at the bit offset.
