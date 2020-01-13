@@ -36,16 +36,45 @@
 
 #include <jtag/swd.h>
 
+//  SPI Configuration
+static const char *device = "/dev/spidev0.0";  //  SPI device name. If missing, enable SPI in raspi-config.
+static uint8_t mode = 0  //  Note: LSB mode is not supported on Broadcom. We must flip LSB to MSB ourselves.
+    | SPI_NO_CS  //  1 device per bus, no Chip Select
+    | SPI_3WIRE  //  Bidirectional mode, data in and out pin shared
+    ;            //  Data is valid on first rising edge of the clock, so CPOL=0 and CPHA=0
+static uint8_t bits = 8;         //  8 bits per word
+static uint32_t speed = 1953000;  //  1,953 kHz. Previously 500000
+static uint16_t delay = 0;       //  SPI driver latency: https://www.raspberrypi.org/forums/viewtopic.php?f=44&t=19489
+
+//  #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
+
+/// We need 2 transmit/receive buffers: One buffer in OpenOCD's LSB format, one buffer in Broadcom SPI's MSB format
+#define MAX_SPI_SIZE 256
+/// Bytes to be transmitted or received in LSB format (used by OpenOCD)
+static uint8_t lsb_buf[MAX_SPI_SIZE];
+/// Bytes to be transmitted or received in MSB format (used by Broadcom SPI)
+static uint8_t msb_buf[MAX_SPI_SIZE];
+/// File descriptor for SPI device
+static int fd = -1;
+
 static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
 static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
+static void spi_init(void);
+static void spi_terminate(void);
+static void pabort(const char *s);
 
-///  Transmit or receive bit_cnt number of bits from/into buf starting at the bit offset.
-///  If rnw is false: Transmit from host to target.
-///  If rnw is true:  Receive from target to host.
+/// Transmit or receive bit_cnt number of bits from/into buf (LSB format) starting at the bit offset.
+/// If rnw is false: Transmit from host to target.
+/// If rnw is true:  Receive from target to host.
 void spi_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
-    if (!buf) { pabort("spi_exchange: null buffer"); }
-    if (bit_cnt == 0) { return; }
+    if (!buf) { pabort("spi_exchange: null buffer"); return; }
+    if (bit_cnt == 0) { return; }    
+    unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
+    if (byte_cnt >= MAX_SPI_SIZE) { printf("bit_cnt=%d ", bit_cnt); pabort("spi_exchange: overflow"); return; }
+
+    //  Init SPI if not initialised.
+    spi_init();
     //  If rnw is true, receive from target to host. Else transmit from host to target.
     if (rnw) {
         spi_exchange_receive(buf, offset, bit_cnt);
@@ -55,18 +84,41 @@ void spi_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsigned int bit
     //  If bit_cnt is a multiple of 8, then we have a round number of bytes sent/received, no problem. 
     //  Else we got trailing undefined bits that will confuse the target. Need to resync the target by transmitting JTAG-to-SWD sequence.
     if (bit_cnt % 8 != 0) {
-        transmit_seq_jtag_to_swd();
+        puts("spi_exchange: JTAG-to-SWD seq");
+        spi_transmit(fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
     }
     static int count = 0;  if (count++ == 1) { pabort("Exit for testing"); } ////
 }
 
-///  Transmit bit_cnt number of bits from buf starting at the bit offset.
+/// Transmit bit_cnt number of bits from buf (LSB format) starting at the bit offset.
 static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
-    //  Consolidate the bits into a buffer before transmitting.
+    //  Consolidate the bits into LSB buffer before transmitting.
     unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
+	int tdi;
+	for (unsigned int i = offset; i < bit_cnt + offset; i++) {
+		int bytec = i/8;
+		int bcval = 1 << (i % 8);
+		tdi = !rnw && (buf[bytec] & bcval);
 
-    //  Transmit the consolidated bits to target.
+		bitbang_interface->write(0, 0, tdi);
+		bitbang_interface->write(1, 0, tdi);
+	}
+
+    //  TODO: Fill missing bits with 0.
+
+    //  Transmit the consolidated LSB buffer to target.
+    spi_transmit(fd, lsb_buf, byte_cnt);
+}
+
+/// Receive bit_cnt number of bits into buf (LSB format) starting at the bit offset.
+static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
+{
+    //  Receive the LSB buffer from target.
+    unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
+    spi_receive(fd, lsb_buf, byte_cnt);
+
+    //  Populate LSB buf from the received LSB bits.
 
 	int tdi;
 
@@ -75,45 +127,162 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
 		int bcval = 1 << (i % 8);
 		tdi = !rnw && (buf[bytec] & bcval);
 
-		bitbang_interface->write(0, 0, tdi);
-
-		if (rnw && buf) {
-			if (bitbang_interface->swdio_read())
-				buf[bytec] |= bcval;
-			else
-				buf[bytec] &= ~bcval;
-		}
-
-		bitbang_interface->write(1, 0, tdi);
+        if (bitbang_interface->swdio_read())
+            buf[bytec] |= bcval;
+        else
+            buf[bytec] &= ~bcval;
 	}
 }
 
-///  Receive bit_cnt number of bits into buf starting at the bit offset.
-static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
-{
-    //  Receive the bits from target.
+/// The byte at index i is the value of i with all bits flipped. https://stackoverflow.com/questions/746171/efficient-algorithm-for-bit-reversal-from-msb-lsb-to-lsb-msb-in-c
+static const uint8_t reverse_byte[] = {  
+  0x00, 0x80, 0x40, 0xC0, 0x20, 0xA0, 0x60, 0xE0, 0x10, 0x90, 0x50, 0xD0, 0x30, 0xB0, 0x70, 0xF0, 
+  0x08, 0x88, 0x48, 0xC8, 0x28, 0xA8, 0x68, 0xE8, 0x18, 0x98, 0x58, 0xD8, 0x38, 0xB8, 0x78, 0xF8, 
+  0x04, 0x84, 0x44, 0xC4, 0x24, 0xA4, 0x64, 0xE4, 0x14, 0x94, 0x54, 0xD4, 0x34, 0xB4, 0x74, 0xF4, 
+  0x0C, 0x8C, 0x4C, 0xCC, 0x2C, 0xAC, 0x6C, 0xEC, 0x1C, 0x9C, 0x5C, 0xDC, 0x3C, 0xBC, 0x7C, 0xFC, 
+  0x02, 0x82, 0x42, 0xC2, 0x22, 0xA2, 0x62, 0xE2, 0x12, 0x92, 0x52, 0xD2, 0x32, 0xB2, 0x72, 0xF2, 
+  0x0A, 0x8A, 0x4A, 0xCA, 0x2A, 0xAA, 0x6A, 0xEA, 0x1A, 0x9A, 0x5A, 0xDA, 0x3A, 0xBA, 0x7A, 0xFA,
+  0x06, 0x86, 0x46, 0xC6, 0x26, 0xA6, 0x66, 0xE6, 0x16, 0x96, 0x56, 0xD6, 0x36, 0xB6, 0x76, 0xF6, 
+  0x0E, 0x8E, 0x4E, 0xCE, 0x2E, 0xAE, 0x6E, 0xEE, 0x1E, 0x9E, 0x5E, 0xDE, 0x3E, 0xBE, 0x7E, 0xFE,
+  0x01, 0x81, 0x41, 0xC1, 0x21, 0xA1, 0x61, 0xE1, 0x11, 0x91, 0x51, 0xD1, 0x31, 0xB1, 0x71, 0xF1,
+  0x09, 0x89, 0x49, 0xC9, 0x29, 0xA9, 0x69, 0xE9, 0x19, 0x99, 0x59, 0xD9, 0x39, 0xB9, 0x79, 0xF9, 
+  0x05, 0x85, 0x45, 0xC5, 0x25, 0xA5, 0x65, 0xE5, 0x15, 0x95, 0x55, 0xD5, 0x35, 0xB5, 0x75, 0xF5,
+  0x0D, 0x8D, 0x4D, 0xCD, 0x2D, 0xAD, 0x6D, 0xED, 0x1D, 0x9D, 0x5D, 0xDD, 0x3D, 0xBD, 0x7D, 0xFD,
+  0x03, 0x83, 0x43, 0xC3, 0x23, 0xA3, 0x63, 0xE3, 0x13, 0x93, 0x53, 0xD3, 0x33, 0xB3, 0x73, 0xF3, 
+  0x0B, 0x8B, 0x4B, 0xCB, 0x2B, 0xAB, 0x6B, 0xEB, 0x1B, 0x9B, 0x5B, 0xDB, 0x3B, 0xBB, 0x7B, 0xFB,
+  0x07, 0x87, 0x47, 0xC7, 0x27, 0xA7, 0x67, 0xE7, 0x17, 0x97, 0x57, 0xD7, 0x37, 0xB7, 0x77, 0xF7, 
+  0x0F, 0x8F, 0x4F, 0xCF, 0x2F, 0xAF, 0x6F, 0xEF, 0x1F, 0x9F, 0x5F, 0xDF, 0x3F, 0xBF, 0x7F, 0xFF
+};
 
-    //  Populate buf from the received bits.
+/* From https://www.raspberrypi.org/documentation/hardware/raspberrypi/spi/README.md:
+    Bidirectional or "3-wire" mode is supported by the spi-bcm2835 kernel module. 
+    Please note that in this mode, either the tx or rx field of the spi_transfer 
+    struct must be a NULL pointer, since only half-duplex communication is possible. 
+    Otherwise, the transfer will fail. The spidev_test.c source code does not consider 
+    this correctly, and therefore does not work at all in 3-wire mode. */
 
+/// Transmit len bytes of buf (assumed to be in LSB format) to the SPI device in MSB format
+static void spi_transmit(int fd, const uint8_t *buf, unsigned int len) {
+    //  Reverse LSB to MSB for LSB buf into MSB buffer.
+    if (len >= MAX_SPI_SIZE) { printf("len=%d ", len); pabort("spi_transmit overflow"); return; }
+    for (unsigned int i = 0; i < len; i++) {
+        uint8_t b = buf[i];
+        msb_buf[i] = reverse_byte[(uint8_t) b];
+    }
+    {
+        printf("spi_transmit: len=%d\n", len);
+        for (unsigned int i = 0; i < len; i++) {
+            if (i > 0 && i % 8 == 0) { puts(""); }
+            printf("%.2X ", msb_buf[i]);
+        }
+        puts("");
+    }
+    //  Transmit the MSB buffer to SPI device.
+	struct spi_ioc_transfer tr = {
+		.tx_buf = (unsigned long) msb_buf,
+		.rx_buf = (unsigned long) NULL,
+		.len = len,
+		.delay_usecs = delay,
+		.speed_hz = speed,
+		.bits_per_word = bits,
+	};
+	int ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
+    //  Check SPI result.
+	if (ret < 1) { pabort("spi_transmit failed"); }
+}
 
-	int tdi;
+/// Receive len bytes from SPI device (assumed to be in MSB format) and write into buf in LSB format
+static void spi_receive(int fd, uint8_t *buf, unsigned int len) {
+    //  Receive the MSB buffer from SPI device.
+    printf("spi_receive: len=%d\n", len);
+    if (len >= MAX_SPI_SIZE) { printf("len=%d ", len); pabort("spi_receive overflow"); return; }
+	struct spi_ioc_transfer tr = {
+		.tx_buf = (unsigned long) NULL,
+		.rx_buf = (unsigned long) msb_buf,
+		.len = len,
+		.delay_usecs = delay,
+		.speed_hz = speed,
+		.bits_per_word = bits,
+	};
+	int ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
+    //  Check SPI result.
+	if (ret < 1) { pabort("spi_receive failed"); }
+    //  Reverse MSB to LSB from MSB buffer into LSB buf.
+    for (unsigned int i = 0; i < len; i++) {
+        uint8_t b = msb_buf[i];
+        buf[i] = reverse_byte[(uint8_t) b];
+    }
+    {
+        for (unsigned int i = 0; i < len; i++) {
+            if (i > 0 && i % 8 == 0) { puts(""); }
+            printf("%.2X ", buf[i]);
+        }
+        puts("");
+    }
+}
 
-	for (unsigned int i = offset; i < bit_cnt + offset; i++) {
-		int bytec = i/8;
-		int bcval = 1 << (i % 8);
-		tdi = !rnw && (buf[bytec] & bcval);
+/// Transmit and receive data to/from SPI device
+static void spi_transfer(int fd) {
+    for (int i = 0; i <= 1; i++) {  //  Test twice
+        printf("\n---- Test #%d\n\n", i + 1);
 
-		bitbang_interface->write(0, 0, tdi);
+        //  Transmit JTAG-to-SWD sequence. Need to transmit every time because the SWD read/write command has extra 2 undefined bits that will confuse the target.
+        puts("Transmit JTAG-to-SWD sequence...");
+        spi_transmit(fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
 
-		if (rnw && buf) {
-			if (bitbang_interface->swdio_read())
-				buf[bytec] |= bcval;
-			else
-				buf[bytec] &= ~bcval;
-		}
+        //  Transmit command to read Register 0 (IDCODE).
+        puts("\nTransmit command to read Register 0 (IDCODE)...");
+        spi_transmit(fd, swd_read_reg_0, swd_read_reg_0_len / 8);
 
-		bitbang_interface->write(1, 0, tdi);
-	}
+        //  Read response (38 bits)
+        const int buf_size = 5;
+        uint8_t buf[buf_size];
+        puts("\nReceive value of Register 0 (IDCODE)...");
+        spi_receive(fd, buf, buf_size);
+    }
+}
+
+static void spi_init(void) {
+    if (fd >= 0) { return; }  //  Init only once
+	printf("spi_init spi mode: %d\n", mode);
+	printf("bits per word: %d\n", bits);
+	printf("max speed: %d Hz (%d KHz)\n", speed, speed/1000);
+
+    //  Open SPI device.
+	fd = open(device, O_RDWR);
+	if (fd < 0) { pabort("can't open device"); }
+
+    //  Set SPI mode to read and write.
+	int ret = ioctl(fd, SPI_IOC_WR_MODE, &mode);
+	if (ret == -1) { pabort("can't set spi mode"); }
+	ret = ioctl(fd, SPI_IOC_RD_MODE, &mode);
+	if (ret == -1) { pabort("can't get spi mode"); }
+
+    //  Set SPI read and write bits per word.
+	ret = ioctl(fd, SPI_IOC_WR_BITS_PER_WORD, &bits);
+	if (ret == -1) { pabort("can't set bits per word"); }
+	ret = ioctl(fd, SPI_IOC_RD_BITS_PER_WORD, &bits);
+	if (ret == -1) { pabort("can't get bits per word"); }
+
+    //  Set SPI read and write max speed.
+	ret = ioctl(fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
+	if (ret == -1) { pabort("can't set max speed hz"); }
+	ret = ioctl(fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
+	if (ret == -1) { pabort("can't get max speed hz"); }
+}
+
+static void spi_terminate(void) {
+    //  Close SPI device.
+    if (fd < 0) { return; }  //  Terminate only once
+	printf("spi_terminate\n");
+    close(fd);
+	fd = -1;
+}
+
+static void pabort(const char *s) {
+	perror(s);
+    spi_terminate();
+	abort();
 }
 
 #endif  //  SWD_SPI
