@@ -104,7 +104,7 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
         spi_transmit(spi_fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
     }
     //  Sending to target is always round number of bytes with trailing bits=0, so target is not confused.
-    static int count = 0;  if (++count == 2) { pabort("Exit for testing"); } ////
+    static int count = 0;  if (++count == 3) { pabort("Exit for testing"); } ////
 }
 
 /// Transmit bit_cnt number of bits from buf (LSB format) starting at the bit offset.
@@ -327,6 +327,12 @@ clear ; cd ~/openocd-spi ; git pull ; make
 clear ; cd ~/pinetime-rust-mynewt ; scripts/nrf52-pi/flash-unprotect.sh 
 
 clear ; cd ~/pinetime-rust-mynewt ; scripts/nrf52-pi/flash-unprotect.sh >flash-unprotect.log 2>&1
+
+/home/pi/openocd-spi/src/openocd \
+    -d4 \
+    -s /home/pi/openocd-spi/tcl \
+    -f scripts/nrf52-pi/swd-pi.ocd \
+    -f scripts/nrf52-pi/flash-unprotect.ocd
 
 clear ; cd ~/pi-swd-spi ; pi-swd-spi
 
