@@ -89,7 +89,8 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
 {
     if (!buf) { pabort("spi_exchange: null buffer"); return; }
     if (bit_cnt == 0) { return; }    
-    unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
+    if (bit_cnt - offset == 0) { return; }    
+    unsigned int byte_cnt = (bit_cnt - offset + 7) / 8;  //  Round up to next byte count.
     if (byte_cnt >= MAX_SPI_SIZE) { printf("bit_cnt=%d ", bit_cnt); pabort("spi_exchange: overflow"); return; }
 
     //  Init SPI if not initialised.
@@ -102,7 +103,7 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
     }
     //  If we are receiving from target and bit_cnt is a multiple of 8, then we have a round number of bytes received, no problem. 
     //  Else we got trailing undefined bits that will confuse the target. Need to resync the target by transmitting JTAG-to-SWD sequence.
-    if (target_to_host && bit_cnt % 8 != 0) {
+    if (target_to_host && (bit_cnt - offset) % 8 != 0) {
         puts("spi_exchange: JTAG-to-SWD seq");
         spi_transmit(spi_fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
     }
@@ -113,7 +114,7 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
 /// Transmit bit_cnt number of bits from buf (LSB format) starting at the bit offset.
 static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
-    unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
+    unsigned int byte_cnt = (bit_cnt - offset + 7) / 8;  //  Round up to next byte count.
     //  Fill the missing bits with 0.
     memset(lsb_buf, 0, sizeof(lsb_buf));
     lsb_buf_bit_index = 0;
@@ -138,7 +139,7 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
 /// Receive bit_cnt number of bits into buf (LSB format) starting at the bit offset.
 static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
-    unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
+    unsigned int byte_cnt = (bit_cnt - offset + 7) / 8;  //  Round up to next byte count.
     //  Fill the missing bits with 0.
     memset(lsb_buf, 0, sizeof(lsb_buf));
     lsb_buf_bit_index = 0;
@@ -196,9 +197,9 @@ static void spi_transmit(int fd, const uint8_t *buf, unsigned int len) {
         msb_buf[i] = reverse_byte[(uint8_t) b];
     }
     {
-        printf("spi_transmit: len=%d\n", len);
+        printf("spi_transmit: len=%d\n  ", len);
         for (unsigned int i = 0; i < len; i++) {
-            if (i > 0 && i % 8 == 0) { puts(""); }
+            if (i > 0 && i % 8 == 0) { printf("\n  "); }
             printf("%.2X ", msb_buf[i]);
         }
         puts("");
@@ -220,7 +221,7 @@ static void spi_transmit(int fd, const uint8_t *buf, unsigned int len) {
 /// Receive len bytes from SPI device (assumed to be in MSB format) and write into buf in LSB format
 static void spi_receive(int fd, uint8_t *buf, unsigned int len) {
     //  Receive the MSB buffer from SPI device.
-    printf("spi_receive: len=%d\n", len);
+    printf("spi_receive: len=%d\n  ", len);
     if (len >= MAX_SPI_SIZE) { printf("len=%d ", len); pabort("spi_receive overflow"); return; }
 	struct spi_ioc_transfer tr = {
 		.tx_buf = (unsigned long) NULL,
@@ -240,7 +241,7 @@ static void spi_receive(int fd, uint8_t *buf, unsigned int len) {
     }
     {
         for (unsigned int i = 0; i < len; i++) {
-            if (i > 0 && i % 8 == 0) { puts(""); }
+            if (i > 0 && i % 8 == 0) { printf("\n  "); }
             printf("%.2X ", buf[i]);
         }
         puts("");
