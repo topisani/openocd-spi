@@ -47,12 +47,12 @@
 
 //  SPI Configuration
 static const char *device = "/dev/spidev0.0";  //  SPI device name. If missing, enable SPI in raspi-config.
-static uint8_t mode = 0  //  Note: LSB mode is not supported on Broadcom. We must flip LSB to MSB ourselves.
-    | SPI_NO_CS  //  1 device per bus, no Chip Select
-    | SPI_3WIRE  //  Bidirectional mode, data in and out pin shared
+static uint8_t mode = 0  //  Note: SPI LSB mode is not supported on Broadcom. We must flip LSB to MSB ourselves.
+    | SPI_NO_CS  //  1 SPI device per bus, no Chip Select
+    | SPI_3WIRE  //  Bidirectional SPI mode, data in and out pin shared
     ;            //  Data is valid on first rising edge of the clock, so CPOL=0 and CPHA=0
-static uint8_t bits = 8;          //  8 bits per word
-static uint32_t speed = 1953000;  //  1,953 kHz. Previously 500000
+static uint8_t bits = 8;          //  8 bits per SPI word
+static uint32_t speed = 1953000;  //  1,953 kHz, or 1.9 MHz for SPI speed. Use fastest speed possible because we resend JTAG-to-SWD sequence often. Previously 500000.
 static uint16_t delay = 0;        //  SPI driver latency: https://www.raspberrypi.org/forums/viewtopic.php?f=44&t=19489
 
 //  #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
@@ -63,6 +63,8 @@ static uint16_t delay = 0;        //  SPI driver latency: https://www.raspberryp
 static uint8_t lsb_buf[MAX_SPI_SIZE];
 /// Bytes to be transmitted or received in MSB format (used by Broadcom SPI)
 static uint8_t msb_buf[MAX_SPI_SIZE];
+/// Index of bit in lsb_buf currently being pushed or popped
+static unsigned int lsb_buf_bit_index;
 /// File descriptor for SPI device
 static int fd = -1;
 
@@ -103,48 +105,60 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
 /// Transmit bit_cnt number of bits from buf (LSB format) starting at the bit offset.
 static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
+    unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
     //  Fill the missing bits with 0.
     memset(lsb_buf, 0, sizeof(lsb_buf));
+    lsb_buf_bit_index = 0;
 
     //  Consolidate the bits into LSB buffer before transmitting.
-    unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
 	int tdi;
 	for (unsigned int i = offset; i < bit_cnt + offset; i++) {
 		int bytec = i/8;
 		int bcval = 1 << (i % 8);
-		tdi = !target_to_host && (buf[bytec] & bcval);
-
-		bitbang_interface->write(0, 0, tdi);
-		bitbang_interface->write(1, 0, tdi);
+		int next_bit = buf[bytec] & bcval;
+        //  If next_bit is true, push bit 1. Else push bit 0.
+        if (next_bit) {
+            push_lsb_buf(1);
+        } else {
+            push_lsb_buf(0);
+        }
 	}
 
     //  Transmit the consolidated LSB buffer to target.
     spi_transmit(fd, lsb_buf, byte_cnt);
 }
 
+static void push_lsb_buf(int bit) {
+    lsb_buf_bit_index++;
+}
+
+static int pop_lsb_buf(void) {
+    lsb_buf_bit_index++;
+}
+
 /// Receive bit_cnt number of bits into buf (LSB format) starting at the bit offset.
 static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
+    unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
     //  Fill the missing bits with 0.
     memset(lsb_buf, 0, sizeof(lsb_buf));
+    lsb_buf_bit_index = 0;
 
     //  Receive the LSB buffer from target.
-    unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
     spi_receive(fd, lsb_buf, byte_cnt);
 
     //  Populate LSB buf from the received LSB bits.
-
 	int tdi;
-
 	for (unsigned int i = offset; i < bit_cnt + offset; i++) {
 		int bytec = i/8;
 		int bcval = 1 << (i % 8);
-		tdi = !target_to_host && (buf[bytec] & bcval);
-
-        if (bitbang_interface->swdio_read())
+        int next_bit = pop_lsb_buf();
+        //  If next_bit is true, push bit 1. Else push bit 0.
+        if (next_bit) {
             buf[bytec] |= bcval;
-        else
+        } else {
             buf[bytec] &= ~bcval;
+        }
 	}
 }
 
