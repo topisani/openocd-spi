@@ -96,7 +96,7 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
 {
     if (!buf && bit_cnt == 8) {
         // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8. We send a null byte.
-        buf = null_byte;   
+        buf = (uint8_t *) null_byte;   
     }
     if (!buf) { pabort("spi_exchange: null buffer"); return; }
     if (bit_cnt == 0) { return; }    
