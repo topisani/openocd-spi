@@ -32,7 +32,7 @@
 //  Interfacing Options --> SPI --> Yes
 //  Finish --> Yes
 #define SWD_SPI  //  Transmit and receive SWD commands over SPI...
-#ifdef SWD_SPI  
+#ifdef SWD_SPI   //  Transmit and receive SWD commands over SPI...
 
 #include <stdint.h>
 #include <unistd.h>
@@ -70,6 +70,8 @@ static int fd = -1;
 
 static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
 static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
+static void spi_transmit(int fd, const uint8_t *buf, unsigned int len);
+static void spi_receive(int fd, uint8_t *buf, unsigned int len);
 static void spi_init(void);
 static void spi_terminate(void);
 static void push_lsb_buf(int next_bit);
