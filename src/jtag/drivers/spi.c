@@ -88,9 +88,14 @@ static void pabort(const char *s);
 /// Transmit or receive bit_cnt number of bits from/into buf (LSB format) starting at the bit offset.
 /// If target_to_host is false: Transmit from host to target.
 /// If target_to_host is true:  Receive from target to host.
-/// Called by src/jtag/drivers/bitbang.c
+/// Called by bitbang_exchange() in src/jtag/drivers/bitbang.c
 void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
+    if (!buf && bit_cnt == 8) {
+        // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8. We send a null byte.
+        static const uint8_t null_byte[0] = { 0 };     
+        buf = null_byte;   
+    }
     if (!buf) { pabort("spi_exchange: null buffer"); return; }
     if (bit_cnt == 0) { return; }    
     if (bit_cnt - offset == 0) { return; }    
@@ -321,7 +326,9 @@ static int pop_lsb_buf(void) {
 }
 
 static void pabort(const char *s) {
+    printf("** PABORT: ");
 	perror(s);
+    printf("\n");
     spi_terminate();
 	abort();
 }
