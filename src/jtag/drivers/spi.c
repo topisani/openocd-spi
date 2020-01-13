@@ -32,7 +32,7 @@
 //  Interfacing Options --> SPI --> Yes
 //  Finish --> Yes
 #define SWD_SPI  //  Transmit and receive SWD commands over SPI...
-#ifdef SWD_SPI	
+#ifdef SWD_SPI  
 
 #include <stdint.h>
 #include <unistd.h>

@@ -622,3 +622,7 @@ const struct swd_driver bitbang_swd = {
 	.write_reg = bitbang_swd_write_reg,
 	.run = bitbang_swd_run_queue,
 };
+
+#ifdef SWD_SPI  //  Transmit and receive SWD commands over SPI...
+#include "spi.c"  ////  TODO
+#endif  //  SWD_SPI	
