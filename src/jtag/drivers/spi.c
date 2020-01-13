@@ -34,6 +34,15 @@
 #define SWD_SPI  //  Transmit and receive SWD commands over SPI...
 #ifdef SWD_SPI	
 
+#include <stdint.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <getopt.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <linux/types.h>
+#include <linux/spi/spidev.h>
 #include <jtag/swd.h>
 
 //  SPI Configuration
@@ -42,9 +51,9 @@ static uint8_t mode = 0  //  Note: LSB mode is not supported on Broadcom. We mus
     | SPI_NO_CS  //  1 device per bus, no Chip Select
     | SPI_3WIRE  //  Bidirectional mode, data in and out pin shared
     ;            //  Data is valid on first rising edge of the clock, so CPOL=0 and CPHA=0
-static uint8_t bits = 8;         //  8 bits per word
+static uint8_t bits = 8;          //  8 bits per word
 static uint32_t speed = 1953000;  //  1,953 kHz. Previously 500000
-static uint16_t delay = 0;       //  SPI driver latency: https://www.raspberrypi.org/forums/viewtopic.php?f=44&t=19489
+static uint16_t delay = 0;        //  SPI driver latency: https://www.raspberrypi.org/forums/viewtopic.php?f=44&t=19489
 
 //  #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
@@ -64,9 +73,9 @@ static void spi_terminate(void);
 static void pabort(const char *s);
 
 /// Transmit or receive bit_cnt number of bits from/into buf (LSB format) starting at the bit offset.
-/// If rnw is false: Transmit from host to target.
-/// If rnw is true:  Receive from target to host.
-void spi_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
+/// If target_to_host is false: Transmit from host to target.
+/// If target_to_host is true:  Receive from target to host.
+void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
     if (!buf) { pabort("spi_exchange: null buffer"); return; }
     if (bit_cnt == 0) { return; }    
@@ -75,37 +84,39 @@ void spi_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsigned int bit
 
     //  Init SPI if not initialised.
     spi_init();
-    //  If rnw is true, receive from target to host. Else transmit from host to target.
-    if (rnw) {
+    //  If target_to_host is true, receive from target to host. Else transmit from host to target.
+    if (target_to_host) {
         spi_exchange_receive(buf, offset, bit_cnt);
     } else {
         spi_exchange_transmit(buf, offset, bit_cnt);
     }
-    //  If bit_cnt is a multiple of 8, then we have a round number of bytes sent/received, no problem. 
+    //  If we are receiving from target and bit_cnt is a multiple of 8, then we have a round number of bytes received, no problem. 
     //  Else we got trailing undefined bits that will confuse the target. Need to resync the target by transmitting JTAG-to-SWD sequence.
-    if (bit_cnt % 8 != 0) {
+    if (target_to_host && bit_cnt % 8 != 0) {
         puts("spi_exchange: JTAG-to-SWD seq");
         spi_transmit(fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
     }
+    //  Sending to target is always round number of bytes with trailing bits=0, so target is not confused.
     static int count = 0;  if (count++ == 1) { pabort("Exit for testing"); } ////
 }
 
 /// Transmit bit_cnt number of bits from buf (LSB format) starting at the bit offset.
 static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
+    //  Fill the missing bits with 0.
+    memset(lsb_buf, 0, sizeof(lsb_buf));
+
     //  Consolidate the bits into LSB buffer before transmitting.
     unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
 	int tdi;
 	for (unsigned int i = offset; i < bit_cnt + offset; i++) {
 		int bytec = i/8;
 		int bcval = 1 << (i % 8);
-		tdi = !rnw && (buf[bytec] & bcval);
+		tdi = !target_to_host && (buf[bytec] & bcval);
 
 		bitbang_interface->write(0, 0, tdi);
 		bitbang_interface->write(1, 0, tdi);
 	}
-
-    //  TODO: Fill missing bits with 0.
 
     //  Transmit the consolidated LSB buffer to target.
     spi_transmit(fd, lsb_buf, byte_cnt);
@@ -114,6 +125,9 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
 /// Receive bit_cnt number of bits into buf (LSB format) starting at the bit offset.
 static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
+    //  Fill the missing bits with 0.
+    memset(lsb_buf, 0, sizeof(lsb_buf));
+
     //  Receive the LSB buffer from target.
     unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
     spi_receive(fd, lsb_buf, byte_cnt);
@@ -125,7 +139,7 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
 	for (unsigned int i = offset; i < bit_cnt + offset; i++) {
 		int bytec = i/8;
 		int bcval = 1 << (i % 8);
-		tdi = !rnw && (buf[bytec] & bcval);
+		tdi = !target_to_host && (buf[bytec] & bcval);
 
         if (bitbang_interface->swdio_read())
             buf[bytec] |= bcval;
