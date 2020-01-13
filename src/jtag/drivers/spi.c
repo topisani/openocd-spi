@@ -72,6 +72,9 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
 static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
 static void spi_init(void);
 static void spi_terminate(void);
+static void push_lsb_buf(int next_bit);
+static int pop_lsb_buf(void);
+
 static void pabort(const char *s);
 
 /// Transmit or receive bit_cnt number of bits from/into buf (LSB format) starting at the bit offset.
@@ -126,14 +129,6 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
 
     //  Transmit the consolidated LSB buffer to target.
     spi_transmit(fd, lsb_buf, byte_cnt);
-}
-
-static void push_lsb_buf(int bit) {
-    lsb_buf_bit_index++;
-}
-
-static int pop_lsb_buf(void) {
-    lsb_buf_bit_index++;
 }
 
 /// Receive bit_cnt number of bits into buf (LSB format) starting at the bit offset.
@@ -305,6 +300,34 @@ static void spi_terminate(void) {
 	printf("spi_terminate\n");
     close(fd);
 	fd = -1;
+}
+
+/// Push the bit to the lsb_buf
+static void push_lsb_buf(int next_bit) {
+    unsigned int byte_cnt = (lsb_buf_bit_index + 7) / 8;  //  Round up to next byte count.
+    if (byte_cnt >= MAX_SPI_SIZE) { pabort("push_lsb_buf: overflow"); return; }
+
+    int bytec = lsb_buf_bit_index / 8;
+    int bcval = 1 << (lsb_buf_bit_index % 8);
+    if (next_bit) {
+        lsb_buf[bytec] |= bcval;
+    } else {
+        lsb_buf[bytec] &= ~bcval;
+    }
+    lsb_buf_bit_index++;
+}
+
+/// Pop the next bit from the lsb_buf
+static int pop_lsb_buf(void) {
+    unsigned int byte_cnt = (lsb_buf_bit_index + 7) / 8;  //  Round up to next byte count.
+    if (byte_cnt >= MAX_SPI_SIZE) { pabort("pop_lsb_buf: overflow"); return; }
+
+    int bytec = lsb_buf_bit_index / 8;
+    int bcval = 1 << (lsb_buf_bit_index % 8);
+    int next_bit = lsb_buf[bytec] & bcval;
+    lsb_buf_bit_index++;
+    if (next_bit) { return 1; }
+    return 0;
 }
 
 static void pabort(const char *s) {
