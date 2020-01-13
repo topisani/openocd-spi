@@ -1,3 +1,18 @@
+OpenOCD implementation of SWD over SPI on Raspberry Pi
+======================================================
+
+Uses SPI to implement SWD flashing and debugging reliably, without using GPIO bit banging...
+
+https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi
+
+This version of OpenOCD is now used in the PineTime Smart Watch Debugger. Thanks everyone for testing! :-)
+
+https://lupyuen.github.io/articles/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi
+
+If you found this repo useful, please sponsor me a coffee. Thanks! :-)
+
+https://github.com/sponsors/lupyuen
+
 Welcome to OpenOCD!
 ===================
 

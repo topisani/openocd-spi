@@ -58,6 +58,8 @@ struct bitbang_interface {
 
 extern const struct swd_driver bitbang_swd;
 
+extern bool swd_mode;
+
 int bitbang_execute_queue(void);
 
 extern struct bitbang_interface *bitbang_interface;
