@@ -34,8 +34,12 @@ cd ~/openocd-spi
 ./bootstrap
 ./configure --enable-sysfsgpio --enable-bcm2835gpio --enable-cmsis-dap
 
-clear ; cd ~/openocd-spi ; make
+clear ; cd ~/openocd-spi ; git pull ; make
 
 clear ; cd ~/pinetime-rust-mynewt ; scripts/nrf52-pi/flash-unprotect.sh 
+
+clear ; cd ~/pinetime-rust-mynewt ; scripts/nrf52-pi/flash-unprotect.sh >flash-unprotect.log 2>&1
+
+sync ; sudo shutdown now
 
 #endif  //  NOTUSED
