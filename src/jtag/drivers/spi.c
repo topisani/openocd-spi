@@ -277,7 +277,7 @@ static void spi_terminate(void) {
     //  Close SPI device.
     if (spi_fd < 0) { return; }  //  Terminate only once
 	printf("spi_terminate\n");
-    close(fd);
+    close(spi_fd);
 	spi_fd = -1;
 }
 
@@ -299,7 +299,7 @@ static void push_lsb_buf(int next_bit) {
 /// Pop the next bit from the lsb_buf
 static int pop_lsb_buf(void) {
     unsigned int byte_cnt = (lsb_buf_bit_index + 7) / 8;  //  Round up to next byte count.
-    if (byte_cnt >= MAX_SPI_SIZE) { pabort("pop_lsb_buf: overflow"); return; }
+    if (byte_cnt >= MAX_SPI_SIZE) { pabort("pop_lsb_buf: overflow"); return -1; }
 
     int bytec = lsb_buf_bit_index / 8;
     int bcval = 1 << (lsb_buf_bit_index % 8);
