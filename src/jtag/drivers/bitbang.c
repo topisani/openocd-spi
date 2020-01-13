@@ -404,7 +404,7 @@ static int bitbang_swd_init(void)
 	return ERROR_OK;
 }
 
-//#define SWD_SPI  //  Transmit and receive SWD commands over SPI...
+#define SWD_SPI  //  Transmit and receive SWD commands over SPI...
 #ifdef SWD_SPI	
 void spi_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
 #endif  //  SWD_SPI	
