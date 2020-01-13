@@ -13,6 +13,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 //  Implement SWD protocol with Raspberry Pi Bidirectional SPI (luppy@appkaki.com)
+//  Called by src/jtag/drivers/bitbang.c
+
 //  Why implement SWD over Bidirectional SPI on Raspberry Pi?  Because SWD over Bit-Banging GPIO has timing issues that affect OpenOCD flashing...
 //  https://gist.github.com/lupyuen/18e66c3e81e11050a10d1192c5b84bb0
 
@@ -82,6 +84,7 @@ static void pabort(const char *s);
 /// Transmit or receive bit_cnt number of bits from/into buf (LSB format) starting at the bit offset.
 /// If target_to_host is false: Transmit from host to target.
 /// If target_to_host is true:  Receive from target to host.
+/// Called by src/jtag/drivers/bitbang.c
 void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
     if (!buf) { pabort("spi_exchange: null buffer"); return; }
