@@ -136,7 +136,7 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
     //  Or JTAG-To-SWD, which is 136 bits and byte-aligned:
     //  ** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
 
-    //  unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
+    unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
     memset(lsb_buf, 0, sizeof(lsb_buf));
     lsb_buf_bit_index = 0;
 
@@ -162,12 +162,10 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
     if (i > 0) { printf("  pad %d\n", i); } ////
 
     //  Add 8 clock cycles before stopping the clock.  A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
-    for (i = 0; i < 8; i++) {
-        push_lsb_buf(0);
-    }
+    //  for (i = 0; i < 8; i++) { push_lsb_buf(0); }
 
     //  Transmit the consolidated LSB buffer to target.
-    spi_transmit(spi_fd, lsb_buf, lsb_buf_bit_index / 8);
+    spi_transmit(spi_fd, lsb_buf, byte_cnt);
 }
 
 /// Receive bit_cnt number of bits into buf (LSB format) starting at the bit offset.
