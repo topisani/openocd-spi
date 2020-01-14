@@ -168,7 +168,7 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
     //  We always force return OK (0x13) without actually receiving SPI bytes. We compensate the 5 bits during SWD Write Data later (33 bits).
     if (offset == 0 && bit_cnt == 5) {
         printf("write ack force OK\n");
-        buf[0] = (buf[0] & 0b11111) | 0x13;  //  Force lower 5 bits to be 0x13
+        buf[0] = (buf[0] & 0b11100000) | 0x13;  //  Force lower 5 bits to be 0x13
         return;
     }
     //  Otherwise we must be receiving SWD Read Data, which is 38 bits and not byte-aligned. We will resync by transmitting JTAG-To-SWD below.
