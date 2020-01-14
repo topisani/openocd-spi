@@ -149,11 +149,12 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
 	}
 
     //  Pad with null bits until the whole byte is populated.  Should be 2 bits for SWD Write Command.
-    int i = 1;
+    int i = 0;
     while (lsb_buf_bit_index % 8 != 0) {        
-        printf("pad %d\n", i++); ////
         push_lsb_buf(0);
+        i++;
     }
+    if (i > 0) { printf("  pad %d\n", i); } ////
 
     //  Transmit the consolidated LSB buffer to target.
     spi_transmit(spi_fd, lsb_buf, byte_cnt);
