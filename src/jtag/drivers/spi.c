@@ -163,14 +163,18 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
     }
     if (i > 0) { printf("  pad %d\n", i); } ////
 
-    if (bit_cnt == 38) {  //  SWD Write Command
-        //  Add 8 clock cycles before stopping the clock.  A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
-        for (i = 0; i < 8; i++) { push_lsb_buf(0); }
-        byte_cnt++;
-    }
-
     //  Transmit the consolidated LSB buffer to target.
     spi_transmit(spi_fd, lsb_buf, byte_cnt);
+
+    if (bit_cnt == 38) {  //  SWD Write Command
+        printf("**** SWD Write\n");
+        spi_transmit(spi_fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
+        //  Transmit command to read Register 0 (IDCODE).  This is mandatory after JTAG-to-SWD sequence, according to SWD protocol.  We prepad with 2 null bits so that the next command will be byte-aligned.
+        spi_transmit(spi_fd, swd_read_reg_0_prepadded, swd_read_reg_0_prepadded_len / 8);
+        //  Add 8 clock cycles before stopping the clock.  A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
+        //  for (i = 0; i < 8; i++) { push_lsb_buf(0); }
+        //  byte_cnt++;
+    }
 }
 
 /// Receive bit_cnt number of bits into buf (LSB format) starting at the bit offset.
