@@ -100,8 +100,7 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
     }
     if (!buf) { pabort("spi_exchange: null buffer"); return; }
     if (bit_cnt == 0) { return; }    
-    if (bit_cnt - offset == 0) { return; }    
-    unsigned int byte_cnt = (bit_cnt - offset + 7) / 8;  //  Round up to next byte count.
+    unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
     if (byte_cnt >= MAX_SPI_SIZE) { printf("bit_cnt=%d ", bit_cnt); pabort("spi_exchange: overflow"); return; }
 
     //  Init SPI if not initialised.
@@ -112,24 +111,27 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
     } else {
         spi_exchange_transmit(buf, offset, bit_cnt);
     }
-    //  If we are receiving from target and bit_cnt is a multiple of 8, then we have a round number of bytes received, no problem. 
-    //  Else we got trailing undefined bits that will confuse the target. Need to resync the target by transmitting JTAG-to-SWD sequence.
-    if (target_to_host && (bit_cnt - offset) % 8 != 0) {
-        puts("spi_exchange: JTAG-to-SWD seq");
-        spi_transmit(spi_fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
-        //  Transmit command to read Register 0 (IDCODE).  This is mandatory after JTAG-to-SWD sequence, according to SWD protocol.  We prepad with 2 null bits so that the next command will be byte-aligned.
-        puts("spi_exchange: Prepadded read reg 0 seq");
-        spi_transmit(spi_fd, swd_read_reg_0_prepadded, swd_read_reg_0_prepadded_len / 8);
-    }
-    //  Sending to target is always round number of bytes with trailing bits=0, so target is not confused.
-    static int count = 0;  if (++count == 200) { pabort("Exit for testing"); } ////
+    static int count = 0;  if (++count == 20) { pabort("Exit for testing"); } ////
 }
 
 /// Transmit bit_cnt number of bits from buf (LSB format) starting at the bit offset.
+/// Transmit to target is always byte-aligned with trailing bits=0, so no need to resync the target.
 static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
-    unsigned int byte_cnt = (bit_cnt - offset + 7) / 8;  //  Round up to next byte count.
-    //  Fill the missing bits with 0.
+    //  Handle SWD Write Data, which is 33 bits and not byte-aligned:
+    //  ** host -> trgt offset 5 bits 33: d3 03 00 00 80
+    //  This happens right after SWD Write Ack (5 bits), which doesn't receive SPI bytes. We compensate the SWD Write Ack before SWD Write Data.  
+    if (offset == 5 && bit_cnt == 33) {
+        //  SWD Write Ack (5 bits) + SWD Write Data (33 bits) = 38 bits. Then pad later by 2 bits to 40 bits to align by byte.
+        offset = 0;
+        bit_cnt = 38;
+    }
+    //  Otherwise we must be transmitting the SWD Command Header, which is 8 bits and byte-aligned:
+    //  ** host -> trgt offset 0 bits  8: 81
+    //  Or JTAG-To-SWD, which is 136 bits and byte-aligned:
+    //  ** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
+
+    unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
     memset(lsb_buf, 0, sizeof(lsb_buf));
     lsb_buf_bit_index = 0;
 
@@ -146,6 +148,13 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
         }
 	}
 
+    //  Pad with null bits until the whole byte is populated.  Should be 2 bits for SWD Write Command.
+    int i = 1;
+    while (lsb_buf_bit_index % 8 != 0) {        
+        printf("pad %d\n", i++); ////
+        push_lsb_buf(0);
+    }
+
     //  Transmit the consolidated LSB buffer to target.
     spi_transmit(spi_fd, lsb_buf, byte_cnt);
 }
@@ -153,7 +162,18 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
 /// Receive bit_cnt number of bits into buf (LSB format) starting at the bit offset.
 static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
-    unsigned int byte_cnt = (bit_cnt - offset + 7) / 8;  //  Round up to next byte count.
+    //  Handle SWD Write Ack, which is 5 bits and not byte-aligned:
+    //  ** trgt -> host offset 0 bits  5: 13
+    //  We always force return OK (0x13) without actually receiving SPI bytes. We compensate the 5 bits during SWD Write Data later (33 bits).
+    if (offset == 0 && bit_cnt == 5) {
+        printf("write ack force OK\n");
+        buf[0] = 0x13;
+        return;
+    }
+    //  Otherwise we must be receiving SWD Read Data, which is 38 bits and not byte-aligned. We will resync by transmitting JTAG-To-SWD below.
+    //  ** trgt -> host offset 0 bits 38: 73 47 01 ba a2
+
+    unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
     //  Fill the missing bits with 0.
     memset(lsb_buf, 0, sizeof(lsb_buf));
     lsb_buf_bit_index = 0;
@@ -173,6 +193,19 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
             buf[bytec] &= ~bcval;
         }
 	}
+
+    //  Handle SWD Read Data, which is 38 bits and not byte-aligned:
+    //  ** trgt -> host offset 0 bits 38: 73 47 01 ba a2
+    //  Since the target is in garbled state, we will resync by transmitting JTAG-To-SWD and Read IDCODE.
+    if (offset == 0 && bit_cnt == 38) {
+        puts("spi_exchange_receive: JTAG-to-SWD seq");
+        spi_transmit(spi_fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
+        //  Transmit command to read Register 0 (IDCODE).  This is mandatory after JTAG-to-SWD sequence, according to SWD protocol.  We prepad with 2 null bits so that the next command will be byte-aligned.
+        puts("spi_exchange_receive: Prepadded read reg 0 seq");
+        spi_transmit(spi_fd, swd_read_reg_0_prepadded, swd_read_reg_0_prepadded_len / 8);
+    } else {
+        pabort("spi_exchange_receive: unknown msg");
+    }
 }
 
 /// The byte at index i is the value of i with all bits flipped. https://stackoverflow.com/questions/746171/efficient-algorithm-for-bit-reversal-from-msb-lsb-to-lsb-msb-in-c
