@@ -71,6 +71,7 @@ static unsigned int lsb_buf_bit_index;
 static int spi_fd = -1;
 
 /// SWD Sequence to Read Register 0 (IDCODE), prepadded with 2 null bits bits to fill up 6 bytes. Target will not get out of sync after sequence.
+/// A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
 //static const uint8_t swd_read_reg_0_prepadded[] = { 0x94, 0x02, 0x00, 0x00, 0x00, 0x00 };
 //static const unsigned swd_read_reg_0_prepadded_len = 48;  //  Number of bits
 static const uint8_t swd_read_reg_0_prepadded[] = { 0x00, 0x94, 0x02, 0x00, 0x00, 0x00, 0x00 };
