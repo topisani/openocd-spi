@@ -74,8 +74,10 @@ static int spi_fd = -1;
 /// A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
 //static const uint8_t swd_read_reg_0_prepadded[] = { 0x94, 0x02, 0x00, 0x00, 0x00, 0x00 };
 //static const unsigned swd_read_reg_0_prepadded_len = 48;  //  Number of bits
-static const uint8_t swd_read_reg_0_prepadded[] = { 0x00, 0x94, 0x02, 0x00, 0x00, 0x00, 0x00 };
-static const unsigned swd_read_reg_0_prepadded_len = 56;  //  Number of bits
+//static const uint8_t swd_read_reg_0_prepadded[] = { 0x00, 0x94, 0x02, 0x00, 0x00, 0x00, 0x00 };
+//static const unsigned swd_read_reg_0_prepadded_len = 56;  //  Number of bits
+static const uint8_t swd_read_reg_0_prepadded[] = { 0x00, 0x94, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00 };
+static const unsigned swd_read_reg_0_prepadded_len = 64;  //  Number of bits
 
 /// SWD Sequence for null byte, used by bitbang_swd_run_queue()
 ////static const uint8_t null_byte[1] = { 0 };
