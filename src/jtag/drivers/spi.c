@@ -163,8 +163,11 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
     }
     if (i > 0) { printf("  pad %d\n", i); } ////
 
-    //  Add 8 clock cycles before stopping the clock.  A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
-    //  for (i = 0; i < 8; i++) { push_lsb_buf(0); }
+    if (bit_cnt == 38) {  //  SWD Write Command
+        //  Add 8 clock cycles before stopping the clock.  A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
+        for (i = 0; i < 8; i++) { push_lsb_buf(0); }
+        byte_cnt++;
+    }
 
     //  Transmit the consolidated LSB buffer to target.
     spi_transmit(spi_fd, lsb_buf, byte_cnt);
