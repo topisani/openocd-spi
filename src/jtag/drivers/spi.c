@@ -72,6 +72,7 @@ static int spi_fd = -1;
 
 /// SWD Sequence to Read Register 0 (IDCODE), prepadded with 2 null bits bits to fill up 6 bytes. Target will not get out of sync after sequence.
 /// A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
+/// After clocking out the data parity bit, continue to clock the SW-DP serial interface until it has clocked out at least 8 more clock rising edges, before stopping the clock.
 //static const uint8_t swd_read_reg_0_prepadded[] = { 0x94, 0x02, 0x00, 0x00, 0x00, 0x00 };
 //static const unsigned swd_read_reg_0_prepadded_len = 48;  //  Number of bits
 //static const uint8_t swd_read_reg_0_prepadded[] = { 0x00, 0x94, 0x02, 0x00, 0x00, 0x00, 0x00 };
@@ -163,17 +164,22 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
     }
     if (i > 0) { printf("  pad %d\n", i); } ////
 
+    if (bit_cnt == 38) {  //  SWD Write Command
+        printf("**** SWD Write 1\n");
+        //  Add 8 clock cycles before stopping the clock.  A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
+        //  After clocking out the data parity bit, continue to clock the SW-DP serial interface until it has clocked out at least 8 more clock rising edges, before stopping the clock.
+        for (i = 0; i < 8; i++) { push_lsb_buf(0); }
+        byte_cnt++;
+    }
+
     //  Transmit the consolidated LSB buffer to target.
     spi_transmit(spi_fd, lsb_buf, byte_cnt);
 
     if (bit_cnt == 38) {  //  SWD Write Command
-        printf("**** SWD Write\n");
+        printf("**** SWD Write 2\n");
         spi_transmit(spi_fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
         //  Transmit command to read Register 0 (IDCODE).  This is mandatory after JTAG-to-SWD sequence, according to SWD protocol.  We prepad with 2 null bits so that the next command will be byte-aligned.
         spi_transmit(spi_fd, swd_read_reg_0_prepadded, swd_read_reg_0_prepadded_len / 8);
-        //  Add 8 clock cycles before stopping the clock.  A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
-        //  for (i = 0; i < 8; i++) { push_lsb_buf(0); }
-        //  byte_cnt++;
     }
 }
 
@@ -196,6 +202,13 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
     //  Fill the missing bits with 0.
     memset(lsb_buf, 0, sizeof(lsb_buf));
     lsb_buf_bit_index = 0;
+
+    if (bit_cnt == 38) {  //  SWD Read Command
+        printf("**** SWD Read\n");
+        //  Add 8 clock cycles before stopping the clock.  A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
+        //  After clocking out the data parity bit, continue to clock the SW-DP serial interface until it has clocked out at least 8 more clock rising edges, before stopping the clock.
+        byte_cnt++;
+    }
 
     //  Receive the LSB buffer from target.
     spi_receive(spi_fd, lsb_buf, byte_cnt);
