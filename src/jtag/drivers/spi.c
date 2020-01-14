@@ -136,7 +136,7 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
     //  Or JTAG-To-SWD, which is 136 bits and byte-aligned:
     //  ** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
 
-    unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
+    //  unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
     memset(lsb_buf, 0, sizeof(lsb_buf));
     lsb_buf_bit_index = 0;
 
