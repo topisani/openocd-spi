@@ -111,7 +111,7 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
     } else {
         spi_exchange_transmit(buf, offset, bit_cnt);
     }
-    static int count = 0;  if (++count == 200) { pabort("Exit for testing"); } ////
+    static int count = 0;  if (++count == 400) { pabort("Exit for testing"); } ////
 }
 
 /// Transmit bit_cnt number of bits from buf (LSB format) starting at the bit offset.
