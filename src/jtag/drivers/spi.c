@@ -75,7 +75,7 @@ static const uint8_t swd_read_reg_0_prepadded[] = { 0x94, 0x02, 0x00, 0x00, 0x00
 static const unsigned swd_read_reg_0_prepadded_len = 48;  //  Number of bits
 
 /// SWD Sequence for null byte, used by bitbang_swd_run_queue()
-static const uint8_t null_byte[1] = { 0 };
+////static const uint8_t null_byte[1] = { 0 };
 
 static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
 static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
@@ -94,9 +94,11 @@ static void pabort(const char *s);
 void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
     if (!buf && bit_cnt == 8) {
-        // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8. We send a null byte.
-        target_to_host = false;
-        buf = (uint8_t *) null_byte;   
+        // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8. We receive a byte.
+        ////target_to_host = false;
+        ////buf = (uint8_t *) null_byte;   
+        static uint8_t single_byte[1];
+        buf = single_byte;
     }
     if (!buf) { pabort("spi_exchange: null buffer"); return; }
     if (bit_cnt == 0) { return; }    
