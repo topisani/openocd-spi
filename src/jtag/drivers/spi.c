@@ -71,8 +71,10 @@ static unsigned int lsb_buf_bit_index;
 static int spi_fd = -1;
 
 /// SWD Sequence to Read Register 0 (IDCODE), prepadded with 2 null bits bits to fill up 6 bytes. Target will not get out of sync after sequence.
-static const uint8_t swd_read_reg_0_prepadded[] = { 0x94, 0x02, 0x00, 0x00, 0x00, 0x00 };
-static const unsigned swd_read_reg_0_prepadded_len = 48;  //  Number of bits
+//static const uint8_t swd_read_reg_0_prepadded[] = { 0x94, 0x02, 0x00, 0x00, 0x00, 0x00 };
+//static const unsigned swd_read_reg_0_prepadded_len = 48;  //  Number of bits
+static const uint8_t swd_read_reg_0_prepadded[] = { 0x00, 0x94, 0x02, 0x00, 0x00, 0x00, 0x00 };
+static const unsigned swd_read_reg_0_prepadded_len = 56;  //  Number of bits
 
 /// SWD Sequence for null byte, used by bitbang_swd_run_queue()
 ////static const uint8_t null_byte[1] = { 0 };
