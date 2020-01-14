@@ -175,6 +175,7 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
     }
     //  Otherwise we must be receiving SWD Read Data, which is 38 bits and not byte-aligned. We will resync by transmitting JTAG-To-SWD below.
     //  ** trgt -> host offset 0 bits 38: 73 47 01 ba a2
+    //  Or receiving SWD Run Queue, which is 8 bits and byte-aligned.
 
     unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
     //  Fill the missing bits with 0.
@@ -206,6 +207,8 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
         //  Transmit command to read Register 0 (IDCODE).  This is mandatory after JTAG-to-SWD sequence, according to SWD protocol.  We prepad with 2 null bits so that the next command will be byte-aligned.
         puts("spi_exchange_receive: Prepadded read reg 0 seq");
         spi_transmit(spi_fd, swd_read_reg_0_prepadded, swd_read_reg_0_prepadded_len / 8);
+    } else if (offset == 0 && bit_cnt == 8) {
+        //  Receiving SWD Run Queue, which is 8 bits and byte-aligned. Do nothing.
     } else {
         pabort("spi_exchange_receive: unknown msg");
     }
