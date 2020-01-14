@@ -126,7 +126,7 @@ Debug: 140 13 command.c:354 register_command_handler(): registering 'nrf5'...
 Debug: 141 13 command.c:354 register_command_handler(): registering 'nrf5'...
 Debug: 142 13 command.c:354 register_command_handler(): registering 'nrf51'...
 Debug: 143 13 command.c:354 register_command_handler(): registering 'nrf51'...
-Debug: 144 13 tcl.c:1156 handle_flash_bank_command(): 'nrf5' driver usage field missing
+Debug: 144 14 tcl.c:1156 handle_flash_bank_command(): 'nrf5' driver usage field missing
 Debug: 145 14 command.c:143 script_debug(): command - flash flash bank nrf52.uicr nrf5 0x10001000 0 1 1 nrf52.cpu
 Debug: 147 14 command.c:376 register_command(): command 'nrf5' is already registered in '<global>' context
 Debug: 148 14 command.c:376 register_command(): command 'mass_erase' is already registered in 'nrf5' context
@@ -141,7 +141,7 @@ Debug: 157 14 command.c:143 script_debug(): command - gdb_breakpoint_override gd
 User : 159 14 gdb_server.c:3669 handle_gdb_breakpoint_override_command(): force hard breakpoints
 Debug: 160 14 command.c:143 script_debug(): command - init init
 Debug: 162 14 command.c:143 script_debug(): command - target target init
-Debug: 164 14 command.c:143 script_debug(): command - target target names
+Debug: 164 15 command.c:143 script_debug(): command - target target names
 Debug: 165 15 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu cget -event gdb-flash-erase-start
 Debug: 166 15 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu configure -event gdb-flash-erase-start reset init
 Debug: 167 15 command.c:143 script_debug(): command - nrf52.cpu nrf52.cpu cget -event gdb-flash-write-end
@@ -160,9 +160,9 @@ Debug: 179 15 command.c:354 register_command_handler(): registering 'virt2phys'.
 Debug: 180 15 command.c:354 register_command_handler(): registering 'reg'...
 Debug: 181 15 command.c:354 register_command_handler(): registering 'poll'...
 Debug: 182 15 command.c:354 register_command_handler(): registering 'wait_halt'...
-Debug: 183 15 command.c:354 register_command_handler(): registering 'halt'...
-Debug: 184 15 command.c:354 register_command_handler(): registering 'resume'...
-Debug: 185 15 command.c:354 register_command_handler(): registering 'reset'...
+Debug: 183 16 command.c:354 register_command_handler(): registering 'halt'...
+Debug: 184 16 command.c:354 register_command_handler(): registering 'resume'...
+Debug: 185 16 command.c:354 register_command_handler(): registering 'reset'...
 Debug: 186 16 command.c:354 register_command_handler(): registering 'soft_reset_halt'...
 Debug: 187 16 command.c:354 register_command_handler(): registering 'step'...
 Debug: 188 16 command.c:354 register_command_handler(): registering 'mdd'...
@@ -214,7 +214,7 @@ spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
   E7 FF FF FF FF FF FF FF 
   00 
-Debug: 226 22 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 226 25 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: a5
 spi_transmit: len=1
   A5 
@@ -229,25 +229,25 @@ spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
 ** trgt -> host offset 0 bits 38: 73 47 01 ba e2
-Debug: 227 25 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
-Debug: 228 25 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+Debug: 227 32 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 228 32 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: 81
 spi_transmit: len=1
   81 
 write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 03 00 00 80
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 80
   pad 2
 spi_transmit: len=5
-  C8 C0 00 00 00 
-Debug: 229 26 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 00000018
-Debug: 230 26 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+  CB C0 00 00 00 
+Debug: 229 33 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 230 34 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
 spi_transmit: len=1
   00 
-Debug: 231 26 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Info : 232 26 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
-Debug: 233 26 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
-Debug: 234 26 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+Debug: 231 34 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 232 34 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 233 34 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 234 34 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: b1
 spi_transmit: len=1
   8D 
@@ -257,13 +257,13 @@ write ack force OK
   pad 2
 spi_transmit: len=5
   C8 00 00 00 00 
-Debug: 235 27 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 00000000
-Debug: 236 27 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 235 36 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 00000000
+Debug: 236 36 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 8d
 spi_transmit: len=1
   B1 
 spi_receive: len=5
-  03 00 00 00 EF 
+  13 00 00 00 FF 
 spi_exchange_receive: JTAG-to-SWD seq
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
@@ -272,13 +272,13 @@ spi_transmit: len=17
 spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 237 29 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 238 29 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+** trgt -> host offset 0 bits 38: 13 00 00 00 3f
+Debug: 237 42 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000001
+Debug: 238 42 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
 spi_transmit: len=1
   00 
-Debug: 239 29 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 240 29 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+Debug: 239 43 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Debug: 240 43 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: a9
 spi_transmit: len=1
   95 
@@ -288,13 +288,13 @@ write ack force OK
   pad 2
 spi_transmit: len=5
   C8 20 00 00 54 
-Debug: 241 30 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000020
-Debug: 242 30 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 241 44 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000020
+Debug: 242 44 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 8d
 spi_transmit: len=1
   B1 
 spi_receive: len=5
-  03 00 00 00 EF 
+  33 00 00 00 EF 
 spi_exchange_receive: JTAG-to-SWD seq
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
@@ -303,9 +303,9 @@ spi_transmit: len=17
 spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 af
-Debug: 243 33 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 244 33 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** trgt -> host offset 0 bits 38: 33 00 00 00 af
+Debug: 243 51 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000003
+Debug: 244 51 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: a9
 spi_transmit: len=1
   95 
@@ -315,15 +315,15 @@ write ack force OK
   pad 2
 spi_transmit: len=5
   C8 00 00 00 50 
-Debug: 245 33 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 246 33 arm_adi_v5.c:698 dap_dp_init(): DAP: wait CDBGPWRUPACK
-Debug: 247 33 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x20000000, value 0x20000000
-Debug: 248 33 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 245 53 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
+Debug: 246 53 arm_adi_v5.c:698 dap_dp_init(): DAP: wait CDBGPWRUPACK
+Debug: 247 53 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x20000000, value 0x20000000
+Debug: 248 53 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 8d
 spi_transmit: len=1
   B1 
 spi_receive: len=5
-  03 00 00 00 EF 
+  33 00 00 00 EF 
 spi_exchange_receive: JTAG-to-SWD seq
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
@@ -332,20 +332,20 @@ spi_transmit: len=17
 spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 249 36 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 250 36 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+** trgt -> host offset 0 bits 38: 33 00 00 00 2f
+Debug: 249 59 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000003
+Debug: 250 59 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
 spi_transmit: len=1
   00 
-Debug: 251 36 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 252 36 arm_adi_v5.c:706 dap_dp_init(): DAP: wait CSYSPWRUPACK
-Debug: 253 36 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x80000000, value 0x80000000
-Debug: 254 36 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 251 60 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Debug: 252 60 arm_adi_v5.c:706 dap_dp_init(): DAP: wait CSYSPWRUPACK
+Debug: 253 60 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x80000000, value 0x80000000
+Debug: 254 60 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 8d
 spi_transmit: len=1
   B1 
 spi_receive: len=5
-  03 00 00 00 EF 
+  33 00 00 00 EF 
 spi_exchange_receive: JTAG-to-SWD seq
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
@@ -354,18 +354,18 @@ spi_transmit: len=17
 spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 255 39 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 256 39 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+** trgt -> host offset 0 bits 38: 33 00 00 00 2f
+Debug: 255 66 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000003
+Debug: 256 66 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
 spi_transmit: len=1
   00 
-Debug: 257 39 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 258 39 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 257 67 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Debug: 258 67 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 8d
 spi_transmit: len=1
   B1 
 spi_receive: len=5
-  03 00 00 00 EF 
+  33 00 00 00 EF 
 spi_exchange_receive: JTAG-to-SWD seq
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
@@ -374,25 +374,25 @@ spi_transmit: len=17
 spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 af
-Debug: 259 42 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 260 42 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** trgt -> host offset 0 bits 38: 33 00 00 00 af
+Debug: 259 73 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000003
+Debug: 260 73 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: a9
 spi_transmit: len=1
   95 
 write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 aa
+** trgt -> host offset 0 bits  5: 33
+** host -> trgt offset 5 bits 33: 33 00 00 00 aa
   pad 2
 spi_transmit: len=5
-  C8 00 00 00 54 
-Debug: 261 42 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 262 42 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+  CC 00 00 00 54 
+Debug: 261 75 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000001
+Debug: 262 75 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 8d
 spi_transmit: len=1
   B1 
 spi_receive: len=5
-  03 08 00 00 FF 
+  33 00 00 00 EF 
 spi_exchange_receive: JTAG-to-SWD seq
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
@@ -401,15 +401,15 @@ spi_transmit: len=17
 spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 08 00 00 bf
-Debug: 263 45 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000080
-Debug: 264 45 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+** trgt -> host offset 0 bits 38: 33 00 00 00 af
+Debug: 263 82 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000003
+Debug: 264 82 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
 spi_transmit: len=1
   00 
-Debug: 265 45 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 266 45 openocd.c:158 handle_init_command(): Examining targets...
-Debug: 267 45 target.c:1611 target_call_event_callbacks(): target event 17 (examine-start) for core nrf52.cpu
-Debug: 268 45 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+Debug: 265 82 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Debug: 266 82 openocd.c:158 handle_init_command(): Examining targets...
+Debug: 267 82 target.c:1611 target_call_event_callbacks(): target event 17 (examine-start) for core nrf52.cpu
+Debug: 268 82 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: b1
 spi_transmit: len=1
   8D 
@@ -419,13 +419,13 @@ write ack force OK
   pad 2
 spi_transmit: len=5
   C8 78 00 00 00 
-Debug: 269 46 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 000000f0
-Debug: 270 46 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 269 84 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 000000f0
+Debug: 270 84 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 9f
 spi_transmit: len=1
   F9 
 spi_receive: len=5
-  FF FF FF FF FF 
+  F9 FF FF FF FF 
 spi_exchange_receive: JTAG-to-SWD seq
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
@@ -434,23 +434,23 @@ spi_transmit: len=17
 spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: ff ff ff ff 3f
-Debug: 271 48 bitbang.c:523 bitbang_swd_read_reg(): JUNK AP read reg C = ffffffff
-Debug: 272 48 bitbang.c:546 bitbang_swd_read_reg(): No valid acknowledge: ack=7
-Debug: 273 48 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-Debug: 274 48 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
-Debug: 275 48 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+** trgt -> host offset 0 bits 38: f9 ff ff ff 3f
+Debug: 271 91 bitbang.c:523 bitbang_swd_read_reg(): FAULT AP read reg C = ffffffff
+Debug: 272 91 bitbang.c:542 bitbang_swd_read_reg(): SWD_ACK_FAULT
+Debug: 273 91 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 274 91 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=4
+Debug: 275 91 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
 spi_transmit: len=1
   00 
-Debug: 276 49 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
-Debug: 277 49 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
-Debug: 278 49 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+Debug: 276 91 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 04
+Debug: 277 91 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 278 91 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
 ** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
   E7 FF FF FF FF FF FF FF 
   00 
-Debug: 279 50 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 279 95 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: a5
 spi_transmit: len=1
   A5 
@@ -465,25 +465,25 @@ spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
 ** trgt -> host offset 0 bits 38: 73 47 01 ba e2
-Debug: 280 53 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
-Debug: 281 53 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+Debug: 280 102 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 281 102 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: 81
 spi_transmit: len=1
   81 
 write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 03 00 00 00
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 00
   pad 2
 spi_transmit: len=5
-  C8 C0 00 00 00 
-Debug: 282 53 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 00000018
-Debug: 283 53 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+  CB C0 00 00 00 
+Debug: 282 103 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 283 103 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
 spi_transmit: len=1
   00 
-Debug: 284 54 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Info : 285 54 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
-Debug: 286 54 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
-Debug: 287 54 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+Debug: 284 104 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 285 104 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 286 104 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 287 104 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: b1
 spi_transmit: len=1
   8D 
@@ -493,13 +493,13 @@ write ack force OK
   pad 2
 spi_transmit: len=5
   C8 00 00 00 00 
-Debug: 288 54 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 00000000
-Debug: 289 54 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 288 106 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 00000000
+Debug: 289 106 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 8d
 spi_transmit: len=1
   B1 
 spi_receive: len=5
-  03 00 00 00 EF 
+  13 00 00 00 FF 
 spi_exchange_receive: JTAG-to-SWD seq
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
@@ -508,13 +508,13 @@ spi_transmit: len=17
 spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 290 57 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 291 57 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+** trgt -> host offset 0 bits 38: 13 00 00 00 3f
+Debug: 290 112 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000001
+Debug: 291 112 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
 spi_transmit: len=1
   00 
-Debug: 292 57 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 293 57 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+Debug: 292 113 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Debug: 293 113 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: a9
 spi_transmit: len=1
   95 
@@ -524,13 +524,13 @@ write ack force OK
   pad 2
 spi_transmit: len=5
   C8 20 00 00 54 
-Debug: 294 58 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000020
-Debug: 295 58 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 294 114 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000020
+Debug: 295 114 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 8d
 spi_transmit: len=1
   B1 
 spi_receive: len=5
-  03 00 00 00 EF 
+  33 00 00 00 EF 
 spi_exchange_receive: JTAG-to-SWD seq
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
@@ -539,9 +539,9 @@ spi_transmit: len=17
 spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 296 60 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 297 60 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** trgt -> host offset 0 bits 38: 33 00 00 00 2f
+Debug: 296 121 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000003
+Debug: 297 121 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: a9
 spi_transmit: len=1
   95 
@@ -551,15 +551,15 @@ write ack force OK
   pad 2
 spi_transmit: len=5
   C8 00 00 00 50 
-Debug: 298 61 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 299 61 arm_adi_v5.c:698 dap_dp_init(): DAP: wait CDBGPWRUPACK
-Debug: 300 61 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x20000000, value 0x20000000
-Debug: 301 61 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 298 123 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
+Debug: 299 123 arm_adi_v5.c:698 dap_dp_init(): DAP: wait CDBGPWRUPACK
+Debug: 300 123 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x20000000, value 0x20000000
+Debug: 301 123 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 8d
 spi_transmit: len=1
   B1 
 spi_receive: len=5
-  03 00 00 00 EF 
+  33 00 00 00 EF 
 spi_exchange_receive: JTAG-to-SWD seq
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
@@ -568,20 +568,20 @@ spi_transmit: len=17
 spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 302 64 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 303 64 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+** trgt -> host offset 0 bits 38: 33 00 00 00 2f
+Debug: 302 129 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000003
+Debug: 303 129 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
 spi_transmit: len=1
   00 
-Debug: 304 64 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 305 64 arm_adi_v5.c:706 dap_dp_init(): DAP: wait CSYSPWRUPACK
-Debug: 306 64 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x80000000, value 0x80000000
-Debug: 307 64 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 304 130 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Debug: 305 130 arm_adi_v5.c:706 dap_dp_init(): DAP: wait CSYSPWRUPACK
+Debug: 306 130 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x80000000, value 0x80000000
+Debug: 307 130 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 8d
 spi_transmit: len=1
   B1 
 spi_receive: len=5
-  03 00 00 00 EF 
+  33 00 00 00 EF 
 spi_exchange_receive: JTAG-to-SWD seq
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
@@ -590,18 +590,18 @@ spi_transmit: len=17
 spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 308 67 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 309 67 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+** trgt -> host offset 0 bits 38: 33 00 00 00 2f
+Debug: 308 136 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000003
+Debug: 309 136 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
 spi_transmit: len=1
   00 
-Debug: 310 67 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 311 67 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 310 137 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Debug: 311 137 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 8d
 spi_transmit: len=1
   B1 
 spi_receive: len=5
-  03 00 00 00 EF 
+  33 00 00 00 EF 
 spi_exchange_receive: JTAG-to-SWD seq
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
@@ -610,25 +610,25 @@ spi_transmit: len=17
 spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 312 69 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 313 69 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+** trgt -> host offset 0 bits 38: 33 00 00 00 2f
+Debug: 312 143 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000003
+Debug: 313 143 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: a9
 spi_transmit: len=1
   95 
 write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 2a
+** trgt -> host offset 0 bits  5: 33
+** host -> trgt offset 5 bits 33: 33 00 00 00 2a
   pad 2
 spi_transmit: len=5
-  C8 00 00 00 54 
-Debug: 314 70 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 315 70 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+  CC 00 00 00 54 
+Debug: 314 145 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000001
+Debug: 315 145 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 8d
 spi_transmit: len=1
   B1 
 spi_receive: len=5
-  03 08 00 00 FF 
+  33 00 00 00 EF 
 spi_exchange_receive: JTAG-to-SWD seq
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
@@ -637,13 +637,13 @@ spi_transmit: len=17
 spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 08 00 00 3f
-Debug: 316 73 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000080
-Debug: 317 73 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+** trgt -> host offset 0 bits 38: 33 00 00 00 2f
+Debug: 316 152 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000003
+Debug: 317 152 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
 spi_transmit: len=1
   00 
-Debug: 318 73 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 319 73 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+Debug: 318 152 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Debug: 319 152 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: b1
 spi_transmit: len=1
   8D 
@@ -653,13 +653,13 @@ write ack force OK
   pad 2
 spi_transmit: len=5
   C8 78 00 04 04 
-Debug: 320 74 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 010000f0
-Debug: 321 74 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 320 154 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 010000f0
+Debug: 321 154 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 9f
 spi_transmit: len=1
   F9 
 spi_receive: len=5
-  FF FF FF FF FF 
+  F9 FF FF FF FF 
 spi_exchange_receive: JTAG-to-SWD seq
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
@@ -668,23 +668,23 @@ spi_transmit: len=17
 spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: ff ff ff ff 3f
-Debug: 322 76 bitbang.c:523 bitbang_swd_read_reg(): JUNK AP read reg C = ffffffff
-Debug: 323 76 bitbang.c:546 bitbang_swd_read_reg(): No valid acknowledge: ack=7
-Debug: 324 76 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-Debug: 325 76 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
-Debug: 326 76 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+** trgt -> host offset 0 bits 38: f9 ff ff ff 3f
+Debug: 322 160 bitbang.c:523 bitbang_swd_read_reg(): FAULT AP read reg C = ffffffff
+Debug: 323 160 bitbang.c:542 bitbang_swd_read_reg(): SWD_ACK_FAULT
+Debug: 324 160 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 325 161 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=4
+Debug: 326 161 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
 spi_transmit: len=1
   00 
-Debug: 327 76 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
-Debug: 328 76 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
-Debug: 329 76 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
+Debug: 327 161 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 04
+Debug: 328 161 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
+Debug: 329 161 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
 ** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
   E7 FF FF FF FF FF FF FF 
   00 
-Debug: 330 78 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 330 165 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: a5
 spi_transmit: len=1
   A5 
@@ -699,25 +699,25 @@ spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
 ** trgt -> host offset 0 bits 38: 73 47 01 ba e2
-Debug: 331 81 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
-Debug: 332 81 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+Debug: 331 171 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
+Debug: 332 171 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: 81
 spi_transmit: len=1
   81 
 write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 03 00 00 00
+** trgt -> host offset 0 bits  5: d3
+** host -> trgt offset 5 bits 33: d3 03 00 00 00
   pad 2
 spi_transmit: len=5
-  C8 C0 00 00 00 
-Debug: 333 81 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 00000018
-Debug: 334 81 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+  CB C0 00 00 00 
+Debug: 333 173 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 0000001e
+Debug: 334 173 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
 spi_transmit: len=1
   00 
-Debug: 335 81 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Info : 336 81 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
-Debug: 337 81 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
-Debug: 338 81 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+Debug: 335 174 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Info : 336 174 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
+Debug: 337 174 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
+Debug: 338 174 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: b1
 spi_transmit: len=1
   8D 
@@ -727,13 +727,13 @@ write ack force OK
   pad 2
 spi_transmit: len=5
   C8 00 00 00 00 
-Debug: 339 82 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 00000000
-Debug: 340 82 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 339 175 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 00000000
+Debug: 340 175 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 8d
 spi_transmit: len=1
   B1 
 spi_receive: len=5
-  03 00 00 00 EF 
+  13 00 00 00 FF 
 spi_exchange_receive: JTAG-to-SWD seq
 spi_transmit: len=17
   FF FF FF FF FF FF FF 79 
@@ -742,13 +742,13 @@ spi_transmit: len=17
 spi_exchange_receive: Prepadded read reg 0 seq
 spi_transmit: len=6
   29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 341 85 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 342 85 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
+** trgt -> host offset 0 bits 38: 13 00 00 00 3f
+Debug: 341 182 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000001
+Debug: 342 182 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
 spi_transmit: len=1
   00 
-Debug: 343 85 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 344 85 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
+Debug: 343 182 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
+Debug: 344 182 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
 ** host -> trgt offset 0 bits  8: a9
 spi_transmit: len=1
   95 
@@ -758,1738 +758,13 @@ write ack force OK
   pad 2
 spi_transmit: len=5
   C8 20 00 00 54 
-Debug: 345 86 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000020
-Debug: 346 86 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
+Debug: 345 184 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000020
+Debug: 346 184 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
 ** host -> trgt offset 0 bits  8: 8d
 spi_transmit: len=1
   B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 347 88 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 348 88 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 0a
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 50 
-Debug: 349 89 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 350 89 arm_adi_v5.c:698 dap_dp_init(): DAP: wait CDBGPWRUPACK
-Debug: 351 89 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x20000000, value 0x20000000
-Debug: 352 89 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 353 92 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 354 92 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 355 92 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 356 92 arm_adi_v5.c:706 dap_dp_init(): DAP: wait CSYSPWRUPACK
-Debug: 357 92 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x80000000, value 0x80000000
-Debug: 358 92 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 359 94 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 360 94 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 361 95 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 362 95 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 363 97 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 364 97 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 2a
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 54 
-Debug: 365 98 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 366 98 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 08 00 00 FF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 08 00 00 3f
-Debug: 367 101 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000080
-Debug: 368 101 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 369 101 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 370 101 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: b1
-spi_transmit: len=1
-  8D 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 1e 00 40 20
-  pad 2
-spi_transmit: len=5
-  C8 78 00 02 04 
-Debug: 371 101 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 020000f0
-Debug: 372 101 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 9f
-spi_transmit: len=1
-  F9 
-spi_receive: len=5
-  FF FF FF FF FF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: ff ff ff ff 3f
-Debug: 373 104 bitbang.c:523 bitbang_swd_read_reg(): JUNK AP read reg C = ffffffff
-Debug: 374 104 bitbang.c:546 bitbang_swd_read_reg(): No valid acknowledge: ack=7
-Debug: 375 104 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-Debug: 376 104 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
-Debug: 377 104 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 378 104 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
-Debug: 379 104 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
-Debug: 380 104 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
-** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-Debug: 381 106 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: a5
-spi_transmit: len=1
-  A5 
-spi_receive: len=5
-  73 47 01 BA E2 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 73 47 01 ba e2
-Debug: 382 108 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
-Debug: 383 108 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: 81
-spi_transmit: len=1
-  81 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 03 00 00 00
-  pad 2
-spi_transmit: len=5
-  C8 C0 00 00 00 
-Debug: 384 109 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 00000018
-Debug: 385 109 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 386 109 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Info : 387 109 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
-Debug: 388 109 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
-Debug: 389 109 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: b1
-spi_transmit: len=1
-  8D 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 80
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 00 
-Debug: 390 110 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 00000000
-Debug: 391 110 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 392 113 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 393 113 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 394 113 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 395 113 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 04 00 00 2a
-  pad 2
-spi_transmit: len=5
-  C8 20 00 00 54 
-Debug: 396 113 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000020
-Debug: 397 113 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 398 116 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 399 116 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 0a
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 50 
-Debug: 400 117 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 401 117 arm_adi_v5.c:698 dap_dp_init(): DAP: wait CDBGPWRUPACK
-Debug: 402 117 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x20000000, value 0x20000000
-Debug: 403 117 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 404 119 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 405 119 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 406 120 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 407 120 arm_adi_v5.c:706 dap_dp_init(): DAP: wait CSYSPWRUPACK
-Debug: 408 120 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x80000000, value 0x80000000
-Debug: 409 120 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 410 122 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 411 122 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 412 122 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 413 122 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 414 125 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 415 125 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 2a
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 54 
-Debug: 416 126 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 417 126 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 08 00 00 FF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 08 00 00 3f
-Debug: 418 128 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000080
-Debug: 419 128 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 420 128 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 421 129 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: b1
-spi_transmit: len=1
-  8D 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 1e 00 60 00
-  pad 2
-spi_transmit: len=5
-  C8 78 00 06 00 
-Debug: 422 129 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 030000f0
-Debug: 423 129 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 9f
-spi_transmit: len=1
-  F9 
-spi_receive: len=5
-  FF FF FF FF FF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: ff ff ff ff 3f
-Debug: 424 132 bitbang.c:523 bitbang_swd_read_reg(): JUNK AP read reg C = ffffffff
-Debug: 425 132 bitbang.c:546 bitbang_swd_read_reg(): No valid acknowledge: ack=7
-Debug: 426 132 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-Debug: 427 132 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
-Debug: 428 132 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 429 132 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
-Debug: 430 132 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
-Debug: 431 132 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
-** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-Debug: 432 134 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: a5
-spi_transmit: len=1
-  A5 
-spi_receive: len=5
-  73 47 01 BA E2 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 73 47 01 ba e2
-Debug: 433 136 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
-Debug: 434 136 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: 81
-spi_transmit: len=1
-  81 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 03 00 00 00
-  pad 2
-spi_transmit: len=5
-  C8 C0 00 00 00 
-Debug: 435 137 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 00000018
-Debug: 436 137 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 437 137 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Info : 438 137 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
-Debug: 439 137 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
-Debug: 440 137 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: b1
-spi_transmit: len=1
-  8D 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 80
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 00 
-Debug: 441 138 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 00000000
-Debug: 442 138 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 443 140 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 444 140 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 445 141 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 446 141 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 04 00 00 2a
-  pad 2
-spi_transmit: len=5
-  C8 20 00 00 54 
-Debug: 447 141 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000020
-Debug: 448 141 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 449 144 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 450 144 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 0a
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 50 
-Debug: 451 145 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 452 145 arm_adi_v5.c:698 dap_dp_init(): DAP: wait CDBGPWRUPACK
-Debug: 453 145 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x20000000, value 0x20000000
-Debug: 454 145 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 455 147 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 456 147 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 457 147 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 458 147 arm_adi_v5.c:706 dap_dp_init(): DAP: wait CSYSPWRUPACK
-Debug: 459 147 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x80000000, value 0x80000000
-Debug: 460 147 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 461 150 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 462 150 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 463 150 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 464 150 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 465 153 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 466 153 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 2a
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 54 
-Debug: 467 154 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 468 154 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 08 00 00 FF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 08 00 00 3f
-Debug: 469 156 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000080
-Debug: 470 156 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 471 156 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 472 156 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: b1
-spi_transmit: len=1
-  8D 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 1e 00 80 20
-  pad 2
-spi_transmit: len=5
-  C8 78 00 01 04 
-Debug: 473 157 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 040000f0
-Debug: 474 157 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 9f
-spi_transmit: len=1
-  F9 
-spi_receive: len=5
-  FF FF FF FF FF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: ff ff ff ff 3f
-Debug: 475 160 bitbang.c:523 bitbang_swd_read_reg(): JUNK AP read reg C = ffffffff
-Debug: 476 160 bitbang.c:546 bitbang_swd_read_reg(): No valid acknowledge: ack=7
-Debug: 477 160 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-Debug: 478 160 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
-Debug: 479 160 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 480 160 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
-Debug: 481 160 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
-Debug: 482 160 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
-** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-Debug: 483 161 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: a5
-spi_transmit: len=1
-  A5 
-spi_receive: len=5
-  73 47 01 BA E2 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 73 47 01 ba e2
-Debug: 484 164 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
-Debug: 485 164 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: 81
-spi_transmit: len=1
-  81 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 03 00 00 00
-  pad 2
-spi_transmit: len=5
-  C8 C0 00 00 00 
-Debug: 486 165 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 00000018
-Debug: 487 165 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 488 165 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Info : 489 165 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
-Debug: 490 165 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
-Debug: 491 165 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: b1
-spi_transmit: len=1
-  8D 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 80
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 00 
-Debug: 492 166 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 00000000
-Debug: 493 166 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 494 168 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 495 168 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 496 168 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 497 168 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 04 00 00 2a
-  pad 2
-spi_transmit: len=5
-  C8 20 00 00 54 
-Debug: 498 169 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000020
-Debug: 499 169 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 500 172 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 501 172 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 0a
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 50 
-Debug: 502 172 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 503 172 arm_adi_v5.c:698 dap_dp_init(): DAP: wait CDBGPWRUPACK
-Debug: 504 172 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x20000000, value 0x20000000
-Debug: 505 173 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 506 175 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 507 175 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 508 175 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 509 175 arm_adi_v5.c:706 dap_dp_init(): DAP: wait CSYSPWRUPACK
-Debug: 510 175 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x80000000, value 0x80000000
-Debug: 511 175 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 512 178 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 513 178 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 514 178 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 515 178 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 516 181 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 517 181 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 2a
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 54 
-Debug: 518 181 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 519 181 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 08 00 00 FF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 08 00 00 3f
-Debug: 520 184 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000080
-Debug: 521 184 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 522 184 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 523 184 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: b1
-spi_transmit: len=1
-  8D 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 1e 00 a0 00
-  pad 2
-spi_transmit: len=5
-  C8 78 00 05 00 
-Debug: 524 185 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 050000f0
-Debug: 525 185 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 9f
-spi_transmit: len=1
-  F9 
-spi_receive: len=5
-  FF FF FF FF FF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: ff ff ff ff 3f
-Debug: 526 188 bitbang.c:523 bitbang_swd_read_reg(): JUNK AP read reg C = ffffffff
-Debug: 527 188 bitbang.c:546 bitbang_swd_read_reg(): No valid acknowledge: ack=7
-Debug: 528 188 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-Debug: 529 188 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
-Debug: 530 188 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 531 188 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
-Debug: 532 188 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
-Debug: 533 188 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
-** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-Debug: 534 189 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: a5
-spi_transmit: len=1
-  A5 
-spi_receive: len=5
-  73 47 01 BA E2 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 73 47 01 ba e2
-Debug: 535 192 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
-Debug: 536 192 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: 81
-spi_transmit: len=1
-  81 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 03 00 00 00
-  pad 2
-spi_transmit: len=5
-  C8 C0 00 00 00 
-Debug: 537 193 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 00000018
-Debug: 538 193 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 539 193 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Info : 540 193 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
-Debug: 541 193 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
-Debug: 542 193 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: b1
-spi_transmit: len=1
-  8D 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 80
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 00 
-Debug: 543 194 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 00000000
-Debug: 544 194 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 545 196 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 546 196 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 547 196 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 548 196 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 04 00 00 2a
-  pad 2
-spi_transmit: len=5
-  C8 20 00 00 54 
-Debug: 549 197 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000020
-Debug: 550 197 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 551 200 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 552 200 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 0a
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 50 
-Debug: 553 200 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 554 200 arm_adi_v5.c:698 dap_dp_init(): DAP: wait CDBGPWRUPACK
-Debug: 555 200 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x20000000, value 0x20000000
-Debug: 556 200 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 557 203 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 558 203 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 559 203 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 560 203 arm_adi_v5.c:706 dap_dp_init(): DAP: wait CSYSPWRUPACK
-Debug: 561 203 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x80000000, value 0x80000000
-Debug: 562 203 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 563 206 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 564 206 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 565 206 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 566 206 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 567 209 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 568 209 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 2a
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 54 
-Debug: 569 209 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 570 209 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 08 00 00 FF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 08 00 00 3f
-Debug: 571 212 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000080
-Debug: 572 212 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 573 212 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 574 212 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: b1
-spi_transmit: len=1
-  8D 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 1e 00 c0 00
-  pad 2
-spi_transmit: len=5
-  C8 78 00 03 00 
-Debug: 575 213 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 060000f0
-Debug: 576 213 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 9f
-spi_transmit: len=1
-  F9 
-spi_receive: len=5
-  FF FF FF FF FF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: ff ff ff ff 3f
-Debug: 577 215 bitbang.c:523 bitbang_swd_read_reg(): JUNK AP read reg C = ffffffff
-Debug: 578 215 bitbang.c:546 bitbang_swd_read_reg(): No valid acknowledge: ack=7
-Debug: 579 215 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-Debug: 580 215 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
-Debug: 581 215 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 582 216 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
-Debug: 583 216 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
-Debug: 584 216 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
-** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-Debug: 585 217 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: a5
-spi_transmit: len=1
-  A5 
-spi_receive: len=5
-  73 47 01 BA E2 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 73 47 01 ba e2
-Debug: 586 220 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
-Debug: 587 220 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: 81
-spi_transmit: len=1
-  81 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 03 00 00 00
-  pad 2
-spi_transmit: len=5
-  C8 C0 00 00 00 
-Debug: 588 221 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 00000018
-Debug: 589 221 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 590 221 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Info : 591 221 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
-Debug: 592 221 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
-Debug: 593 221 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: b1
-spi_transmit: len=1
-  8D 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 80
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 00 
-Debug: 594 221 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 00000000
-Debug: 595 221 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 596 224 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 597 224 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 598 224 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 599 224 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 04 00 00 2a
-  pad 2
-spi_transmit: len=5
-  C8 20 00 00 54 
-Debug: 600 225 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000020
-Debug: 601 225 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 602 227 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 603 227 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 0a
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 50 
-Debug: 604 228 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 605 228 arm_adi_v5.c:698 dap_dp_init(): DAP: wait CDBGPWRUPACK
-Debug: 606 228 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x20000000, value 0x20000000
-Debug: 607 228 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 608 231 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 609 231 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 610 231 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 611 231 arm_adi_v5.c:706 dap_dp_init(): DAP: wait CSYSPWRUPACK
-Debug: 612 231 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x80000000, value 0x80000000
-Debug: 613 231 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 614 234 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 615 234 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 616 234 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 617 234 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 618 236 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 619 236 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 2a
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 54 
-Debug: 620 237 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 621 237 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 08 00 00 FF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 08 00 00 3f
-Debug: 622 240 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000080
-Debug: 623 240 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 624 240 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 625 240 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: b1
-spi_transmit: len=1
-  8D 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 1e 00 e0 20
-  pad 2
-spi_transmit: len=5
-  C8 78 00 07 04 
-Debug: 626 241 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 070000f0
-Debug: 627 241 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 9f
-spi_transmit: len=1
-  F9 
-spi_receive: len=5
-  FF FF FF FF FF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: ff ff ff ff 3f
-Debug: 628 243 bitbang.c:523 bitbang_swd_read_reg(): JUNK AP read reg C = ffffffff
-Debug: 629 243 bitbang.c:546 bitbang_swd_read_reg(): No valid acknowledge: ack=7
-Debug: 630 243 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-Debug: 631 243 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
-Debug: 632 243 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 633 243 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
-Debug: 634 243 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
-Debug: 635 243 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
-** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-Debug: 636 245 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: a5
-spi_transmit: len=1
-  A5 
-spi_receive: len=5
-  73 47 01 BA E2 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 73 47 01 ba e2
-Debug: 637 248 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
-Debug: 638 248 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: 81
-spi_transmit: len=1
-  81 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 03 00 00 00
-  pad 2
-spi_transmit: len=5
-  C8 C0 00 00 00 
-Debug: 639 248 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 00000018
-Debug: 640 248 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 641 249 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Info : 642 249 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
-Debug: 643 249 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
-Debug: 644 249 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: b1
-spi_transmit: len=1
-  8D 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 80
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 00 
-Debug: 645 249 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 00000000
-Debug: 646 249 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 647 252 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 648 252 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 649 252 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 650 252 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 04 00 00 2a
-  pad 2
-spi_transmit: len=5
-  C8 20 00 00 54 
-Debug: 651 253 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000020
-Debug: 652 253 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 653 255 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 654 255 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 0a
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 50 
-Debug: 655 256 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 656 256 arm_adi_v5.c:698 dap_dp_init(): DAP: wait CDBGPWRUPACK
-Debug: 657 256 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x20000000, value 0x20000000
-Debug: 658 256 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 659 259 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 660 259 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 661 259 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 662 259 arm_adi_v5.c:706 dap_dp_init(): DAP: wait CSYSPWRUPACK
-Debug: 663 259 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x80000000, value 0x80000000
-Debug: 664 259 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 665 262 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 666 262 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 667 262 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 668 262 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 669 264 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 670 264 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 2a
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 54 
-Debug: 671 265 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 672 265 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 08 00 00 FF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 08 00 00 3f
-Debug: 673 268 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000080
-Debug: 674 268 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 675 268 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 676 268 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: b1
-spi_transmit: len=1
-  8D 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 1e 00 00 21
-  pad 2
-spi_transmit: len=5
-  C8 78 00 00 84 
-Debug: 677 268 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 080000f0
-Debug: 678 268 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 9f
-spi_transmit: len=1
-  F9 
-spi_receive: len=5
-  FF FF FF FF FF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: ff ff ff ff 3f
-Debug: 679 271 bitbang.c:523 bitbang_swd_read_reg(): JUNK AP read reg C = ffffffff
-Debug: 680 271 bitbang.c:546 bitbang_swd_read_reg(): No valid acknowledge: ack=7
-Debug: 681 271 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-Debug: 682 271 bitbang.c:500 bitbang_swd_read_reg(): Skip bitbang_swd_read_reg because queued_retval=7
-Debug: 683 271 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 684 271 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 07
-Debug: 685 271 bitbang.c:459 bitbang_swd_switch_seq(): bitbang_swd_switch_seq
-Debug: 686 271 bitbang.c:467 bitbang_swd_switch_seq(): JTAG-to-SWD
-** host -> trgt offset 0 bits 136: ff ff ff ff ff ff ff 9e e7 ff ff ff ff ff ff ff 00
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-Debug: 687 273 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: a5
-spi_transmit: len=1
-  A5 
-spi_receive: len=5
-  73 47 01 BA E2 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 73 47 01 ba e2
-Debug: 688 276 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 0 = 2ba01477
-Debug: 689 276 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: 81
-spi_transmit: len=1
-  81 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 03 00 00 00
-  pad 2
-spi_transmit: len=5
-  C8 C0 00 00 00 
-Debug: 690 276 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 0 = 00000018
-Debug: 691 276 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 692 276 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Info : 693 276 adi_v5_swd.c:136 swd_connect(): SWD DPIDR 0x2ba01477
-Debug: 694 276 arm_adi_v5.c:653 dap_dp_init(): nrf52.dap
-Debug: 695 276 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: b1
-spi_transmit: len=1
-  8D 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 80
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 00 
-Debug: 696 277 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 8 = 00000000
-Debug: 697 277 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 698 280 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 699 280 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 700 280 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 701 280 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 04 00 00 2a
-  pad 2
-spi_transmit: len=5
-  C8 20 00 00 54 
-Debug: 702 281 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000020
-Debug: 703 281 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 704 283 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 705 283 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
-write ack force OK
-** trgt -> host offset 0 bits  5: 13
-** host -> trgt offset 5 bits 33: 13 00 00 00 0a
-  pad 2
-spi_transmit: len=5
-  C8 00 00 00 50 
-Debug: 706 284 bitbang.c:582 bitbang_swd_write_reg(): OK DP write reg 4 = 50000000
-Debug: 707 284 arm_adi_v5.c:698 dap_dp_init(): DAP: wait CDBGPWRUPACK
-Debug: 708 284 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x20000000, value 0x20000000
-Debug: 709 284 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 710 287 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 711 287 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 712 287 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 713 287 arm_adi_v5.c:706 dap_dp_init(): DAP: wait CSYSPWRUPACK
-Debug: 714 287 arm_adi_v5.h:501 dap_dp_poll_register(): DAP: poll 4, mask 0x80000000, value 0x80000000
-Debug: 715 287 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 716 289 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 717 289 bitbang.c:607 bitbang_swd_run_queue(): bitbang_swd_run_queue
-spi_transmit: len=1
-  00 
-Debug: 718 290 bitbang.c:614 bitbang_swd_run_queue(): SWD queue return value: 00
-Debug: 719 290 bitbang.c:496 bitbang_swd_read_reg(): bitbang_swd_read_reg
-** host -> trgt offset 0 bits  8: 8d
-spi_transmit: len=1
-  B1 
-spi_receive: len=5
-  03 00 00 00 EF 
-spi_exchange_receive: JTAG-to-SWD seq
-spi_transmit: len=17
-  FF FF FF FF FF FF FF 79 
-  E7 FF FF FF FF FF FF FF 
-  00 
-spi_exchange_receive: Prepadded read reg 0 seq
-spi_transmit: len=6
-  29 40 00 00 00 00 
-** trgt -> host offset 0 bits 38: 03 00 00 00 2f
-Debug: 720 292 bitbang.c:523 bitbang_swd_read_reg(): OK DP read reg 4 = f0000000
-Debug: 721 292 bitbang.c:555 bitbang_swd_write_reg(): bitbang_swd_write_reg
-** host -> trgt offset 0 bits  8: a9
-spi_transmit: len=1
-  95 
 ** PABORT: Exit for testing: Success
 
 spi_terminate
-Debug: 722 292 server.c:609 sig_handler(): Terminating on Signal 6
-scripts/nrf52-pi/flash-unprotect.sh: line 11:  5433 Aborted                 sudo /home/pi/openocd-spi/src/openocd -d4 -s /home/pi/openocd-spi/tcl -f scripts/nrf52-pi/swd-pi.ocd -f scripts/nrf52-pi/flash-unprotect.ocd
+Debug: 347 185 server.c:609 sig_handler(): Terminating on Signal 6
+scripts/nrf52-pi/flash-unprotect.sh: line 11:  8650 Aborted                 sudo /home/pi/openocd-spi/src/openocd -d4 -s /home/pi/openocd-spi/tcl -f scripts/nrf52-pi/swd-pi.ocd -f scripts/nrf52-pi/flash-unprotect.ocd
