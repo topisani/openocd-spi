@@ -444,15 +444,6 @@ static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsig
 	}
 #endif  //  SWD_SPI	
 	{ ////
-		if (!rnw && buf) {  //  If transmitting SWD command to target...
-			printf("**** %s offset %d bits %2d:", rnw ? "trgt -> host" : "host -> trgt", offset, bit_cnt);
-			for (unsigned int i = 0; i < (bit_cnt + 7) / 8; i++) {
-				printf(" %02x", buf[i]);
-			}
-			printf("\n");
-		}
-	} ////
-	{ ////
 		if (rnw && buf) {  //  If receiving SWD response from target...
 			printf("** %s offset %d bits %2d:", rnw ? "trgt -> host" : "host -> trgt", offset, bit_cnt);
 			for (unsigned int i = 0; i < (bit_cnt + 7) / 8; i++) {
