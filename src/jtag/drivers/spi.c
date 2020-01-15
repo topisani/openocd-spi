@@ -68,13 +68,13 @@ static unsigned int lsb_buf_bit_index;
 /// File descriptor for SPI device
 static int spi_fd = -1;
 
-/// SWD Sequence to Read Register 0 (IDCODE), prepadded with 2 null bits bits to fill up 6 bytes. Byte-aligned, next request will not get out of sync.
+/// SWD Sequence to Read Register 0 (IDCODE), prepadded with 2 null bits bits to fill up 6 bytes. Byte-aligned, will not cause overrun error.
 /// A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
 /// After clocking out the data parity bit, continue to clock the SW-DP serial interface until it has clocked out at least 8 more clock rising edges, before stopping the clock.
 static const uint8_t  swd_read_idcode_prepadded[]   = { 0x00, 0x94, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00 };  //  With null byte (8 cycles idle) before and after
 static const unsigned swd_read_idcode_prepadded_len = 64;  //  Number of bits
 
-/// SWD Sequence to Read Register 4 (CTRL/STAT), with 2 trailing undefined bits short of 6 bytes. NOT byte-aligned, next request will get out of sync.
+/// SWD Sequence to Read Register 4 (CTRL/STAT), with 2 trailing undefined bits short of 6 bytes. NOT byte-aligned, will cause overrun error.
 static const uint8_t  swd_read_ctrlstat[]   = { 0x8d };
 static const unsigned swd_read_ctrlstat_len = 8;  //  Number of bits
 
@@ -83,7 +83,7 @@ static const unsigned swd_read_ctrlstat_len = 8;  //  Number of bits
 /// WDATAERR: write data error flag,
 /// STICKYERR: sticky error flag,
 /// STICKYCMP: sticky compare flag.
-/// Byte-aligned, next request will not get out of sync.
+/// Byte-aligned, will not cause overrun error.
 static const uint8_t  swd_write_abort[]   = { 0x00, 0x81, 0xd3, 0x03, 0x00, 0x00, 0x00, 0x00 };  //  With null byte (8 cycles idle) before and after
 static const unsigned swd_write_abort_len = 64;  //  Number of bits
 
@@ -106,8 +106,6 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
 {
     if (!buf && bit_cnt == 8) {
         // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8. We receive a byte.
-        ////target_to_host = false;
-        ////buf = (uint8_t *) null_byte;   
         static uint8_t single_byte[1];
         buf = single_byte;
     }
@@ -128,7 +126,7 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
 }
 
 /// Transmit bit_cnt number of bits from buf (LSB format) starting at the bit offset.
-/// Transmit to target is always byte-aligned with trailing bits=0, so no need to resync the target.
+/// Transmit to target is always byte-aligned with trailing bits=0, so will not cause overrun error.
 static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
     //  Handle SWD Write Data, which is 33 bits and not byte-aligned:
