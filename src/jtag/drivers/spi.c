@@ -53,11 +53,9 @@ static uint8_t mode = 0  //  Note: SPI LSB mode is not supported on Broadcom. We
     | SPI_NO_CS  //  1 SPI device per bus, no Chip Select
     | SPI_3WIRE  //  Bidirectional SPI mode, data in and out pin shared
     ;            //  Data is valid on first rising edge of the clock, so CPOL=0 and CPHA=0
-static uint8_t bits = 8;          //  8 bits per SPI word
+static uint8_t bits   = 8;          //  8 bits per SPI word
 static uint32_t speed = 122000;   //  122 kHz for SPI speed. Use fastest speed possible because we resend JTAG-to-SWD sequence often. Previously 500000.
 static uint16_t delay = 0;        //  SPI driver latency: https://www.raspberrypi.org/forums/viewtopic.php?f=44&t=19489
-
-//  #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
 /// We need 2 transmit/receive buffers: One buffer in OpenOCD's LSB format, one buffer in Broadcom SPI's MSB format
 #define MAX_SPI_SIZE 256
@@ -70,18 +68,19 @@ static unsigned int lsb_buf_bit_index;
 /// File descriptor for SPI device
 static int spi_fd = -1;
 
-/// SWD Sequence to Read Register 0 (IDCODE), prepadded with 2 null bits bits to fill up 6 bytes. Target will not get out of sync after sequence.
+/// SWD Sequence to Read Register 0 (IDCODE), prepadded with 2 null bits bits to fill up 6 bytes. Byte-aligned, next request will not get out of sync.
 /// A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
 /// After clocking out the data parity bit, continue to clock the SW-DP serial interface until it has clocked out at least 8 more clock rising edges, before stopping the clock.
-//static const uint8_t swd_read_reg_0_prepadded[] = { 0x94, 0x02, 0x00, 0x00, 0x00, 0x00 };
-//static const unsigned swd_read_reg_0_prepadded_len = 48;  //  Number of bits
-//static const uint8_t swd_read_reg_0_prepadded[] = { 0x00, 0x94, 0x02, 0x00, 0x00, 0x00, 0x00 };
-//static const unsigned swd_read_reg_0_prepadded_len = 56;  //  Number of bits
-static const uint8_t swd_read_reg_0_prepadded[] = { 0x00, 0x94, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00 };
-static const unsigned swd_read_reg_0_prepadded_len = 64;  //  Number of bits
+static const uint8_t  swd_read_idcode_prepadded[]   = { 0x00, 0x94, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00 };  //  With null byte (8 cycles idle) before and after
+static const unsigned swd_read_idcode_prepadded_len = 64;  //  Number of bits
 
-/// SWD Sequence for null byte, used by bitbang_swd_run_queue()
-////static const uint8_t null_byte[1] = { 0 };
+/// SWD Sequence to Read Register 4 (CTRL/STAT), with 2 trailing undefined bits short of 6 bytes. NOT byte-aligned, next request will get out of sync.
+static const uint8_t  swd_read_ctrlstat[]   = { 0x8d };
+static const unsigned swd_read_ctrlstat_len = 8;  //  Number of bits
+
+/// SWD Sequence to Write Register 0 (ABORT). Byte-aligned, next request will not get out of sync.
+static const uint8_t  swd_write_abort[]   = { 0x00, 0x81, 0xd3, 0x03, 0x00, 0x00, 0x00, 0x00 };  //  With null byte (8 cycles idle) before and after
+static const unsigned swd_write_abort_len = 64;  //  Number of bits
 
 static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
 static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
@@ -179,7 +178,7 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
         printf("**** SWD Write 2\n");
         spi_transmit(spi_fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
         //  Transmit command to read Register 0 (IDCODE).  This is mandatory after JTAG-to-SWD sequence, according to SWD protocol.  We prepad with 2 null bits so that the next command will be byte-aligned.
-        spi_transmit(spi_fd, swd_read_reg_0_prepadded, swd_read_reg_0_prepadded_len / 8);
+        spi_transmit(spi_fd, swd_read_idcode_prepadded, swd_read_idcode_prepadded_len / 8);
     }
 }
 
@@ -234,7 +233,7 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
         spi_transmit(spi_fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
         //  Transmit command to read Register 0 (IDCODE).  This is mandatory after JTAG-to-SWD sequence, according to SWD protocol.  We prepad with 2 null bits so that the next command will be byte-aligned.
         puts("spi_exchange_receive: Prepadded read reg 0 seq");
-        spi_transmit(spi_fd, swd_read_reg_0_prepadded, swd_read_reg_0_prepadded_len / 8);
+        spi_transmit(spi_fd, swd_read_idcode_prepadded, swd_read_idcode_prepadded_len / 8);
     } else if (offset == 0 && bit_cnt == 8) {
         //  Receiving SWD Run Queue, which is 8 bits and byte-aligned. Do nothing.
     } else {
