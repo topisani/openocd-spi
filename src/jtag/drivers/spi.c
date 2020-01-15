@@ -78,12 +78,18 @@ static const unsigned swd_read_idcode_prepadded_len = 64;  //  Number of bits
 static const uint8_t  swd_read_ctrlstat[]   = { 0x8d };
 static const unsigned swd_read_ctrlstat_len = 8;  //  Number of bits
 
-/// SWD Sequence to Write Register 0 (ABORT). Byte-aligned, next request will not get out of sync.
+/// SWD Sequence to Write Register 0 (ABORT). Clears all sticky flags: 
+/// STICKYORUN: overrun error flag,
+/// WDATAERR: write data error flag,
+/// STICKYERR: sticky error flag,
+/// STICKYCMP: sticky compare flag.
+/// Byte-aligned, next request will not get out of sync.
 static const uint8_t  swd_write_abort[]   = { 0x00, 0x81, 0xd3, 0x03, 0x00, 0x00, 0x00, 0x00 };  //  With null byte (8 cycles idle) before and after
 static const unsigned swd_write_abort_len = 64;  //  Number of bits
 
 static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
 static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
+static void spi_transmit_resync(int fd);
 static void spi_transmit(int fd, const uint8_t *buf, unsigned int len);
 static void spi_receive(int fd, uint8_t *buf, unsigned int len);
 static void spi_init(void);
@@ -164,7 +170,7 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
     if (i > 0) { printf("  pad %d\n", i); } ////
 
     if (bit_cnt == 38) {  //  SWD Write Command
-        printf("**** SWD Write 1\n");
+        printf("**** Add 8 cycles after write\n");
         //  Add 8 clock cycles before stopping the clock.  A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
         //  After clocking out the data parity bit, continue to clock the SW-DP serial interface until it has clocked out at least 8 more clock rising edges, before stopping the clock.
         for (i = 0; i < 8; i++) { push_lsb_buf(0); }
@@ -175,10 +181,8 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
     spi_transmit(spi_fd, lsb_buf, byte_cnt);
 
     if (bit_cnt == 38) {  //  SWD Write Command
-        printf("**** SWD Write 2\n");
-        spi_transmit(spi_fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
-        //  Transmit command to read Register 0 (IDCODE).  This is mandatory after JTAG-to-SWD sequence, according to SWD protocol.  We prepad with 2 null bits so that the next command will be byte-aligned.
-        spi_transmit(spi_fd, swd_read_idcode_prepadded, swd_read_idcode_prepadded_len / 8);
+        printf("**** Resync after write\n");
+        spi_transmit_resync(spi_fd);
     }
 }
 
@@ -203,7 +207,7 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
     lsb_buf_bit_index = 0;
 
     if (bit_cnt == 38) {  //  SWD Read Command
-        printf("**** SWD Read\n");
+        printf("**** Add 8 clock cycles after read\n");
         //  Add 8 clock cycles before stopping the clock.  A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
         //  After clocking out the data parity bit, continue to clock the SW-DP serial interface until it has clocked out at least 8 more clock rising edges, before stopping the clock.
         byte_cnt++;
@@ -229,16 +233,27 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
     //  ** trgt -> host offset 0 bits 38: 73 47 01 ba a2
     //  Since the target is in garbled state, we will resync by transmitting JTAG-To-SWD and Read IDCODE.
     if (offset == 0 && bit_cnt == 38) {
-        puts("spi_exchange_receive: JTAG-to-SWD seq");
-        spi_transmit(spi_fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
-        //  Transmit command to read Register 0 (IDCODE).  This is mandatory after JTAG-to-SWD sequence, according to SWD protocol.  We prepad with 2 null bits so that the next command will be byte-aligned.
-        puts("spi_exchange_receive: Prepadded read reg 0 seq");
-        spi_transmit(spi_fd, swd_read_idcode_prepadded, swd_read_idcode_prepadded_len / 8);
+        printf("**** Resync after read\n");
+        spi_transmit_resync(spi_fd);
     } else if (offset == 0 && bit_cnt == 8) {
         //  Receiving SWD Run Queue, which is 8 bits and byte-aligned. Do nothing.
     } else {
         pabort("spi_exchange_receive: unknown msg");
     }
+}
+
+/// Transmit preamble to resync target with host
+static void spi_transmit_resync(int fd) {
+    printf("**** spi_transmit_resync\n");
+
+    //  Transmit JTAG-to-SWD sequence. Need to transmit every time because the SWD read/write command has extra 2 undefined bits that will confuse the target.
+    spi_transmit(fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
+
+    //  Transmit command to read Register 0 (IDCODE).  This is mandatory after JTAG-to-SWD sequence, according to SWD protocol.  We prepad with 2 null bits so that the next command will be byte-aligned.
+    spi_transmit(fd, swd_read_idcode_prepadded, swd_read_idcode_prepadded_len / 8);
+
+    //  Transmit command to write Register 0 (ABORT) and clear all sticky flags.  Error flags must be cleared before sending next transaction to target.
+    spi_transmit(fd, swd_write_abort, swd_write_abort_len / 8);
 }
 
 /// The byte at index i is the value of i with all bits flipped. https://stackoverflow.com/questions/746171/efficient-algorithm-for-bit-reversal-from-msb-lsb-to-lsb-msb-in-c
