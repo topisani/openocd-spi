@@ -115,10 +115,10 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
 
     //  Handle delay operation.
     if (!buf) {
-        // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8 for delay.
-        // bitbang_swd_write_reg() calls bitbang_exchange() with buf=NULL and bit_cnt=255 for delay.
-        // We send the null bytes for delay.
-        printf("delay %d\n", bit_cnt);
+        //  bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8 for delay.
+        //  bitbang_swd_write_reg() calls bitbang_exchange() with buf=NULL and bit_cnt=255 for delay.
+        //  We send the null bytes for delay.
+        //  printf("delay %d\n", bit_cnt);
         memset(delay_buf, 0, byte_cnt);
         spi_transmit(spi_fd, delay_buf, byte_cnt);
         return;
@@ -174,7 +174,7 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
         push_lsb_buf(0);
         i++;
     }
-    if (i > 0) { printf("  pad %d\n", i); } ////
+    //  if (i > 0) { printf("  pad %d\n", i); } ////
 
     if (bit_cnt == 38) {  //  SWD Write Command
         //  Add 8 clock cycles before stopping the clock.  A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
@@ -196,7 +196,7 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
     //  ** trgt -> host offset 0 bits  5: 13
     //  We always force return OK (0x13) without actually receiving SPI bytes. We compensate the 5 bits during SWD Write Data later (33 bits).
     if (offset == 0 && bit_cnt == 5) {
-        printf("write ack force OK\n");
+        //  printf("write ack force OK\n");
         buf[0] = (buf[0] & 0b11100000) | 0x13;  //  Force lower 5 bits to be 0x13
         return;
     }
@@ -236,7 +236,7 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
     //  ** trgt -> host offset 0 bits 38: 73 47 01 ba a2
     //  Since the target is in garbled state, we will resync by transmitting JTAG-To-SWD and Read IDCODE.
     if (offset == 0 && bit_cnt == 38) {
-        printf("Resync after read\n");
+        //  printf("Resync after read\n");
         spi_transmit_resync(spi_fd);
     } else {
         printf("offset=%d, bit_cnt=%d, ", offset, bit_cnt);

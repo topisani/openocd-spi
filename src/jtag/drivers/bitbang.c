@@ -423,8 +423,10 @@ static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsig
 			printf("\n");
 		}
 	} ////
+#else  //  LOG_BITBANG
+	LOG_DEBUG("bitbang_exchange");
 #endif  //  LOG_BITBANG
-	////  LOG_DEBUG("bitbang_exchange");
+
 #ifdef SWD_SPI  //  Transmit and receive SWD commands over SPI...
 	spi_exchange(rnw, buf, offset, bit_cnt);
 #else           //  Transmit and receive SWD commands over GPIO...
@@ -447,6 +449,7 @@ static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsig
 		bitbang_interface->write(1, 0, tdi);
 	}
 #endif  //  SWD_SPI	
+
 #ifdef LOG_BITBANG
 	{ ////
 		if (rnw && buf) {  //  If receiving SWD response from target...
