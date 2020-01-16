@@ -405,12 +405,15 @@ static int bitbang_swd_init(void)
 }
 
 #define SWD_SPI  //  Transmit and receive SWD commands over SPI...
+//  #define LOG_BITBANG  //  Log bit bang requests
+
 #ifdef SWD_SPI	
 void spi_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
 #endif  //  SWD_SPI	
 
 static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
+#ifdef LOG_BITBANG
 	{ ////
 		if (!rnw && buf) {  //  If transmitting SWD command to target...
 			printf("** %s offset %d bits %2d:", rnw ? "trgt -> host" : "host -> trgt", offset, bit_cnt);
@@ -420,6 +423,7 @@ static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsig
 			printf("\n");
 		}
 	} ////
+#endif  //  LOG_BITBANG
 	////  LOG_DEBUG("bitbang_exchange");
 #ifdef SWD_SPI  //  Transmit and receive SWD commands over SPI...
 	spi_exchange(rnw, buf, offset, bit_cnt);
@@ -443,6 +447,7 @@ static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsig
 		bitbang_interface->write(1, 0, tdi);
 	}
 #endif  //  SWD_SPI	
+#ifdef LOG_BITBANG
 	{ ////
 		if (rnw && buf) {  //  If receiving SWD response from target...
 			printf("** %s offset %d bits %2d:", rnw ? "trgt -> host" : "host -> trgt", offset, bit_cnt);
@@ -452,6 +457,7 @@ static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsig
 			printf("\n");
 		}
 	} ////
+#endif  //  LOG_BITBANG
 }
 
 int bitbang_swd_switch_seq(enum swd_special_seq seq)
