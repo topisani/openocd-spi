@@ -427,6 +427,8 @@ cd ~/openocd-spi
 ./configure --enable-sysfsgpio --enable-bcm2835gpio --enable-cmsis-dap
 
 ~/openocd-spi/scripts/build-test.sh
+~/openocd-spi/scripts/test-flash-boot.sh
+~/openocd-spi/scripts/test-flash-app.sh
 
 clear ; cd ~/openocd-spi ; git pull ; make
 
