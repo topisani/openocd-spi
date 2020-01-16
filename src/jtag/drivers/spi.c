@@ -63,6 +63,8 @@ static uint16_t delay = 0;        //  SPI driver latency: https://www.raspberryp
 static uint8_t lsb_buf[MAX_SPI_SIZE];
 /// Bytes to be transmitted or received in MSB format (used by Broadcom SPI)
 static uint8_t msb_buf[MAX_SPI_SIZE];
+/// Dummy buffer for receiving bytes during delay
+static uint8_t delay_buf[MAX_SPI_SIZE];
 /// Index of bit in lsb_buf currently being pushed or popped
 static unsigned int lsb_buf_bit_index;
 /// File descriptor for SPI device
@@ -105,17 +107,19 @@ static void pabort(const char *s);
 void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
     if (bit_cnt == 0) { return; }
-    if (!buf && bit_cnt == 8) {
-        // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8. We skip this.
-        printf("**** Skip run queue\n");
-        return;
-        // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8. We receive a byte.
-        // static uint8_t single_byte[1];
-        // buf = single_byte;
-    }
-    if (!buf) { printf("offset=%d, bit_cnt=%d, ", offset, bit_cnt); pabort("spi_exchange: null buffer"); return; }
     unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
     if (byte_cnt >= MAX_SPI_SIZE) { printf("bit_cnt=%d ", bit_cnt); pabort("spi_exchange: overflow"); return; }
+
+    if (!buf) {
+        // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL for delay. We receive the bytes.
+        buf = delay_buf;
+#ifdef NOTUSED
+        // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL for delay. We skip this.
+        printf("**** Skip run queue\n");
+        return;
+#endif  //  NOTUSED
+    }
+    if (!buf) { printf("offset=%d, bit_cnt=%d, ", offset, bit_cnt); pabort("spi_exchange: null buffer"); return; }
 
     //  Init SPI if not initialised.
     spi_init();
