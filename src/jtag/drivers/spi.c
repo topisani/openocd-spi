@@ -104,6 +104,7 @@ static void pabort(const char *s);
 /// Called by bitbang_exchange() in src/jtag/drivers/bitbang.c
 void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
+    if (bit_cnt == 0) { return; }
     if (!buf && bit_cnt == 8) {
         // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8. We skip this.
         printf("**** Skip run queue\n");
@@ -113,7 +114,6 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
         // buf = single_byte;
     }
     if (!buf) { pabort("spi_exchange: null buffer"); return; }
-    if (bit_cnt == 0) { return; }    
     unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
     if (byte_cnt >= MAX_SPI_SIZE) { printf("bit_cnt=%d ", bit_cnt); pabort("spi_exchange: overflow"); return; }
 
