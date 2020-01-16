@@ -35,6 +35,7 @@
 //  Finish --> Yes
 #define SWD_SPI  //  Transmit and receive SWD commands over SPI...
 #ifdef SWD_SPI   //  Transmit and receive SWD commands over SPI...
+//  #define LOG_SPI  //  Log SPI requests
 
 #include <stdint.h>
 #include <unistd.h>
@@ -118,7 +119,9 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
         //  bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8 for delay.
         //  bitbang_swd_write_reg() calls bitbang_exchange() with buf=NULL and bit_cnt=255 for delay.
         //  We send the null bytes for delay.
-        //  printf("delay %d\n", bit_cnt);
+#ifdef LOG_SPI
+        printf("delay %d\n", bit_cnt);
+#endif  //  LOG_SPI
         memset(delay_buf, 0, byte_cnt);
         spi_transmit(spi_fd, delay_buf, byte_cnt);
         return;
@@ -174,7 +177,9 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
         push_lsb_buf(0);
         i++;
     }
-    //  if (i > 0) { printf("  pad %d\n", i); } ////
+#ifdef LOG_SPI
+    if (i > 0) { printf("  pad %d\n", i); }
+#endif  //  LOG_SPI
 
     if (bit_cnt == 38) {  //  SWD Write Command
         //  Add 8 clock cycles before stopping the clock.  A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
@@ -236,7 +241,9 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
     //  ** trgt -> host offset 0 bits 38: 73 47 01 ba a2
     //  Since the target is in garbled state, we will resync by transmitting JTAG-To-SWD and Read IDCODE.
     if (offset == 0 && bit_cnt == 38) {
-        //  printf("Resync after read\n");
+#ifdef LOG_SPI
+        printf("Resync after read\n");
+#endif  //  LOG_SPI
         spi_transmit_resync(spi_fd);
     } else {
         printf("offset=%d, bit_cnt=%d, ", offset, bit_cnt);
@@ -285,8 +292,6 @@ static const uint8_t reverse_byte[] = {
     struct must be a NULL pointer, since only half-duplex communication is possible. 
     Otherwise, the transfer will fail. The spidev_test.c source code does not consider 
     this correctly, and therefore does not work at all in 3-wire mode. */
-
-//  #define LOG_SPI  //  Log SPI requests
 
 /// Transmit len bytes of buf (assumed to be in LSB format) to the SPI device in MSB format
 static void spi_transmit(int fd, const uint8_t *buf, unsigned int len) {
