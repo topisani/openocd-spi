@@ -110,6 +110,10 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
     unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
     if (byte_cnt >= MAX_SPI_SIZE) { printf("bit_cnt=%d ", bit_cnt); pabort("spi_exchange: overflow"); return; }
 
+    //  Init SPI if not initialised.
+    spi_init();
+
+    //  Handle null buffer.
     if (!buf) {
         if (bit_cnt == 8) {
             // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8 for delay. We skip this.
@@ -121,11 +125,11 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
         memset(delay_buf, 0, byte_cnt);
         buf = delay_buf;
         target_to_host = false;
+        spi_transmit(spi_fd, buf, byte_cnt);
+        return;
     }
     if (!buf) { printf("offset=%d, bit_cnt=%d, ", offset, bit_cnt); pabort("spi_exchange: null buffer"); return; }
 
-    //  Init SPI if not initialised.
-    spi_init();
     //  If target_to_host is true, receive from target to host. Else transmit from host to target.
     if (target_to_host) {
         spi_exchange_receive(buf, offset, bit_cnt);
