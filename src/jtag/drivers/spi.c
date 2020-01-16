@@ -115,11 +115,13 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
 
     //  Handle null buffer.
     if (!buf) {
+#ifdef NOTUSED
         if (bit_cnt == 8) {
             // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8 for delay. We skip this.
             printf("**** Skip run queue\n");
             return;
         }
+#endif  //  NOTUSED
         // bitbang_swd_write_reg() calls bitbang_exchange() with buf=NULL and bit_cnt=255 for delay. We send the null bytes.
         printf("**** delay %d\n", bit_cnt);
         memset(delay_buf, 0, byte_cnt);
