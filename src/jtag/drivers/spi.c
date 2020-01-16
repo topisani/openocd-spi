@@ -111,13 +111,14 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
     if (byte_cnt >= MAX_SPI_SIZE) { printf("bit_cnt=%d ", bit_cnt); pabort("spi_exchange: overflow"); return; }
 
     if (!buf) {
-        // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL for delay. We receive the bytes.
+        if (bit_cnt == 8) {
+            // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8 for delay. We skip this.
+            printf("**** Skip run queue\n");
+            return;
+        }
+        // bitbang_swd_write_reg() calls bitbang_exchange() with buf=NULL and bit_cnt=255 for delay. We receive the bytes.
+        printf("**** delay %d\n", bit_cnt);
         buf = delay_buf;
-#ifdef NOTUSED
-        // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL for delay. We skip this.
-        printf("**** Skip run queue\n");
-        return;
-#endif  //  NOTUSED
     }
     if (!buf) { printf("offset=%d, bit_cnt=%d, ", offset, bit_cnt); pabort("spi_exchange: null buffer"); return; }
 
