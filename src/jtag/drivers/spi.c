@@ -193,16 +193,10 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
 
     //  Transmit the consolidated LSB buffer to target.
     spi_transmit(spi_fd, lsb_buf, byte_cnt);
-
-#ifdef NOTUSED
-    if (bit_cnt == 38) {  //  SWD Write Command
-        printf("**** Resync after write\n");
-        spi_transmit_resync(spi_fd);
-    }
-#endif  //  NOTUSED
 }
 
 /// Receive bit_cnt number of bits into buf (LSB format) starting at the bit offset.
+/// SWD Read Data request is not byte-aligned, so this will always cause overrun error. We clear the error in spi_transmit_resync().
 static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
     //  Handle SWD Write Ack, which is 5 bits and not byte-aligned:
@@ -251,10 +245,6 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
     if (offset == 0 && bit_cnt == 38) {
         printf("**** Resync after read\n");
         spi_transmit_resync(spi_fd);
-    } else if (offset == 0 && bit_cnt == 8) {
-        //  Receiving SWD Run Queue, which is 8 bits and byte-aligned. Do nothing.
-    } else if (offset == 0 && bit_cnt == 255) {
-        //  Receiving SWD Write Delay, which is 256 bits and byte-aligned. Do nothing.
     } else {
         printf("offset=%d, bit_cnt=%d, ", offset, bit_cnt);
         pabort("spi_exchange_receive: unknown msg");
@@ -272,6 +262,7 @@ static void spi_transmit_resync(int fd) {
     spi_transmit(fd, swd_read_idcode_prepadded, swd_read_idcode_prepadded_len / 8);
 
     //  Transmit command to write Register 0 (ABORT) and clear all sticky flags.  Error flags must be cleared before sending next transaction to target.
+    //  We expect overrun errors because SWD Read requests are not byte-aligned. So we clear the error here.
     spi_transmit(fd, swd_write_abort, swd_write_abort_len / 8);
 }
 
