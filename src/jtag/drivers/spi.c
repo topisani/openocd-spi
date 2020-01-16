@@ -118,7 +118,7 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
         // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8 for delay.
         // bitbang_swd_write_reg() calls bitbang_exchange() with buf=NULL and bit_cnt=255 for delay.
         // We send the null bytes for delay.
-        printf("** delay %d\n", bit_cnt);
+        printf("delay %d\n", bit_cnt);
         memset(delay_buf, 0, byte_cnt);
         spi_transmit(spi_fd, delay_buf, byte_cnt);
         return;
@@ -286,6 +286,8 @@ static const uint8_t reverse_byte[] = {
     Otherwise, the transfer will fail. The spidev_test.c source code does not consider 
     this correctly, and therefore does not work at all in 3-wire mode. */
 
+//  #define LOG_SPI  //  Log SPI requests
+
 /// Transmit len bytes of buf (assumed to be in LSB format) to the SPI device in MSB format
 static void spi_transmit(int fd, const uint8_t *buf, unsigned int len) {
     //  Reverse LSB to MSB for LSB buf into MSB buffer.
@@ -294,6 +296,7 @@ static void spi_transmit(int fd, const uint8_t *buf, unsigned int len) {
         uint8_t b = buf[i];
         msb_buf[i] = reverse_byte[(uint8_t) b];
     }
+#ifdef LOG_SPI
     {
         printf("spi_transmit: len=%d\n  ", len);
         for (unsigned int i = 0; i < len; i++) {
@@ -302,6 +305,7 @@ static void spi_transmit(int fd, const uint8_t *buf, unsigned int len) {
         }
         puts("");
     }
+#endif  //  LOG_SPI
     //  Transmit the MSB buffer to SPI device.
 	struct spi_ioc_transfer tr = {
 		.tx_buf = (unsigned long) msb_buf,
@@ -319,7 +323,9 @@ static void spi_transmit(int fd, const uint8_t *buf, unsigned int len) {
 /// Receive len bytes from SPI device (assumed to be in MSB format) and write into buf in LSB format
 static void spi_receive(int fd, uint8_t *buf, unsigned int len) {
     //  Receive the MSB buffer from SPI device.
+#ifdef LOG_SPI
     printf("spi_receive: len=%d\n  ", len);
+#endif  //  LOG_SPI
     if (len >= MAX_SPI_SIZE) { printf("len=%d ", len); pabort("spi_receive overflow"); return; }
 	struct spi_ioc_transfer tr = {
 		.tx_buf = (unsigned long) NULL,
@@ -337,6 +343,7 @@ static void spi_receive(int fd, uint8_t *buf, unsigned int len) {
         uint8_t b = msb_buf[i];
         buf[i] = reverse_byte[(uint8_t) b];
     }
+#ifdef LOG_SPI
     {
         for (unsigned int i = 0; i < len; i++) {
             if (i > 0 && i % 8 == 0) { printf("\n  "); }
@@ -344,6 +351,7 @@ static void spi_receive(int fd, uint8_t *buf, unsigned int len) {
         }
         puts("");
     }
+#endif  //  LOG_SPI
 }
 
 static void spi_init(void) {
