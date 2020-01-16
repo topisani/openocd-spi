@@ -245,7 +245,7 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
         spi_transmit_resync(spi_fd);
     } else if (offset == 0 && bit_cnt == 8) {
         //  Receiving SWD Run Queue, which is 8 bits and byte-aligned. Do nothing.
-    } else if (offset == 0 && bit_cnt == 256) {
+    } else if (offset == 0 && bit_cnt == 255) {
         //  Receiving SWD Write Delay, which is 256 bits and byte-aligned. Do nothing.
     } else {
         printf("offset=%d, bit_cnt=%d, ", offset, bit_cnt);
