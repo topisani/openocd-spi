@@ -113,7 +113,7 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
         // static uint8_t single_byte[1];
         // buf = single_byte;
     }
-    if (!buf) { pabort("spi_exchange: null buffer"); return; }
+    if (!buf) { printf("offset=%d, bit_cnt=%d, ", offset, bit_cnt); pabort("spi_exchange: null buffer"); return; }
     unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
     if (byte_cnt >= MAX_SPI_SIZE) { printf("bit_cnt=%d ", bit_cnt); pabort("spi_exchange: overflow"); return; }
 
