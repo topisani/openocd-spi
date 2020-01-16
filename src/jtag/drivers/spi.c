@@ -181,10 +181,12 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
     //  Transmit the consolidated LSB buffer to target.
     spi_transmit(spi_fd, lsb_buf, byte_cnt);
 
+#ifdef NOTUSED
     if (bit_cnt == 38) {  //  SWD Write Command
         printf("**** Resync after write\n");
         spi_transmit_resync(spi_fd);
     }
+#endif  //  NOTUSED
 }
 
 /// Receive bit_cnt number of bits into buf (LSB format) starting at the bit offset.
