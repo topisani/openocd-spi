@@ -113,24 +113,17 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
     //  Init SPI if not initialised.
     spi_init();
 
-    //  Handle null buffer.
+    //  Handle delay operation.
     if (!buf) {
-#ifdef NOTUSED
-        if (bit_cnt == 8) {
-            // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8 for delay. We skip this.
-            printf("**** Skip run queue\n");
-            return;
-        }
-#endif  //  NOTUSED
-        // bitbang_swd_write_reg() calls bitbang_exchange() with buf=NULL and bit_cnt=255 for delay. We send the null bytes.
+        // bitbang_swd_run_queue() calls bitbang_exchange() with buf=NULL and bit_cnt=8 for delay.
+        // bitbang_swd_write_reg() calls bitbang_exchange() with buf=NULL and bit_cnt=255 for delay.
+        // We send the null bytes for delay.
         printf("**** delay %d\n", bit_cnt);
         memset(delay_buf, 0, byte_cnt);
-        buf = delay_buf;
-        target_to_host = false;
-        spi_transmit(spi_fd, buf, byte_cnt);
+        spi_transmit(spi_fd, delay_buf, byte_cnt);
         return;
     }
-    if (!buf) { printf("offset=%d, bit_cnt=%d, ", offset, bit_cnt); pabort("spi_exchange: null buffer"); return; }
+    //  if (!buf) { printf("offset=%d, bit_cnt=%d, ", offset, bit_cnt); pabort("spi_exchange: null buffer"); return; }
 
     //  If target_to_host is true, receive from target to host. Else transmit from host to target.
     if (target_to_host) {
