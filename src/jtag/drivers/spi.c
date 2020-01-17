@@ -55,9 +55,9 @@ static uint8_t mode = 0  //  Note: SPI LSB mode is not supported on Broadcom. We
     | SPI_3WIRE  //  Bidirectional SPI mode, data in and out pin shared
     ;            //  Data is valid on first rising edge of the clock, so CPOL=0 and CPHA=0
 static uint8_t bits   = 8;         //  8 bits per SPI word
-static uint32_t speed = 6250000;   //  6,250 kHz (6.2 MHz) for SPI speed. Use fastest speed possible because we resend JTAG-to-SWD sequence after every read
-//  static uint32_t speed = 1953000;   //  1,953 kHz (1.9 MHz) for SPI speed. Use fastest speed possible because we resend JTAG-to-SWD sequence after every read
-//  static uint32_t speed = 122000;//  122 kHz for SPI speed. Use fastest speed possible because we resend JTAG-to-SWD sequence after every read
+static uint32_t speed = 62500 * 1000;   //  62,500 kHz (62.5 MHz) for SPI speed. Use fastest speed possible because we resend JTAG-to-SWD sequence after every read
+//  static uint32_t speed = 1953000;   //  Slower: 1,953 kHz (1.9 MHz)
+//  static uint32_t speed = 122000;    //  Slowest: 122 kHz
 static uint16_t delay = 0;         //  SPI driver latency: https://www.raspberrypi.org/forums/viewtopic.php?f=44&t=19489
 
 /// We need 2 transmit/receive buffers: One buffer in OpenOCD's LSB format, one buffer in Broadcom SPI's MSB format
