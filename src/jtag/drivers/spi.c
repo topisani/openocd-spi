@@ -253,7 +253,7 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
     }
 }
 
-/// Transmit preamble to resync target with host
+/// Transmit resync sequence to reset SWD connection with target
 static void spi_transmit_resync(int fd) {
     //  printf("**** spi_transmit_resync\n");
 
