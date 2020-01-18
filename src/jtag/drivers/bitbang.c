@@ -404,17 +404,16 @@ static int bitbang_swd_init(void)
 	return ERROR_OK;
 }
 
-#define SWD_SPI  //  Transmit and receive SWD commands over SPI...
 //  #define LOG_BITBANG  //  Log bit bang requests
 
-#ifdef SWD_SPI	
+#if BUILD_BCM2835SPI == 1
 void spi_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
-#endif  //  SWD_SPI	
+#endif  //  BUILD_BCM2835SPI == 1
 
 static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsigned int bit_cnt)
 {
 #ifdef LOG_BITBANG
-	{ ////
+	{
 		if (!rnw && buf) {  //  If transmitting SWD command to target...
 			printf("** %s offset %d bits %2d:", rnw ? "trgt -> host" : "host -> trgt", offset, bit_cnt);
 			for (unsigned int i = 0; i < (bit_cnt + 7) / 8; i++) {
@@ -422,14 +421,14 @@ static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsig
 			}
 			printf("\n");
 		}
-	} ////
+	}
 #else  //  LOG_BITBANG
 	LOG_DEBUG("bitbang_exchange");
 #endif  //  LOG_BITBANG
 
-#ifdef SWD_SPI  //  Transmit and receive SWD commands over SPI...
+#if BUILD_BCM2835SPI == 1  //  Transmit and receive SWD commands over SPI...
 	spi_exchange(rnw, buf, offset, bit_cnt);
-#else           //  Transmit and receive SWD commands over GPIO...
+#else  //  Transmit and receive SWD commands over GPIO...
 	int tdi;
 
 	for (unsigned int i = offset; i < bit_cnt + offset; i++) {
@@ -448,10 +447,10 @@ static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsig
 
 		bitbang_interface->write(1, 0, tdi);
 	}
-#endif  //  SWD_SPI	
+#endif  //  BUILD_BCM2835SPI == 1
 
 #ifdef LOG_BITBANG
-	{ ////
+	{
 		if (rnw && buf) {  //  If receiving SWD response from target...
 			printf("** %s offset %d bits %2d:", rnw ? "trgt -> host" : "host -> trgt", offset, bit_cnt);
 			for (unsigned int i = 0; i < (bit_cnt + 7) / 8; i++) {
@@ -459,7 +458,7 @@ static void bitbang_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsig
 			}
 			printf("\n");
 		}
-	} ////
+	}
 #endif  //  LOG_BITBANG
 }
 
@@ -631,7 +630,3 @@ const struct swd_driver bitbang_swd = {
 	.write_reg = bitbang_swd_write_reg,
 	.run = bitbang_swd_run_queue,
 };
-
-#ifdef SWD_SPI  //  Transmit and receive SWD commands over SPI...
-#include "spi.c"  ////  TODO
-#endif  //  SWD_SPI	

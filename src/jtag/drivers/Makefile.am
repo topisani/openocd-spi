@@ -150,6 +150,7 @@ DRIVERFILES += %D%/bcm2835gpio.c
 endif
 if BCM2835SPI
 DRIVERFILES += %D%/bcm2835spi.c
+DRIVERFILES += %D%/spi.c
 endif
 if OPENJTAG
 DRIVERFILES += %D%/openjtag.c

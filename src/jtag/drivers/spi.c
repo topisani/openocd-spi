@@ -33,8 +33,7 @@
 //  sudo raspi-config
 //  Interfacing Options --> SPI --> Yes
 //  Finish --> Yes
-#define SWD_SPI  //  Transmit and receive SWD commands over SPI...
-#ifdef SWD_SPI   //  Transmit and receive SWD commands over SPI...
+
 //  #define LOG_SPI  //  Log SPI requests
 
 #include <stdint.h>
@@ -433,8 +432,6 @@ static void pabort(const char *s) {
     spi_terminate();
 	abort();
 }
-
-#endif  //  SWD_SPI
 
 #ifdef NOTUSED
 cd ~/openocd-spi
