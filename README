@@ -1,7 +1,7 @@
 Experimental version of OpenOCD that implements SWD over SPI on Raspberry Pi
 ============================================================================
 
-See https://medium.com/@ly.lee/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch-5e14259c55?source=friends_link&sk=150b2a73b84144e5ef25b985e65aebe9
+See https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&sk=df399bfd913d3e262447d28aa5af6b63
 
 Welcome to OpenOCD!
 ===================
