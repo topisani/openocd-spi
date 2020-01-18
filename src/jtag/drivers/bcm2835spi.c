@@ -5,28 +5,6 @@
 #include <jtag/interface.h>
 #include "bitbang.h"
 
-#include <sys/mman.h>
-
-uint32_t bcm2835_peri_base = 0x20000000;
-#define BCM2835_GPIO_BASE	(bcm2835_peri_base + 0x200000) /* GPIO controller */
-
-#define BCM2835_PADS_GPIO_0_27		(bcm2835_peri_base + 0x100000)
-#define BCM2835_PADS_GPIO_0_27_OFFSET	(0x2c / 4)
-
-/* GPIO setup macros */
-#define MODE_GPIO(g) (*(pio_base+((g)/10))>>(((g)%10)*3) & 7)
-#define INP_GPIO(g) do { *(pio_base+((g)/10)) &= ~(7<<(((g)%10)*3)); } while (0)
-#define SET_MODE_GPIO(g, m) do { /* clear the mode bits first, then set as necessary */ \
-		INP_GPIO(g);						\
-		*(pio_base+((g)/10)) |=  ((m)<<(((g)%10)*3)); } while (0)
-#define OUT_GPIO(g) SET_MODE_GPIO(g, 1)
-
-#define GPIO_SET (*(pio_base+7))  /* sets   bits which are 1, ignores bits which are 0 */
-#define GPIO_CLR (*(pio_base+10)) /* clears bits which are 1, ignores bits which are 0 */
-#define GPIO_LEV (*(pio_base+13)) /* current level of the pin */
-
-static volatile uint32_t *pio_base;
-
 static bb_value_t bcm2835spi_read(void);
 static int bcm2835spi_write(int tck, int tms, int tdi);
 static int bcm2835spi_reset(int trst, int srst);
@@ -48,17 +26,11 @@ static struct bitbang_interface bcm2835spi_bitbang = {
 
 /* GPIO numbers for each signal. Negative values are invalid */
 static int tck_gpio = -1;
-static int tck_gpio_mode;
 static int tms_gpio = -1;
-static int tms_gpio_mode;
 static int tdi_gpio = -1;
-static int tdi_gpio_mode;
 static int tdo_gpio = -1;
-static int tdo_gpio_mode;
 static int trst_gpio = -1;
-static int trst_gpio_mode;
 static int srst_gpio = -1;
-static int srst_gpio_mode;
 static int swclk_gpio = -1;
 static int swdio_gpio = -1;
 
@@ -69,70 +41,38 @@ static unsigned int jtag_delay;
 
 static bb_value_t bcm2835spi_read(void)
 {
-	return (GPIO_LEV & 1<<tdo_gpio) ? BB_HIGH : BB_LOW;
+	//  TODO
+	return 0;
 }
 
 static int bcm2835spi_write(int tck, int tms, int tdi)
 {
-	uint32_t set = tck<<tck_gpio | tms<<tms_gpio | tdi<<tdi_gpio;
-	uint32_t clear = !tck<<tck_gpio | !tms<<tms_gpio | !tdi<<tdi_gpio;
-
-	GPIO_SET = set;
-	GPIO_CLR = clear;
-
-	for (unsigned int i = 0; i < jtag_delay; i++)
-		asm volatile ("");
-
+	//  TODO
 	return ERROR_OK;
 }
 
 static int bcm2835spi_swd_write(int tck, int tms, int tdi)
 {
-	uint32_t set = tck<<swclk_gpio | tdi<<swdio_gpio;
-	uint32_t clear = !tck<<swclk_gpio | !tdi<<swdio_gpio;
-
-	GPIO_SET = set;
-	GPIO_CLR = clear;
-
-	for (unsigned int i = 0; i < jtag_delay; i++)
-		asm volatile ("");
-
+	//  TODO
 	return ERROR_OK;
 }
 
 /* (1) assert or (0) deassert reset lines */
 static int bcm2835spi_reset(int trst, int srst)
 {
-	uint32_t set = 0;
-	uint32_t clear = 0;
-
-	if (trst_gpio > 0) {
-		set |= !trst<<trst_gpio;
-		clear |= trst<<trst_gpio;
-	}
-
-	if (srst_gpio > 0) {
-		set |= !srst<<srst_gpio;
-		clear |= srst<<srst_gpio;
-	}
-
-	GPIO_SET = set;
-	GPIO_CLR = clear;
-
+	//  TODO
 	return ERROR_OK;
 }
 
 static void bcm2835_swdio_drive(bool is_output)
 {
-	if (is_output)
-		OUT_GPIO(swdio_gpio);
-	else
-		INP_GPIO(swdio_gpio);
+	//  TODO
 }
 
 static int bcm2835_swdio_read(void)
 {
-	return !!(GPIO_LEV & 1 << swdio_gpio);
+	//  TODO
+	return 0;
 }
 
 static int bcm2835spi_khz(int khz, int *jtag_speed)
@@ -157,11 +97,6 @@ static int bcm2835spi_speed(int speed)
 {
 	jtag_delay = speed;
 	return ERROR_OK;
-}
-
-static int is_gpio_valid(int gpio)
-{
-	return gpio >= 0 && gpio <= 53;
 }
 
 COMMAND_HANDLER(bcm2835spi_handle_jtag_gpionums)
@@ -284,11 +219,7 @@ COMMAND_HANDLER(bcm2835spi_handle_speed_coeffs)
 
 COMMAND_HANDLER(bcm2835spi_handle_peripheral_base)
 {
-	if (CMD_ARGC == 1)
-		COMMAND_PARSE_NUMBER(u32, CMD_ARGV[0], bcm2835_peri_base);
-
-	command_print(CMD, "BCM2835 GPIO: peripheral_base = 0x%08x",
-				  bcm2835_peri_base);
+	//  TODO
 	return ERROR_OK;
 }
 
@@ -381,7 +312,7 @@ static const struct command_registration bcm2835spi_command_handlers[] = {
 	COMMAND_REGISTRATION_DONE
 };
 
-static const char * const bcm2835_transports[] = { "jtag", "swd", NULL };
+static const char * const bcm2835_transports[] = { "swd", NULL };
 
 struct jtag_interface bcm2835spi_interface = {
 	.name = "bcm2835spi",
@@ -397,25 +328,8 @@ struct jtag_interface bcm2835spi_interface = {
 	.quit = bcm2835spi_quit,
 };
 
-static bool bcm2835spi_jtag_mode_possible(void)
-{
-	if (!is_gpio_valid(tck_gpio))
-		return 0;
-	if (!is_gpio_valid(tms_gpio))
-		return 0;
-	if (!is_gpio_valid(tdi_gpio))
-		return 0;
-	if (!is_gpio_valid(tdo_gpio))
-		return 0;
-	return 1;
-}
-
 static bool bcm2835spi_swd_mode_possible(void)
 {
-	if (!is_gpio_valid(swclk_gpio))
-		return 0;
-	if (!is_gpio_valid(swdio_gpio))
-		return 0;
 	return 1;
 }
 
@@ -423,23 +337,16 @@ static int bcm2835spi_init(void)
 {
 	bitbang_interface = &bcm2835spi_bitbang;
 
-	LOG_INFO("BCM2835 SPI JTAG/SWD driver");
+	LOG_INFO("BCM2835 SPI SWD driver");
 
-	if (bcm2835spi_jtag_mode_possible()) {
-		if (bcm2835spi_swd_mode_possible())
-			LOG_INFO("JTAG and SWD modes enabled");
-		else
-			LOG_INFO("JTAG only mode enabled (specify swclk and swdio gpio to add SWD mode)");
-	} else if (bcm2835spi_swd_mode_possible()) {
-		LOG_INFO("SWD only mode enabled (specify tck, tms, tdi and tdo gpios to add JTAG mode)");
+	if (bcm2835spi_swd_mode_possible()) {
+		LOG_INFO("SWD only mode enabled");
 	} else {
-		LOG_ERROR("Require tck, tms, tdi and tdo gpios for JTAG mode and/or swclk and swdio gpio for SWD mode");
+		LOG_ERROR("NOT SUPPORTED: Require tck, tms, tdi and tdo gpios for JTAG mode and/or swclk and swdio gpio for SWD mode");
 		return ERROR_JTAG_INIT_FAILED;
 	}
 
-	LOG_DEBUG("saved pinmux settings: tck %d tms %d tdi %d "
-		  "tdo %d trst %d srst %d", tck_gpio_mode, tms_gpio_mode,
-		  tdi_gpio_mode, tdo_gpio_mode, trst_gpio_mode, srst_gpio_mode);
+	LOG_DEBUG("saved pinmux settings");
 
 	if (swd_mode) {
 		bcm2835spi_bitbang.write = bcm2835spi_swd_write;

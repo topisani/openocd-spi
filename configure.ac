@@ -299,9 +299,11 @@ AS_CASE(["${host_cpu}"],
     build_at91rm9200=no
     build_bcm2835gpio=no
     #### build_bcm2835spi=no
-    AC_ARG_ENABLE([bcm2835spi],
-      AS_HELP_STRING([--enable-bcm2835spi], [Enable building support for SPI on BCM2835 (as found in Raspberry Pi)]),
-      [build_bcm2835spi=$enableval], [build_bcm2835spi=no])
+    build_bcm2835spi=yes ####
+    
+    #AC_ARG_ENABLE([bcm2835spi],
+    #  AS_HELP_STRING([--enable-bcm2835spi], [Enable building support for SPI on BCM2835 (as found in Raspberry Pi)]),
+    #  [build_bcm2835spi=$enableval], [build_bcm2835spi=no])
     ####
     build_imx_gpio=no
 ])
