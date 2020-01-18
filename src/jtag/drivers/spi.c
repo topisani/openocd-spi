@@ -436,7 +436,7 @@ static void pabort(const char *s) {
 #ifdef NOTUSED
 cd ~/openocd-spi
 ./bootstrap
-./configure --enable-sysfsgpio --enable-bcm2835gpio --enable-cmsis-dap
+./configure --enable-sysfsgpio --enable-bcm2835spi --enable-cmsis-dap
 
 ~/openocd-spi/scripts/build-test.sh
 ~/openocd-spi/scripts/test-flash-boot.sh
