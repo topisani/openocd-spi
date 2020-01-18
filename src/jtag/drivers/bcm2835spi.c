@@ -25,7 +25,6 @@ uint32_t bcm2835_peri_base = 0x20000000;
 #define GPIO_CLR (*(pio_base+10)) /* clears bits which are 1, ignores bits which are 0 */
 #define GPIO_LEV (*(pio_base+13)) /* current level of the pin */
 
-static int dev_mem_fd;
 static volatile uint32_t *pio_base;
 
 static bb_value_t bcm2835spi_read(void);
@@ -61,9 +60,7 @@ static int trst_gpio_mode;
 static int srst_gpio = -1;
 static int srst_gpio_mode;
 static int swclk_gpio = -1;
-static int swclk_gpio_mode;
 static int swdio_gpio = -1;
-static int swdio_gpio_mode;
 
 /* Transition delay coefficients */
 static int speed_coeff = 113714;
@@ -426,7 +423,7 @@ static int bcm2835spi_init(void)
 {
 	bitbang_interface = &bcm2835spi_bitbang;
 
-	LOG_INFO("BCM2835 GPIO JTAG/SWD bitbang driver");
+	LOG_INFO("BCM2835 SPI JTAG/SWD driver");
 
 	if (bcm2835spi_jtag_mode_possible()) {
 		if (bcm2835spi_swd_mode_possible())
@@ -438,65 +435,6 @@ static int bcm2835spi_init(void)
 	} else {
 		LOG_ERROR("Require tck, tms, tdi and tdo gpios for JTAG mode and/or swclk and swdio gpio for SWD mode");
 		return ERROR_JTAG_INIT_FAILED;
-	}
-
-	dev_mem_fd = open("/dev/mem", O_RDWR | O_SYNC);
-	if (dev_mem_fd < 0) {
-		perror("open");
-		return ERROR_JTAG_INIT_FAILED;
-	}
-
-	pio_base = mmap(NULL, sysconf(_SC_PAGE_SIZE), PROT_READ | PROT_WRITE,
-				MAP_SHARED, dev_mem_fd, BCM2835_GPIO_BASE);
-
-	if (pio_base == MAP_FAILED) {
-		perror("mmap");
-		close(dev_mem_fd);
-		return ERROR_JTAG_INIT_FAILED;
-	}
-
-	static volatile uint32_t *pads_base;
-	pads_base = mmap(NULL, sysconf(_SC_PAGE_SIZE), PROT_READ | PROT_WRITE,
-				MAP_SHARED, dev_mem_fd, BCM2835_PADS_GPIO_0_27);
-
-	if (pads_base == MAP_FAILED) {
-		perror("mmap");
-		close(dev_mem_fd);
-		return ERROR_JTAG_INIT_FAILED;
-	}
-
-	/* set 4mA drive strength, slew rate limited, hysteresis on */
-	pads_base[BCM2835_PADS_GPIO_0_27_OFFSET] = 0x5a000008 + 1;
-
-	tdo_gpio_mode = MODE_GPIO(tdo_gpio);
-	tdi_gpio_mode = MODE_GPIO(tdi_gpio);
-	tck_gpio_mode = MODE_GPIO(tck_gpio);
-	tms_gpio_mode = MODE_GPIO(tms_gpio);
-	swclk_gpio_mode = MODE_GPIO(swclk_gpio);
-	swdio_gpio_mode = MODE_GPIO(swdio_gpio);
-	/*
-	 * Configure TDO as an input, and TDI, TCK, TMS, TRST, SRST
-	 * as outputs.  Drive TDI and TCK low, and TMS/TRST/SRST high.
-	 */
-	INP_GPIO(tdo_gpio);
-
-	GPIO_CLR = 1<<tdi_gpio | 1<<tck_gpio | 1<<swdio_gpio | 1<<swclk_gpio;
-	GPIO_SET = 1<<tms_gpio;
-
-	OUT_GPIO(tdi_gpio);
-	OUT_GPIO(tck_gpio);
-	OUT_GPIO(tms_gpio);
-	OUT_GPIO(swclk_gpio);
-	OUT_GPIO(swdio_gpio);
-	if (trst_gpio != -1) {
-		trst_gpio_mode = MODE_GPIO(trst_gpio);
-		GPIO_SET = 1 << trst_gpio;
-		OUT_GPIO(trst_gpio);
-	}
-	if (srst_gpio != -1) {
-		srst_gpio_mode = MODE_GPIO(srst_gpio);
-		GPIO_SET = 1 << srst_gpio;
-		OUT_GPIO(srst_gpio);
 	}
 
 	LOG_DEBUG("saved pinmux settings: tck %d tms %d tdi %d "
@@ -513,16 +451,6 @@ static int bcm2835spi_init(void)
 
 static int bcm2835spi_quit(void)
 {
-	SET_MODE_GPIO(tdo_gpio, tdo_gpio_mode);
-	SET_MODE_GPIO(tdi_gpio, tdi_gpio_mode);
-	SET_MODE_GPIO(tck_gpio, tck_gpio_mode);
-	SET_MODE_GPIO(tms_gpio, tms_gpio_mode);
-	SET_MODE_GPIO(swclk_gpio, swclk_gpio_mode);
-	SET_MODE_GPIO(swdio_gpio, swdio_gpio_mode);
-	if (trst_gpio != -1)
-		SET_MODE_GPIO(trst_gpio, trst_gpio_mode);
-	if (srst_gpio != -1)
-		SET_MODE_GPIO(srst_gpio, srst_gpio_mode);
-
+	//  TODO
 	return ERROR_OK;
 }
