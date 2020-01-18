@@ -78,10 +78,6 @@ static int spi_fd = -1;
 static const uint8_t  swd_read_idcode_prepadded[]   = { 0x00, 0x94, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00 };  //  With null byte (8 cycles idle) before and after
 static const unsigned swd_read_idcode_prepadded_len = 64;  //  Number of bits
 
-/// SWD Sequence to Read Register 4 (CTRL/STAT), with 2 trailing undefined bits short of 6 bytes. NOT byte-aligned, will cause overrun error.
-static const uint8_t  swd_read_ctrlstat[]   = { 0x8d };
-static const unsigned swd_read_ctrlstat_len = 8;  //  Number of bits
-
 /// SWD Sequence to Write Register 0 (ABORT). Clears all sticky flags: 
 /// STICKYORUN: overrun error flag,
 /// WDATAERR: write data error flag,
