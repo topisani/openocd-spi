@@ -64,8 +64,6 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
 static void spi_transmit_resync(int fd);
 static void spi_transmit(int fd, const uint8_t *buf, unsigned int len);
 static void spi_receive(int fd, uint8_t *buf, unsigned int len);
-static void spi_init(void);
-static void spi_terminate(void);
 static void push_lsb_buf(int next_bit);
 static int pop_lsb_buf(void);
 static bb_value_t bcm2835spi_read(void);
@@ -533,7 +531,7 @@ static int bcm2835spi_init(void)
 		return ERROR_JTAG_INIT_FAILED;
 	}
 
-    if (spi_fd >= 0) { return; }  //  Init only once
+    if (spi_fd >= 0) { return ERROR_OK; }  //  Init only once
 
     //  Open SPI device.
 	spi_fd = open(device, O_RDWR);
