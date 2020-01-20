@@ -76,6 +76,7 @@ static int bcm2835spi_speed_div(int speed, int *khz);
 static int bcm2835spi_khz(int khz, int *jtag_speed);
 static int bcm2835spi_init(void);
 static int bcm2835spi_quit(void);
+COMMAND_HANDLER(bcm2835spi_handle_speed);
 
 //  SPI Configuration
 static const char *device = "/dev/spidev0.0";  //  SPI device name. If missing, enable SPI in raspi-config.
@@ -123,11 +124,11 @@ static const char * const bcm2835_transports[] = { "swd", NULL };
 /// List of configuration settings
 static const struct command_registration bcm2835spi_command_handlers[] = {
 	{
-		.name = "bcm2835spi_speed",
+		.name    = "bcm2835spi_speed",
 		.handler = &bcm2835spi_handle_speed,
-		.mode = COMMAND_CONFIG,
-		.help = "SPEED for SPI interface (kHz).",
-		.usage = "[SPEED]",
+		.mode    = COMMAND_CONFIG,
+		.help    = "SPEED for SPI interface (kHz).",
+		.usage   = "[SPEED]",
 	},
 	COMMAND_REGISTRATION_DONE
 };
