@@ -80,11 +80,11 @@ static uint8_t mode = 0  //  Note: SPI LSB mode is not supported on Broadcom. We
     | SPI_NO_CS  //  1 SPI device per bus, no Chip Select
     | SPI_3WIRE  //  Bidirectional SPI mode, data in and out pin shared
     ;            //  Data is valid on first rising edge of the clock, so CPOL=0 and CPHA=0
-static uint8_t bits   = 8;             //  8 bits per SPI word
-static uint32_t speed_khz = 31200;     //  31,200 kHz (31.2 MHz) for SPI speed. Use fastest speed possible because we resend JTAG-to-SWD sequence after every read
-//  static uint32_t speed_khz = 1953;  //  Slower: 1,953 kHz (1.9 MHz)
-//  static uint32_t speed_khz = 122;   //  Slowest: 122 kHz
-static uint16_t delay = 0;             //  SPI driver latency: https://www.raspberrypi.org/forums/viewtopic.php?f=44&t=19489
+static uint8_t bits   = 8;         //  8 bits per SPI word
+static uint speed_khz = 31200;     //  31,200 kHz (31.2 MHz) for SPI speed. Use fastest speed possible because we resend JTAG-to-SWD sequence after every read
+//  static uint speed_khz = 1953;  //  Slower: 1,953 kHz (1.9 MHz)
+//  static uint speed_khz = 122;   //  Slowest: 122 kHz
+static uint16_t delay = 0;         //  SPI driver latency: https://www.raspberrypi.org/forums/viewtopic.php?f=44&t=19489
 
 /// We need 2 transmit/receive buffers: One buffer in OpenOCD's LSB format, one buffer in Broadcom SPI's MSB format
 #define MAX_SPI_SIZE 256
@@ -471,7 +471,7 @@ static int bcm2835spi_speed(int speed)
 COMMAND_HANDLER(bcm2835spi_handle_speed)
 {
 	if (CMD_ARGC == 1) {
-		COMMAND_PARSE_NUMBER(uint32_t, CMD_ARGV[0], speed_khz);
+		COMMAND_PARSE_NUMBER(uint, CMD_ARGV[0], speed_khz);
 	}
 
 	command_print(CMD, "BCM2835 SPI: speed = %d kHz", speed_khz);
