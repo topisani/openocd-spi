@@ -442,7 +442,7 @@ static int bcm2835spi_reset(int trst, int srst)
 	return ERROR_OK;
 }
 
-/// Set JTAG speed
+/// Set JTAG speed (not used)
 static int bcm2835spi_khz(int khz, int *jtag_speed)
 {
 	//  TODO
@@ -461,11 +461,9 @@ static int bcm2835spi_speed_div(int speed, int *khz)
 	return ERROR_OK;
 }
 
-/// Set JTAG delay
+/// Set JTAG delay (not used)
 static int bcm2835spi_speed(int speed)
 {
-	//  TODO
-	jtag_delay = speed;
 	return ERROR_OK;
 }
 
@@ -473,7 +471,7 @@ static int bcm2835spi_speed(int speed)
 COMMAND_HANDLER(bcm2835spi_handle_speed)
 {
 	if (CMD_ARGC == 1) {
-		COMMAND_PARSE_NUMBER(int, CMD_ARGV[0], speed_khz);
+		COMMAND_PARSE_NUMBER(uint32_t, CMD_ARGV[0], speed_khz);
 	}
 
 	command_print(CMD, "BCM2835 SPI: speed = %d kHz", speed_khz);
@@ -550,6 +548,7 @@ static int bcm2835spi_init(void)
 	if (ret == -1) { perror("can't set read bits per word"); }
 
     //  Set SPI read and write max speed.
+    uint32_t speed = speed_khz * 1000
 	ret = ioctl(spi_fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
 	if (ret == -1) { perror("can't set max write speed"); }
 	ret = ioctl(spi_fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
@@ -566,7 +565,7 @@ static int bcm2835spi_init(void)
 static int bcm2835spi_quit(void)
 {
     //  Close SPI device.
-    if (spi_fd < 0) { return; }  //  Terminate only once
+    if (spi_fd < 0) { return ERROR_OK; }  //  Terminate only once
     close(spi_fd);
 	spi_fd = -1;
 	return ERROR_OK;
