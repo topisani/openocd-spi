@@ -548,7 +548,7 @@ static int bcm2835spi_init(void)
 	if (ret == -1) { perror("can't set read bits per word"); }
 
     //  Set SPI read and write max speed.
-    uint32_t speed = speed_khz * 1000
+    uint32_t speed = speed_khz * 1000;
 	ret = ioctl(spi_fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
 	if (ret == -1) { perror("can't set max write speed"); }
 	ret = ioctl(spi_fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
