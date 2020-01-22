@@ -1,4 +1,7 @@
 /***************************************************************************
+ *   Copyright (C) 2020 by Lup Yuen Lee                                 *
+ *   luppy@appkaki.com
+ *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -12,19 +15,23 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
-//  Implement SWD protocol with Raspberry Pi Bidirectional SPI (luppy@appkaki.com)
-//  Called by src/jtag/drivers/bitbang.c
-
+//  Implementation of SWD protocol with Raspberry Pi Bidirectional SPI.
 //  Why implement SWD over Bidirectional SPI on Raspberry Pi?  Because SWD over Bit-Banging GPIO has timing issues that affect OpenOCD flashing...
-//  https://gist.github.com/lupyuen/18e66c3e81e11050a10d1192c5b84bb0
+//  See https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&sk=df399bfd913d3e262447d28aa5af6b63
 
 //  Based on https://raw.githubusercontent.com/raspberrypi/linux/rpi-3.10.y/Documentation/spi/spidev_test.c
-//  SWD Protocol: https://annals-csis.org/proceedings/2012/pliks/279.pdf
-//  See also: https://github.com/MarkDing/swd_programing_sram
+//  SWD Overview: https://github.com/MarkDing/swd_programing_sram
+//  SWD Protocol: https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf
 //  Pi SPI Hardware: https://www.raspberrypi.org/documentation/hardware/raspberrypi/spi/README.md
 //  Pi SPI Kernel Driver: https://github.com/raspberrypi/linux/blob/rpi-3.12.y/drivers/spi/spi-bcm2708.c
 //  BCM2835 Peripherals Datasheet: https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2835/BCM2835-ARM-Peripherals.pdf
 //  SWD mapped to SPI bytes: https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=0
+
+//  To build:
+//  cd ~/openocd-spi
+//  ./bootstrap
+//  ./configure --enable-sysfsgpio --enable-bcm2835spi --enable-cmsis-dap
+//  make
 
 //  To test:
 //  Connect SWDIO to MOSI (Pin P1-19, Yellow)
@@ -33,9 +40,11 @@
 //  sudo raspi-config
 //  Interfacing Options --> SPI --> Yes
 //  Finish --> Yes
-#define SWD_SPI  //  Transmit and receive SWD commands over SPI...
-#ifdef SWD_SPI   //  Transmit and receive SWD commands over SPI...
-//  #define LOG_SPI  //  Log SPI requests
+
+//  #define LOG_SPI  //  Uncomment to log SPI requests
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <stdint.h>
 #include <unistd.h>
@@ -47,6 +56,27 @@
 #include <linux/types.h>
 #include <linux/spi/spidev.h>
 #include <jtag/swd.h>
+#include <jtag/interface.h>
+#include "bitbang.h"
+
+static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
+static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
+static void spi_transmit_resync(int fd);
+static void spi_transmit(int fd, const uint8_t *buf, unsigned int len);
+static void spi_receive(int fd, uint8_t *buf, unsigned int len);
+static void push_lsb_buf(int next_bit);
+static int pop_lsb_buf(void);
+static bb_value_t bcm2835spi_read(void);
+static int bcm2835spi_write(int tck, int tms, int tdi);
+static int bcm2835spi_reset(int trst, int srst);
+static int bcm2835_swdio_read(void);
+static void bcm2835_swdio_drive(bool is_output);
+static int bcm2835spi_speed(int speed);
+static int bcm2835spi_speed_div(int speed, int *khz);
+static int bcm2835spi_khz(int khz, int *jtag_speed);
+static int bcm2835spi_init(void);
+static int bcm2835spi_quit(void);
+COMMAND_HANDLER(bcm2835spi_handle_speed);
 
 //  SPI Configuration
 static const char *device = "/dev/spidev0.0";  //  SPI device name. If missing, enable SPI in raspi-config.
@@ -54,11 +84,11 @@ static uint8_t mode = 0  //  Note: SPI LSB mode is not supported on Broadcom. We
     | SPI_NO_CS  //  1 SPI device per bus, no Chip Select
     | SPI_3WIRE  //  Bidirectional SPI mode, data in and out pin shared
     ;            //  Data is valid on first rising edge of the clock, so CPOL=0 and CPHA=0
-static uint8_t bits   = 8;             //  8 bits per SPI word
-static uint32_t speed = 31200 * 1000;  //  31,200 kHz (31.2 MHz) for SPI speed. Use fastest speed possible because we resend JTAG-to-SWD sequence after every read
-//  static uint32_t speed = 1953000;   //  Slower: 1,953 kHz (1.9 MHz)
-//  static uint32_t speed = 122000;    //  Slowest: 122 kHz
-static uint16_t delay = 0;             //  SPI driver latency: https://www.raspberrypi.org/forums/viewtopic.php?f=44&t=19489
+static uint8_t bits   = 8;         //  8 bits per SPI word
+static uint speed_khz = 31200;     //  31,200 kHz (31.2 MHz) for SPI speed. Use fastest speed possible because we resend JTAG-to-SWD sequence after every read
+//  static uint speed_khz = 1953;  //  Slower: 1,953 kHz (1.9 MHz)
+//  static uint speed_khz = 122;   //  Slowest: 122 kHz
+static uint16_t delay = 0;         //  SPI driver latency: https://www.raspberrypi.org/forums/viewtopic.php?f=44&t=19489
 
 /// We need 2 transmit/receive buffers: One buffer in OpenOCD's LSB format, one buffer in Broadcom SPI's MSB format
 #define MAX_SPI_SIZE 256
@@ -79,10 +109,6 @@ static int spi_fd = -1;
 static const uint8_t  swd_read_idcode_prepadded[]   = { 0x00, 0x94, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00 };  //  With null byte (8 cycles idle) before and after
 static const unsigned swd_read_idcode_prepadded_len = 64;  //  Number of bits
 
-/// SWD Sequence to Read Register 4 (CTRL/STAT), with 2 trailing undefined bits short of 6 bytes. NOT byte-aligned, will cause overrun error.
-static const uint8_t  swd_read_ctrlstat[]   = { 0x8d };
-static const unsigned swd_read_ctrlstat_len = 8;  //  Number of bits
-
 /// SWD Sequence to Write Register 0 (ABORT). Clears all sticky flags: 
 /// STICKYORUN: overrun error flag,
 /// WDATAERR: write data error flag,
@@ -92,16 +118,45 @@ static const unsigned swd_read_ctrlstat_len = 8;  //  Number of bits
 static const uint8_t  swd_write_abort[]   = { 0x00, 0x81, 0xd3, 0x03, 0x00, 0x00, 0x00, 0x00 };  //  With null byte (8 cycles idle) before and after
 static const unsigned swd_write_abort_len = 64;  //  Number of bits
 
-static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
-static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
-static void spi_transmit_resync(int fd);
-static void spi_transmit(int fd, const uint8_t *buf, unsigned int len);
-static void spi_receive(int fd, uint8_t *buf, unsigned int len);
-static void spi_init(void);
-static void spi_terminate(void);
-static void push_lsb_buf(int next_bit);
-static int pop_lsb_buf(void);
-static void pabort(const char *s);
+/// Only SWD transport supported
+static const char * const bcm2835_transports[] = { "swd", NULL };
+
+/// List of configuration settings
+static const struct command_registration bcm2835spi_command_handlers[] = {
+	{
+		.name    = "bcm2835spi_speed",
+		.handler = &bcm2835spi_handle_speed,
+		.mode    = COMMAND_CONFIG,
+		.help    = "SPEED for SPI interface (kHz).",
+		.usage   = "[SPEED]",
+	},
+	COMMAND_REGISTRATION_DONE
+};
+
+/// Bit Bang Interface for BCM2835 SPI
+static struct bitbang_interface bcm2835spi_bitbang = {
+	.read        = bcm2835spi_read,
+	.write       = bcm2835spi_write,
+	.reset       = bcm2835spi_reset,
+	.swdio_read  = bcm2835_swdio_read,
+	.swdio_drive = bcm2835_swdio_drive,
+	.blink       = NULL
+};
+
+/// JTAG interface
+struct jtag_interface bcm2835spi_interface = {
+	.name           = "bcm2835spi",
+	.supported      = DEBUG_CAP_TMS_SEQ,
+	.execute_queue  = bitbang_execute_queue,
+	.transports     = bcm2835_transports,
+	.swd            = &bitbang_swd,
+	.speed          = bcm2835spi_speed,
+	.khz            = bcm2835spi_khz,
+	.speed_div      = bcm2835spi_speed_div,
+	.commands       = bcm2835spi_command_handlers,
+	.init           = bcm2835spi_init,
+	.quit           = bcm2835spi_quit,
+};
 
 /// Transmit or receive bit_cnt number of bits from/into buf (LSB format) starting at the bit offset.
 /// If target_to_host is false: Transmit from host to target.
@@ -111,10 +166,7 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
 {
     if (bit_cnt == 0) { return; }
     unsigned int byte_cnt = (bit_cnt + 7) / 8;  //  Round up to next byte count.
-    if (byte_cnt >= MAX_SPI_SIZE) { printf("bit_cnt=%d ", bit_cnt); pabort("spi_exchange: overflow"); return; }
-
-    //  Init SPI if not initialised.
-    spi_init();
+    if (byte_cnt >= MAX_SPI_SIZE) { LOG_DEBUG("bit_cnt=%d ", bit_cnt); perror("spi_exchange: overflow"); return; }
 
     //  Handle delay operation.
     if (!buf) {
@@ -122,13 +174,13 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
         //  bitbang_swd_write_reg() calls bitbang_exchange() with buf=NULL and bit_cnt=255 for delay.
         //  We send the null bytes for delay.
 #ifdef LOG_SPI
-        printf("delay %d\n", bit_cnt);
+        LOG_DEBUG("delay %d\n", bit_cnt);
 #endif  //  LOG_SPI
         memset(delay_buf, 0, byte_cnt);
         spi_transmit(spi_fd, delay_buf, byte_cnt);
         return;
     }
-    //  if (!buf) { printf("offset=%d, bit_cnt=%d, ", offset, bit_cnt); pabort("spi_exchange: null buffer"); return; }
+    //  if (!buf) { LOG_DEBUG("offset=%d, bit_cnt=%d, ", offset, bit_cnt); perror("spi_exchange: null buffer"); return; }
 
     //  If target_to_host is true, receive from target to host. Else transmit from host to target.
     if (target_to_host) {
@@ -136,7 +188,7 @@ void spi_exchange(bool target_to_host, uint8_t buf[], unsigned int offset, unsig
     } else {
         spi_exchange_transmit(buf, offset, bit_cnt);
     }
-    //  static int count = 0;  if (++count == 300) { pabort("Exit for testing"); } ////
+    //  static int count = 0;  if (++count == 300) { perror("Exit for testing"); } ////
 }
 
 /// Transmit bit_cnt number of bits from buf (LSB format) starting at the bit offset.
@@ -180,13 +232,13 @@ static void spi_exchange_transmit(uint8_t buf[], unsigned int offset, unsigned i
         i++;
     }
 #ifdef LOG_SPI
-    if (i > 0) { printf("  pad %d\n", i); }
+    if (i > 0) { LOG_DEBUG("  pad %d\n", i); }
 #endif  //  LOG_SPI
 
     if (bit_cnt == 38) {  //  SWD Write Command
         //  Add 8 clock cycles before stopping the clock.  A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
         //  After clocking out the data parity bit, continue to clock the SW-DP serial interface until it has clocked out at least 8 more clock rising edges, before stopping the clock.
-        //  printf("**** Add 8 cycles after write\n");
+        //  LOG_DEBUG("**** Add 8 cycles after write\n");
         for (i = 0; i < 8; i++) { push_lsb_buf(0); }
         byte_cnt++;
     }
@@ -203,7 +255,7 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
     //  ** trgt -> host offset 0 bits  5: 13
     //  We always force return OK (0x13) without actually receiving SPI bytes. We compensate the 5 bits during SWD Write Data later (33 bits).
     if (offset == 0 && bit_cnt == 5) {
-        //  printf("write ack force OK\n");
+        //  LOG_DEBUG("write ack force OK\n");
         buf[0] = (buf[0] & 0b11100000) | 0x13;  //  Force lower 5 bits to be 0x13
         return;
     }
@@ -219,7 +271,7 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
     if (bit_cnt == 38) {  //  SWD Read Command
         //  Add 8 clock cycles before stopping the clock.  A transaction must be followed by another transaction or at least 8 idle cycles to ensure that data is clocked through the AP.
         //  After clocking out the data parity bit, continue to clock the SW-DP serial interface until it has clocked out at least 8 more clock rising edges, before stopping the clock.
-        //  printf("**** Add 8 clock cycles after read\n");
+        //  LOG_DEBUG("**** Add 8 clock cycles after read\n");
         byte_cnt++;
     }
 
@@ -244,18 +296,18 @@ static void spi_exchange_receive(uint8_t buf[], unsigned int offset, unsigned in
     //  Since the target is in garbled state, we will resync by transmitting JTAG-To-SWD and Read IDCODE.
     if (offset == 0 && bit_cnt == 38) {
 #ifdef LOG_SPI
-        printf("Resync after read\n");
+        LOG_DEBUG("Resync after read\n");
 #endif  //  LOG_SPI
         spi_transmit_resync(spi_fd);
     } else {
-        printf("offset=%d, bit_cnt=%d, ", offset, bit_cnt);
-        pabort("spi_exchange_receive: unknown msg");
+        LOG_DEBUG("offset=%d, bit_cnt=%d, ", offset, bit_cnt);
+        perror("spi_exchange_receive: unknown msg");
     }
 }
 
 /// Transmit resync sequence to reset SWD connection with target
 static void spi_transmit_resync(int fd) {
-    //  printf("**** spi_transmit_resync\n");
+    //  LOG_DEBUG("**** spi_transmit_resync\n");
 
     //  Transmit JTAG-to-SWD sequence. Need to transmit every time because the SWD read/write command has extra 2 undefined bits that will confuse the target.
     spi_transmit(fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
@@ -298,19 +350,19 @@ static const uint8_t reverse_byte[] = {
 /// Transmit len bytes of buf (assumed to be in LSB format) to the SPI device in MSB format
 static void spi_transmit(int fd, const uint8_t *buf, unsigned int len) {
     //  Reverse LSB to MSB for LSB buf into MSB buffer.
-    if (len >= MAX_SPI_SIZE) { printf("len=%d ", len); pabort("spi_transmit overflow"); return; }
+    if (len >= MAX_SPI_SIZE) { LOG_DEBUG("len=%d ", len); perror("spi_transmit overflow"); return; }
     for (unsigned int i = 0; i < len; i++) {
         uint8_t b = buf[i];
         msb_buf[i] = reverse_byte[(uint8_t) b];
     }
 #ifdef LOG_SPI
     {
-        printf("spi_transmit: len=%d\n  ", len);
+        LOG_DEBUG("spi_transmit: len=%d\n  ", len);
         for (unsigned int i = 0; i < len; i++) {
-            if (i > 0 && i % 8 == 0) { printf("\n  "); }
-            printf("%.2X ", msb_buf[i]);
+            if (i > 0 && i % 8 == 0) { LOG_DEBUG("\n  "); }
+            LOG_DEBUG("%.2X ", msb_buf[i]);
         }
-        puts("");
+        LOG_DEBUG("\n");
     }
 #endif  //  LOG_SPI
     //  Transmit the MSB buffer to SPI device.
@@ -319,32 +371,32 @@ static void spi_transmit(int fd, const uint8_t *buf, unsigned int len) {
 		.rx_buf = (unsigned long) NULL,
 		.len = len,
 		.delay_usecs = delay,
-		.speed_hz = speed,
+		.speed_hz = speed_khz * 1000,
 		.bits_per_word = bits,
 	};
 	int ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
     //  Check SPI result.
-	if (ret < 1) { pabort("spi_transmit failed"); }
+	if (ret < 1) { perror("spi_transmit failed"); }
 }
 
 /// Receive len bytes from SPI device (assumed to be in MSB format) and write into buf in LSB format
 static void spi_receive(int fd, uint8_t *buf, unsigned int len) {
     //  Receive the MSB buffer from SPI device.
 #ifdef LOG_SPI
-    printf("spi_receive: len=%d\n  ", len);
+    LOG_DEBUG("spi_receive: len=%d\n  ", len);
 #endif  //  LOG_SPI
-    if (len >= MAX_SPI_SIZE) { printf("len=%d ", len); pabort("spi_receive overflow"); return; }
+    if (len >= MAX_SPI_SIZE) { LOG_DEBUG("len=%d ", len); perror("spi_receive overflow"); return; }
 	struct spi_ioc_transfer tr = {
 		.tx_buf = (unsigned long) NULL,
 		.rx_buf = (unsigned long) msb_buf,
 		.len = len,
 		.delay_usecs = delay,
-		.speed_hz = speed,
+		.speed_hz = speed_khz * 1000,
 		.bits_per_word = bits,
 	};
 	int ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
     //  Check SPI result.
-	if (ret < 1) { pabort("spi_receive failed"); }
+	if (ret < 1) { perror("spi_receive failed"); }
     //  Reverse MSB to LSB from MSB buffer into LSB buf.
     for (unsigned int i = 0; i < len; i++) {
         uint8_t b = msb_buf[i];
@@ -353,55 +405,18 @@ static void spi_receive(int fd, uint8_t *buf, unsigned int len) {
 #ifdef LOG_SPI
     {
         for (unsigned int i = 0; i < len; i++) {
-            if (i > 0 && i % 8 == 0) { printf("\n  "); }
-            printf("%.2X ", buf[i]);
+            if (i > 0 && i % 8 == 0) { LOG_DEBUG("\n  "); }
+            LOG_DEBUG("%.2X ", buf[i]);
         }
         puts("");
     }
 #endif  //  LOG_SPI
 }
 
-static void spi_init(void) {
-    if (spi_fd >= 0) { return; }  //  Init only once
-	printf("spi_init spi mode: %d\n", mode);
-	printf("bits per word: %d\n", bits);
-	printf("max speed: %d Hz (%d KHz)\n", speed, speed/1000);
-
-    //  Open SPI device.
-	spi_fd = open(device, O_RDWR);
-	if (spi_fd < 0) { pabort("can't open device"); }
-
-    //  Set SPI mode to read and write.
-	int ret = ioctl(spi_fd, SPI_IOC_WR_MODE, &mode);
-	if (ret == -1) { pabort("can't set spi mode"); }
-	ret = ioctl(spi_fd, SPI_IOC_RD_MODE, &mode);
-	if (ret == -1) { pabort("can't get spi mode"); }
-
-    //  Set SPI read and write bits per word.
-	ret = ioctl(spi_fd, SPI_IOC_WR_BITS_PER_WORD, &bits);
-	if (ret == -1) { pabort("can't set bits per word"); }
-	ret = ioctl(spi_fd, SPI_IOC_RD_BITS_PER_WORD, &bits);
-	if (ret == -1) { pabort("can't get bits per word"); }
-
-    //  Set SPI read and write max speed.
-	ret = ioctl(spi_fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
-	if (ret == -1) { pabort("can't set max speed hz"); }
-	ret = ioctl(spi_fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
-	if (ret == -1) { pabort("can't get max speed hz"); }
-}
-
-static void spi_terminate(void) {
-    //  Close SPI device.
-    if (spi_fd < 0) { return; }  //  Terminate only once
-	printf("spi_terminate\n");
-    close(spi_fd);
-	spi_fd = -1;
-}
-
 /// Push the bit to the lsb_buf
 static void push_lsb_buf(int next_bit) {
     unsigned int byte_cnt = (lsb_buf_bit_index + 7) / 8;  //  Round up to next byte count.
-    if (byte_cnt >= MAX_SPI_SIZE) { pabort("push_lsb_buf: overflow"); return; }
+    if (byte_cnt >= MAX_SPI_SIZE) { perror("push_lsb_buf: overflow"); return; }
 
     int bytec = lsb_buf_bit_index / 8;
     int bcval = 1 << (lsb_buf_bit_index % 8);
@@ -416,7 +431,7 @@ static void push_lsb_buf(int next_bit) {
 /// Pop the next bit from the lsb_buf
 static int pop_lsb_buf(void) {
     unsigned int byte_cnt = (lsb_buf_bit_index + 7) / 8;  //  Round up to next byte count.
-    if (byte_cnt >= MAX_SPI_SIZE) { pabort("pop_lsb_buf: overflow"); return -1; }
+    if (byte_cnt >= MAX_SPI_SIZE) { perror("pop_lsb_buf: overflow"); return -1; }
 
     int bytec = lsb_buf_bit_index / 8;
     int bcval = 1 << (lsb_buf_bit_index % 8);
@@ -426,59 +441,135 @@ static int pop_lsb_buf(void) {
     return 0;
 }
 
-static void pabort(const char *s) {
-    printf("** PABORT: ");
-	perror(s);
-    printf("\n");
-    spi_terminate();
-	abort();
+/// Read one JTAG bit (not used)
+static bb_value_t bcm2835spi_read(void)
+{
+	return 0;
 }
 
-#endif  //  SWD_SPI
-
-#ifdef NOTUSED
-cd ~/openocd-spi
-./bootstrap
-./configure --enable-sysfsgpio --enable-bcm2835gpio --enable-cmsis-dap
-
-~/openocd-spi/scripts/build-test.sh
-~/openocd-spi/scripts/test-flash-boot.sh
-~/openocd-spi/scripts/test-flash-app.sh
-
-clear ; cd ~/openocd-spi ; git pull ; make
-
-clear ; cd ~/pinetime-rust-mynewt ; scripts/nrf52-pi/flash-unprotect.sh 
-
-clear ; cd ~/pinetime-rust-mynewt ; scripts/nrf52-pi/flash-unprotect.sh >flash-unprotect.log 2>&1
-
-/home/pi/openocd-spi/src/openocd \
-    -d4 \
-    -s /home/pi/openocd-spi/tcl \
-    -f scripts/nrf52-pi/swd-pi.ocd \
-    -f scripts/nrf52-pi/flash-unprotect.ocd
-
-clear ; cd ~/pi-swd-spi ; pi-swd-spi
-
-sync ; sudo shutdown now
-
-/// Transmit and receive data to/from SPI device
-static void spi_transfer(int fd) {
-    for (int i = 0; i <= 1; i++) {  //  Test twice
-        printf("\n---- Test #%d\n\n", i + 1);
-
-        //  Transmit JTAG-to-SWD sequence. Need to transmit every time because the SWD read/write command has extra 2 undefined bits that will confuse the target.
-        puts("Transmit JTAG-to-SWD sequence...");
-        spi_transmit(fd, swd_seq_jtag_to_swd, swd_seq_jtag_to_swd_len / 8);
-
-        //  Transmit command to read Register 0 (IDCODE).
-        puts("\nTransmit command to read Register 0 (IDCODE)...");
-        spi_transmit(fd, swd_read_reg_0, swd_read_reg_0_len / 8);
-
-        //  Read response (38 bits)
-        const int buf_size = 5;
-        uint8_t buf[buf_size];
-        puts("\nReceive value of Register 0 (IDCODE)...");
-        spi_receive(fd, buf, buf_size);
-    }
+/// Write one JTAG bit (not used)
+static int bcm2835spi_write(int tck, int tms, int tdi)
+{
+	return ERROR_OK;
 }
-#endif  //  NOTUSED
+
+/// Set SWDIO direction (not used)
+static void bcm2835_swdio_drive(bool is_output)
+{
+}
+
+/// Read one SWDIO bit (not used)
+static int bcm2835_swdio_read(void)
+{
+	return 0;
+}
+
+/// Write one SWD bit (not used)
+static int bcm2835spi_swd_write(int tck, int tms, int tdi)
+{
+	return ERROR_OK;
+}
+
+/// (1) assert or (0) deassert reset lines (not used)
+static int bcm2835spi_reset(int trst, int srst)
+{
+	return ERROR_OK;
+}
+
+/// Set JTAG speed (not used)
+static int bcm2835spi_khz(int khz, int *jtag_speed)
+{
+	//  TODO
+	if (!khz) {
+		LOG_DEBUG("RCLK not supported");
+		return ERROR_FAIL;
+	}
+	*jtag_speed = 0;
+	return ERROR_OK;
+}
+
+/// Set speed div
+static int bcm2835spi_speed_div(int speed, int *khz)
+{
+	*khz = speed_khz;
+	return ERROR_OK;
+}
+
+/// Set JTAG delay (not used)
+static int bcm2835spi_speed(int speed)
+{
+	return ERROR_OK;
+}
+
+/// Parse the SPI speed
+COMMAND_HANDLER(bcm2835spi_handle_speed)
+{
+	if (CMD_ARGC == 1) {
+		COMMAND_PARSE_NUMBER(uint, CMD_ARGV[0], speed_khz);
+	}
+
+	command_print(CMD, "BCM2835 SPI: speed = %d kHz", speed_khz);
+	return ERROR_OK;
+}
+
+/// Is SWD transport supported
+static bool bcm2835spi_swd_mode_possible(void)
+{
+	return 1;
+}
+
+/// Init driver
+static int bcm2835spi_init(void)
+{
+	bitbang_interface = &bcm2835spi_bitbang;
+
+	LOG_INFO("BCM2835 SPI SWD driver");
+
+	if (bcm2835spi_swd_mode_possible()) {
+		LOG_INFO("SWD only mode enabled");
+	} else {
+		LOG_ERROR("Mode not supported");
+		return ERROR_JTAG_INIT_FAILED;
+	}
+
+    if (spi_fd >= 0) { return ERROR_OK; }  //  Init only once
+
+    //  Open SPI device.
+	spi_fd = open(device, O_RDWR);
+	if (spi_fd < 0) { perror("can't open device"); }
+
+    //  Set SPI mode to read and write.
+	int ret = ioctl(spi_fd, SPI_IOC_WR_MODE, &mode);
+	if (ret == -1) { perror("can't set spi write mode"); }
+	ret = ioctl(spi_fd, SPI_IOC_RD_MODE, &mode);
+	if (ret == -1) { perror("can't set spi read mode"); }
+
+    //  Set SPI read and write bits per word.
+	ret = ioctl(spi_fd, SPI_IOC_WR_BITS_PER_WORD, &bits);
+	if (ret == -1) { perror("can't set write bits per word"); }
+	ret = ioctl(spi_fd, SPI_IOC_RD_BITS_PER_WORD, &bits);
+	if (ret == -1) { perror("can't set read bits per word"); }
+
+    //  Set SPI read and write max speed.
+    uint32_t speed = speed_khz * 1000;
+	ret = ioctl(spi_fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
+	if (ret == -1) { perror("can't set max write speed"); }
+	ret = ioctl(spi_fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
+	if (ret == -1) { perror("can't set max read speed"); }
+
+	if (swd_mode) {
+		bcm2835spi_bitbang.write = bcm2835spi_swd_write;
+		bitbang_switch_to_swd();
+	}
+	return ERROR_OK;
+}
+
+/// Terminate driver
+static int bcm2835spi_quit(void)
+{
+    //  Close SPI device.
+    if (spi_fd < 0) { return ERROR_OK; }  //  Terminate only once
+    close(spi_fd);
+	spi_fd = -1;
+	return ERROR_OK;
+}
