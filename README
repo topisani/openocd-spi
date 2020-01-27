@@ -1,5 +1,5 @@
-Experimental version of OpenOCD that implements SWD over SPI on Raspberry Pi
-============================================================================
+OpenOCD implementation of SWD over SPI on Raspberry Pi
+======================================================
 
 Uses SPI to implement SWD flashing and debugging reliably, without using GPIO bit banging...
 
