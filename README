@@ -7,7 +7,7 @@ https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-sp
 
 This version of OpenOCD is now used in the PineTime Smart Watch Debugger. Thanks everyone for testing! :-)
 
-https://web.archive.org/web/20200124105013/https://medium.com/@ly.lee/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi-4b9ac2d093a9
+https://lupyuen.github.io/articles/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi
 
 Welcome to OpenOCD!
 ===================
