@@ -38,6 +38,7 @@
 #include "cortex_m.h"
 #include "arm_semihosting.h"
 #include "target_request.h"
+#include <rtt/rtt.h>
 
 #define savedDCRDR  dbgbase  /* FIXME: using target->dbgbase to preserve DCRDR */
 
@@ -800,6 +801,9 @@ static const struct command_registration adapter_command_handlers[] = {
 	},
 	{
 		.chain = armv7m_trace_command_handlers,
+	},
+	{
+		.chain = rtt_target_command_handlers,
 	},
 	COMMAND_REGISTRATION_DONE
 };
