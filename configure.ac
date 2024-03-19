@@ -301,6 +301,9 @@ AS_CASE(["${host_cpu}"],
     AC_ARG_ENABLE([bcm2835gpio],
       AS_HELP_STRING([--enable-bcm2835gpio], [Enable building support for bitbanging on BCM2835 (as found in Raspberry Pi)]),
       [build_bcm2835gpio=$enableval], [build_bcm2835gpio=no])
+    AC_ARG_ENABLE([bcm2835spi],
+      AS_HELP_STRING([--enable-bcm2835spi], [Enable building support for SPI on BCM2835 (as found in Raspberry Pi)]),
+      [build_bcm2835spi=$enableval], [build_bcm2835spi=no])
     AC_ARG_ENABLE([imx_gpio],
       AS_HELP_STRING([--enable-imx_gpio], [Enable building support for bitbanging on NXP IMX processors]),
       [build_imx_gpio=$enableval], [build_imx_gpio=no])
@@ -310,6 +313,7 @@ AS_CASE(["${host_cpu}"],
   ],
   [
     build_bcm2835gpio=no
+    build_bcm2835spi=no
     build_imx_gpio=no
     build_am335xgpio=no
 ])
@@ -323,42 +327,10 @@ AS_CASE(["${host_cpu}"],
     AC_ARG_ENABLE([at91rm9200],
       AS_HELP_STRING([--enable-at91rm9200], [Enable building support for AT91RM9200 based SBCs]),
       [build_at91rm9200=$enableval], [build_at91rm9200=no])
-
-    AC_ARG_ENABLE([bcm2835gpio],
-      AS_HELP_STRING([--enable-bcm2835gpio], [Enable building support for bitbanging on BCM2835 (as found in Raspberry Pi)]),
-      [build_bcm2835gpio=$enableval], [build_bcm2835gpio=no])
-    AC_ARG_ENABLE([bcm2835spi],
-      AS_HELP_STRING([--enable-bcm2835spi], [Enable building support for SPI on BCM2835 (as found in Raspberry Pi)]),
-      [build_bcm2835spi=$enableval], [build_bcm2835spi=no])
-    AC_ARG_ENABLE([imx_gpio],
-      AS_HELP_STRING([--enable-imx_gpio], [Enable building support for bitbanging on NXP IMX processors]),
-      [build_imx_gpio=$enableval], [build_imx_gpio=no])
-  ],
-  [aarch64*], [
-    AC_ARG_ENABLE([ep93xx],
-      AS_HELP_STRING([--enable-ep93xx], [Enable building support for EP93xx based SBCs]),
-      [build_ep93xx=$enableval], [build_ep93xx=no])
-
-    AC_ARG_ENABLE([at91rm9200],
-      AS_HELP_STRING([--enable-at91rm9200], [Enable building support for AT91RM9200 based SBCs]),
-      [build_at91rm9200=$enableval], [build_at91rm9200=no])
-
-    AC_ARG_ENABLE([bcm2835gpio],
-      AS_HELP_STRING([--enable-bcm2835gpio], [Enable building support for bitbanging on BCM2835 (as found in Raspberry Pi)]),
-      [build_bcm2835gpio=$enableval], [build_bcm2835gpio=no])
-    AC_ARG_ENABLE([bcm2835spi],
-      AS_HELP_STRING([--enable-bcm2835spi], [Enable building support for SPI on BCM2835 (as found in Raspberry Pi)]),
-      [build_bcm2835spi=$enableval], [build_bcm2835spi=no])
-    AC_ARG_ENABLE([imx_gpio],
-      AS_HELP_STRING([--enable-imx_gpio], [Enable building support for bitbanging on NXP IMX processors]),
-      [build_imx_gpio=$enableval], [build_imx_gpio=no])
   ],
   [
     build_ep93xx=no
     build_at91rm9200=no
-    build_bcm2835gpio=no
-    build_bcm2835spi=no    
-    build_imx_gpio=no
 ])
 
 AC_ARG_ENABLE([gw16012],

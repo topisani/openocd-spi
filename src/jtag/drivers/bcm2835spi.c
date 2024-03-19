@@ -41,7 +41,9 @@
 //  Interfacing Options --> SPI --> Yes
 //  Finish --> Yes
 
-//  #define LOG_SPI  //  Uncomment to log SPI requests
+// #define LOG_SPI  //  Uncomment to log SPI requests
+#include "target/arm_adi_v5.h"
+#include "transport/transport.h"
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -117,46 +119,6 @@ static const unsigned swd_read_idcode_prepadded_len = 64;  //  Number of bits
 /// Byte-aligned, will not cause overrun error.
 static const uint8_t  swd_write_abort[]   = { 0x00, 0x81, 0xd3, 0x03, 0x00, 0x00, 0x00, 0x00 };  //  With null byte (8 cycles idle) before and after
 static const unsigned swd_write_abort_len = 64;  //  Number of bits
-
-/// Only SWD transport supported
-static const char * const bcm2835_transports[] = { "swd", NULL };
-
-/// List of configuration settings
-static const struct command_registration bcm2835spi_command_handlers[] = {
-	{
-		.name    = "bcm2835spi_speed",
-		.handler = &bcm2835spi_handle_speed,
-		.mode    = COMMAND_CONFIG,
-		.help    = "SPEED for SPI interface (kHz).",
-		.usage   = "[SPEED]",
-	},
-	COMMAND_REGISTRATION_DONE
-};
-
-/// Bit Bang Interface for BCM2835 SPI
-static struct bitbang_interface bcm2835spi_bitbang = {
-	.read        = bcm2835spi_read,
-	.write       = bcm2835spi_write,
-	.reset       = bcm2835spi_reset,
-	.swdio_read  = bcm2835_swdio_read,
-	.swdio_drive = bcm2835_swdio_drive,
-	.blink       = NULL
-};
-
-/// JTAG interface
-struct jtag_interface bcm2835spi_interface = {
-	.name           = "bcm2835spi",
-	.supported      = DEBUG_CAP_TMS_SEQ,
-	.execute_queue  = bitbang_execute_queue,
-	.transports     = bcm2835_transports,
-	.swd            = &bitbang_swd,
-	.speed          = bcm2835spi_speed,
-	.khz            = bcm2835spi_khz,
-	.speed_div      = bcm2835spi_speed_div,
-	.commands       = bcm2835spi_command_handlers,
-	.init           = bcm2835spi_init,
-	.quit           = bcm2835spi_quit,
-};
 
 /// Transmit or receive bit_cnt number of bits from/into buf (LSB format) starting at the bit offset.
 /// If target_to_host is false: Transmit from host to target.
@@ -444,18 +406,21 @@ static int pop_lsb_buf(void) {
 /// Read one JTAG bit (not used)
 static bb_value_t bcm2835spi_read(void)
 {
+	LOG_ERROR("bcm2835spi_read");
 	return 0;
 }
 
 /// Write one JTAG bit (not used)
 static int bcm2835spi_write(int tck, int tms, int tdi)
 {
+	LOG_ERROR("bcm2835spi_write");
 	return ERROR_OK;
 }
 
 /// Set SWDIO direction (not used)
 static void bcm2835_swdio_drive(bool is_output)
 {
+	LOG_ERROR("bcm2835_swdio_drive");
 }
 
 /// Read one SWDIO bit (not used)
@@ -465,20 +430,23 @@ static int bcm2835_swdio_read(void)
 }
 
 /// Write one SWD bit (not used)
-static int bcm2835spi_swd_write(int tck, int tms, int tdi)
+static int bcm2835spi_swd_write(int swclk, int swdio)
 {
+	LOG_ERROR("bcm2835spi_swd_write");
 	return ERROR_OK;
 }
 
 /// (1) assert or (0) deassert reset lines (not used)
 static int bcm2835spi_reset(int trst, int srst)
 {
+	LOG_ERROR("bcm2835spi_reset");
 	return ERROR_OK;
 }
 
 /// Set JTAG speed (not used)
 static int bcm2835spi_khz(int khz, int *jtag_speed)
 {
+	LOG_ERROR("bcm2835spi_khz");
 	//  TODO
 	if (!khz) {
 		LOG_DEBUG("RCLK not supported");
@@ -491,6 +459,7 @@ static int bcm2835spi_khz(int khz, int *jtag_speed)
 /// Set speed div
 static int bcm2835spi_speed_div(int speed, int *khz)
 {
+	LOG_ERROR("bcm2835spi_speed_div");
 	*khz = speed_khz;
 	return ERROR_OK;
 }
@@ -498,6 +467,7 @@ static int bcm2835spi_speed_div(int speed, int *khz)
 /// Set JTAG delay (not used)
 static int bcm2835spi_speed(int speed)
 {
+	LOG_ERROR("bcm2835spi_speed");
 	return ERROR_OK;
 }
 
@@ -517,6 +487,29 @@ static bool bcm2835spi_swd_mode_possible(void)
 {
 	return 1;
 }
+
+/// List of configuration settings
+static const struct command_registration bcm2835spi_command_handlers[] = {
+	{
+		.name    = "bcm2835spi_speed",
+		.handler = &bcm2835spi_handle_speed,
+		.mode    = COMMAND_CONFIG,
+		.help    = "SPEED for SPI interface (kHz).",
+		.usage   = "[SPEED]",
+	},
+	COMMAND_REGISTRATION_DONE
+};
+
+/// Bit Bang Interface for BCM2835 SPI
+static struct bitbang_interface bcm2835spi_bitbang = {
+	.read        = bcm2835spi_read,
+	.write       = bcm2835spi_write,
+	.swdio_read  = bcm2835_swdio_read,
+	.swdio_drive = bcm2835_swdio_drive,
+	.swd_write   = bcm2835spi_swd_write, 
+	.blink       = NULL
+};
+
 
 /// Init driver
 static int bcm2835spi_init(void)
@@ -556,11 +549,7 @@ static int bcm2835spi_init(void)
 	if (ret == -1) { perror("can't set max write speed"); }
 	ret = ioctl(spi_fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
 	if (ret == -1) { perror("can't set max read speed"); }
-
-	if (swd_mode) {
-		bcm2835spi_bitbang.write = bcm2835spi_swd_write;
-		bitbang_switch_to_swd();
-	}
+	
 	return ERROR_OK;
 }
 
@@ -573,3 +562,27 @@ static int bcm2835spi_quit(void)
 	spi_fd = -1;
 	return ERROR_OK;
 }
+
+/// Only SWD transport supported
+static const char * const bcm2835_transports[] = { "swd", NULL };
+
+static struct jtag_interface bcm2835spi_interface = {
+	.supported = DEBUG_CAP_TMS_SEQ,
+	.execute_queue = bitbang_execute_queue,
+};
+
+struct adapter_driver bcm2835spi_adapter_driver = {
+	.name = "bcm2835spi",
+	.transports = bcm2835_transports,
+	.commands = bcm2835spi_command_handlers,
+
+	.init = bcm2835spi_init,
+	.quit = bcm2835spi_quit,
+	.reset = bcm2835spi_reset,
+	.speed = bcm2835spi_speed,
+	.khz = bcm2835spi_khz,
+	.speed_div = bcm2835spi_speed_div,
+
+	.jtag_ops = &bcm2835spi_interface,
+	.swd_ops = &bitbang_swd,
+};

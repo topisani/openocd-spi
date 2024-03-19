@@ -390,7 +390,8 @@ static int bitbang_swd_init(void)
 	return ERROR_OK;
 }
 
-//  #define LOG_BITBANG  //  Log bit bang requests
+#define LOG_BITBANG  //  Log bit bang requests
+#define BUILD_BCM2835SPI 1
 
 #if BUILD_BCM2835SPI == 1
 void spi_exchange(bool rnw, uint8_t buf[], unsigned int offset, unsigned int bit_cnt);
@@ -403,14 +404,18 @@ static void bitbang_swd_exchange(bool rnw, uint8_t buf[], unsigned int offset, u
 		bitbang_interface->blink(1);
 	}
 #ifdef LOG_BITBANG
-	{
-		if (!rnw && buf) {  //  If transmitting SWD command to target...
-			LOG_DEBUG("** %s offset %d bits %2d:", rnw ? "trgt -> host" : "host -> trgt", offset, bit_cnt);
-			for (unsigned int i = 0; i < (bit_cnt + 7) / 8; i++) {
-				LOG_DEBUG(" %02x", buf[i]);
+	if (!rnw && buf) {
+		char str[128] =	"";
+		for	(unsigned int i	= 0; i < (bit_cnt +	7) / 8;	i++) {
+			int	space =	sizeof(str)	- i	* 3	- 1;
+			if (space >	4) {
+				snprintf(str + i * 3, 4, "%02X ", buf[i]);
+			} else {
+				break;
 			}
-			LOG_DEBUG("\n");
 		}
+		LOG_DEBUG("** %s offset	%d bits	%2d:", rnw ? "trgt -> host"	: "host	-> trgt", offset, bit_cnt);
+		LOG_DEBUG("%s\n", str);
 	}
 #else  //  LOG_BITBANG
 	LOG_DEBUG("bitbang_exchange");
@@ -445,14 +450,18 @@ static void bitbang_swd_exchange(bool rnw, uint8_t buf[], unsigned int offset, u
 #endif  //  BUILD_BCM2835SPI == 1
 
 #ifdef LOG_BITBANG
-	{
-		if (rnw && buf) {  //  If receiving SWD response from target...
-			LOG_DEBUG("** %s offset %d bits %2d:", rnw ? "trgt -> host" : "host -> trgt", offset, bit_cnt);
-			for (unsigned int i = 0; i < (bit_cnt + 7) / 8; i++) {
-				LOG_DEBUG(" %02x", buf[i]);
+	if (rnw && buf) {
+		char str[128] =	"";
+		for	(unsigned int i	= 0; i < (bit_cnt +	7) / 8;	i++) {
+			int	space =	sizeof(str)	- i	* 3	- 1;
+			if (space >	4) {
+				snprintf(str + i * 3, 4, "%02X ", buf[i]);
+			} else {
+				break;
 			}
-			LOG_DEBUG("\n");
 		}
+		LOG_DEBUG("** %s offset	%d bits	%2d:", rnw ? "trgt -> host"	: "host	-> trgt", offset, bit_cnt);
+		LOG_DEBUG("%s\n", str);
 	}
 #endif  //  LOG_BITBANG
 }
